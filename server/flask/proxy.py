@@ -28,7 +28,7 @@ class SchedulerProxy(object):
     
 
     def project_count(self):
-        return self._scheduler.crawler_count()
+        return self._scheduler.project_count()
 
     def project_all(self):
         r = []

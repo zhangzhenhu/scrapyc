@@ -6,7 +6,7 @@ import os,sys
 import threading
 import Queue
 import time
-
+import logging
 
 class Task(threading.Thread):
     """docstring for Task"""
@@ -61,7 +61,7 @@ class Task(threading.Thread):
         self._pre_status = None
         self._commands = Queue.Queue()
         self._callback = callback
-
+        self.logger = logging.getLogger("TaskQueue")
     
     def _safe(func):
         print func
@@ -108,11 +108,12 @@ class Task(threading.Thread):
 
         if not self._p_hander:
             self.status = Task.Error
+            self.logger.error("task start error %s",self.task_id)
             return
         
         self.pid = self._p_hander.pid
         self.status = Task.Running
-
+        self.logger.info("task run pid:%d %s",self.pid,self.task_id)
         while self.retcode == None:
             self.retcode = self._p_hander.poll()
             try:
@@ -137,7 +138,7 @@ class Task(threading.Thread):
         else:
             self.status = Task.Failed
         self.end_time = datetime.now()
-
+        self.logger.info("task finished %s %s",self.task_id,self.status)
     def _kill(self,args):
         
         self._p_hander.kill()
@@ -146,6 +147,7 @@ class Task(threading.Thread):
     def kill(self):
         if self.status != Task.Running:
             return
+        self.logger.warning("task kill %s"%self.task_id)
         #self._pre_status = Task.Killing
         self._commands.put((self._kill,None))
 

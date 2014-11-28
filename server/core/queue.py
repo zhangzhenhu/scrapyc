@@ -29,19 +29,19 @@ class ProjectQueue(object):
         self._queue = {}
         #session = self.db_engine.session()
         if not os.path.exists(projects_path):
-            self.logger.warning("path not exists : %s"%projects_path)
+            self.logger.error("project path not exists : %s"%projects_path)
             return  False
         
         for pro in os.listdir(projects_path):
             cfg_file = os.path.join(projects_path,pro,"scrapy.cfg")
             if not os.path.exists(cfg_file):
-                self.logger.warning("not found file : %s"%(cfg_file))
+                self.logger.warning("project config file not found : %s"%(cfg_file))
                 continue
             
             cfg_config = Config(cfg_file)
             p,error_msg = Project.from_cfg(cfg_config)
             if not p:
-                self.logger.error("Init Project from cfg failed. %s : %s"%cfg_config,error_msg)
+                self.logger.error("Project init from cfg failed. %s : %s",error_msg,cfg_config)
                 continue
             self._queue[p.name] = p
         return len(self._queue)
@@ -166,6 +166,7 @@ class TaskQueue(threading.Thread):
                 self._history_queue.put(task)
 
     def run(self):
+        self.logger.info("start")
         self._keeping = True
         while self._keeping:
             self._do_pending()
@@ -174,8 +175,9 @@ class TaskQueue(threading.Thread):
 
 
     def stop(self):
+        self.logger.warning("stopping..")
         self.kill_all()
-        while len(self._running_queue):
+        while len(self._running_queue) >0:
             time.sleep(5)
         self._keeping = False
         self.join()
@@ -185,6 +187,7 @@ class TaskQueue(threading.Thread):
         return True  
     
     def kill_all(self):
+        self.logger.warning("kill all task...")
         with self._lock:
             for task in self._running_queue.values():
                 task.kill()

@@ -21,6 +21,9 @@ class CoreApp(object):
     #def from_other(self):
     def init(self,setting_module=None):
         
+        FORMAT = "%(asctime)s [%(filename)s-%(funcName)s-%(lineno)d] %(levelname)s %(message)s"
+        logging.basicConfig(format=FORMAT,level=logging.DEBUG)
+
         #project_settings = os.environ("SCRAPYC_SETTINGS")
         if setting_module == None:
             setting_module = os.environ["SCRAPYC_SETTINGS"]

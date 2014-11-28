@@ -19,7 +19,7 @@ class Project(object):
         self.latest_update = datetime.now()
         self.project_setting_module = self._cfg_confg.get("default",None,"settings")
         self.spiders = []
-        self.load_spiders()
+        
         
         #self.spiders = cfg_config.get("spiders","")
 
@@ -30,7 +30,10 @@ class Project(object):
         if not project:
             return None,"Not found setting : project = {project_name} "
         #print "[project] %s" % project
-        return cls(cfg_config)
+        p = cls(cfg_config)
+        p.load_spiders()
+        return p,""
+
 
     def load_spiders(self):
         

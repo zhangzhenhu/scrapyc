@@ -9,7 +9,7 @@ class SchedulerProxy(object):
 
     def task_start(self,project_name,spider_name,task_params):
 
-        return self._scheduler(project_name,spider_name,task_params)
+        return self._scheduler.start_job(project_name,spider_name,task_params)
 
     def task_kill(self,task_id):
         pass

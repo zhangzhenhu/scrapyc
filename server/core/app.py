@@ -21,14 +21,16 @@ class CoreApp(object):
     #def from_other(self):
     def init(self,setting_module=None):
         
-        FORMAT = "%(asctime)s [%(filename)s-%(funcName)s-%(lineno)d] %(levelname)s %(message)s"
-        logging.basicConfig(format=FORMAT,level=logging.DEBUG)
+        #FORMAT = "%(asctime)s [%(filename)s-%(funcName)s-%(lineno)d] %(levelname)s %(message)s"
 
         #project_settings = os.environ("SCRAPYC_SETTINGS")
         if setting_module == None:
             setting_module = os.environ["SCRAPYC_SETTINGS"]
 
         self.config.setmodule(setting_module)
+        
+        logging.basicConfig(format=self.config.get("LOG_FORMATER"),level=self.config.get("LOG_LEVEL",logging.INFO))
+        
         for _path_config in ["LOG_PATH","DATA_PATH","PROJECT_PATH","HISTORY_PATH"]:
             _p = self.config.get(_path_config)
             if not os.path.exists(_p):

@@ -19,6 +19,8 @@ class Scheduler(object):
         self.logger = logging.getLogger("Scheduler")
         log_file = os.path.join(settings.get("LOG_PATH"),"scheduler_queue.log")
         handler=logging.FileHandler(log_file)
+        handler.setFormatter(logging.Formatter(self.settings.get("LOG_FORMATER")))
+        handler.setLevel(self.settings.get("LOG_LEVEL",logging.INFO))        
         self.logger.addHandler(handler)      
     
     
@@ -55,8 +57,8 @@ class Scheduler(object):
     def stop_job(self):
         pass
 
-    def kill_job(self):
-        pass
+    def kill_job(self,task_id):
+        self.task_queue.kill_task(task_id)
 
 
 

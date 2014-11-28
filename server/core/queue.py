@@ -19,6 +19,8 @@ class ProjectQueue(object):
         self.logger = logging.getLogger("ProjectQueue")
         log_file = os.path.join(settings.get("LOG_PATH"),"project_queue.log")
         handler=logging.FileHandler(log_file)
+        handler.setFormatter(logging.Formatter(self.settings.get("LOG_FORMATER")))
+        handler.setLevel(self.settings.get("LOG_LEVEL",logging.INFO))
         self.logger.addHandler(handler)
 
         self._queue = {}
@@ -73,6 +75,8 @@ class HistoryQueue(object):
         self.logger = logging.getLogger("HistoryQueue")
         log_file = os.path.join(settings.get("LOG_PATH"),"history_queue.log")
         handler=logging.FileHandler(log_file)
+        handler.setFormatter(logging.Formatter(self.settings.get("LOG_FORMATER")))
+        handler.setLevel(self.settings.get("LOG_LEVEL",logging.INFO))        
         self.logger.addHandler(handler)
 
 
@@ -139,6 +143,8 @@ class TaskQueue(threading.Thread):
         self.logger = logging.getLogger("TaskQueue")
         log_file = os.path.join(self.settings.get("LOG_PATH"),"task_queue.log")
         handler=logging.FileHandler(log_file)
+        handler.setFormatter(logging.Formatter(self.settings.get("LOG_FORMATER")))
+        handler.setLevel(self.settings.get("LOG_LEVEL",logging.INFO))        
         self.logger.addHandler(handler)
 
         self._pending_queue = Queue.Queue()
@@ -186,6 +192,13 @@ class TaskQueue(threading.Thread):
         self._pending_queue.put(task)
         return True  
     
+    def kill_task(self,task_id):
+        if task_id not in self._running_queue:
+            self.logger.warning("task not found %s",task_id)
+            return "Not found"
+        with self._lock:    
+            self._running_queue[task_id].kill()
+
     def kill_all(self):
         self.logger.warning("kill all task...")
         with self._lock:

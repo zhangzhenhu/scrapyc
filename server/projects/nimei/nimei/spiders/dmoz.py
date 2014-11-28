@@ -15,4 +15,4 @@ class DmozSpider(scrapy.Spider):
             relative_url = sel.extract()
             abs_url =urljoin_rfc(base_url,relative_url)
             print abs_url
-            yield scrapy.Request(abs_url,callback=self.parse)
+            #yield scrapy.Request(abs_url,callback=self.parse)

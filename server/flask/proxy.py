@@ -11,14 +11,17 @@ class SchedulerProxy(object):
 
         return self._scheduler(project_name,spider_name,task_params)
 
-    def task_kill(self):
+    def task_kill(self,task_id):
         pass
 
     def task_all(self):
         pass
       
     def history_all(self):
-        pass
+        r = []
+        for c in self._scheduler.history_all():
+            r.append(c.to_dict())
+        return r
 
     def history_by_taskid(self,task_id):
         pass
@@ -39,3 +42,5 @@ class SchedulerProxy(object):
 
     def project_reload(self):
         return self._scheduler.project_reload()
+
+

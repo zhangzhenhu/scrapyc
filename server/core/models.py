@@ -42,7 +42,23 @@ class TaskModel(Base):
         tm.log_path = task.log_path
         tm.spider_config = task.spider_config
         return tm
+    def to_dict(self):
 
+        return {
+    "task_id" : self.task_id, 
+    "name" : self.name, 
+    "desc" : self.desc,
+    "project_name" : self.project_name,
+    "project_version" : self.project_version,
+    "create_time" : self.create_time,
+    "start_time" : self.start_time,
+    "end_time" : self.end_time,
+    "status" : self.status,
+    "retcode " : self.retcode,
+    "log_path" : self.log_path,
+    "spider_config" : self.spider_config,
+
+        }
 
 
 Base.metadata.create_all(db_engine)

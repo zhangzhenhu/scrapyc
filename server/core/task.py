@@ -32,7 +32,8 @@ class Task(threading.Thread):
         self.spider_params = spider_params
         self.name = task_config["task_name"]
         self.create_time = datetime.now()
-        
+        self.end_time = None
+
         self.status = Task.Pending
         self.task_id = "%s_%s_%s"%(self.project_name,self.create_time.strftime("%Y%m%d%H%M%S%f"),random.randint(100000,999999))
        
@@ -44,7 +45,7 @@ class Task(threading.Thread):
         self.desc = task_config["desc"]
         self.uri = ""
         self.spider_config = ""
-
+        self.retcode = None
         self.runner = os.path.join(os.path.dirname(__file__),"runner.py")
 
         self.task_env = os.environ.copy()
@@ -103,6 +104,7 @@ class Task(threading.Thread):
         cmdline = [sys.executable,self.runner,"crawl",self.spider]
         if args:
             cmdline.append(args)
+        self.logger.debug("task run %s %s",self.task_id,cmdline)
         self.start_time =  datetime.now()
         self._p_hander = subprocess.Popen(cmdline,cwd = self.project.source_path,stdin=None, stdout=self._stdout, stderr=self._stderr,env=self.task_env)
 
@@ -122,7 +124,7 @@ class Task(threading.Thread):
             except  Queue.Empty, e:
                 pass
             time.sleep(5)
-
+        self.end_time = datetime.now()
         self._update_status()
         if callable(self._callback):
             self.callback()
@@ -137,7 +139,7 @@ class Task(threading.Thread):
             self.status = Task.Succeed
         else:
             self.status = Task.Failed
-        self.end_time = datetime.now()
+       
         self.logger.info("task finished %s %s",self.task_id,self.status)
     def _kill(self,args):
         

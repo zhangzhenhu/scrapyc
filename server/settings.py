@@ -23,3 +23,4 @@ LOG_PATH = os.path.join(WORK_PATH,"log")
 DATA_PATH = os.path.join(WORK_PATH,"data")
 PROJECT_PATH = os.path.join(WORK_PATH,"projects")
 HISTORY_PATH = os.path.join(WORK_PATH,"history")
+MAX_RUN_TASK = 10

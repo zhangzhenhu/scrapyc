@@ -29,7 +29,7 @@ _scheduler_proxy = SchedulerProxy(flask_app)
 _handler.register_instance(_scheduler_proxy)
 _handler.connect(flask_app, '/api')    
 
-flask_app.run(debug=True)
+flask_app.run(debug=False)
 coreapp.clear()
     
 

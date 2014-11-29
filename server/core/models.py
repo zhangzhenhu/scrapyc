@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String,Enum,Sequence,DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 
-from scrapyc.server.core.database import Base,db_engine,db_session
+from scrapyc.server.core.database import Base,db_engine
 import os,sys
 
 

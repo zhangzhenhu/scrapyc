@@ -12,9 +12,11 @@ class Scheduler(object):
     def __init__(self, settings):
         super(Scheduler, self).__init__()
         self.settings = settings
-        self.task_queue = TaskQueue(settings)
+        #注意三个队列的实例化顺序
         self.history_queue = HistoryQueue(settings)
         self.project_queue = ProjectQueue(settings)
+        self.task_queue = TaskQueue(settings) 
+
         self._lock = threading.Lock()
         self.logger = logging.getLogger("Scheduler")
         log_file = os.path.join(settings.get("LOG_PATH"),"scheduler_queue.log")
@@ -38,7 +40,7 @@ class Scheduler(object):
         self.task_queue.stop()
         self.logger.info("stopped")
 
-    def start_job(self,project_name,spider_name,task_params):
+    def task_start(self,project_name,spider_name,task_params):
         project,error_msg= self.project_queue.get(project_name)
         if not project:
             return False,error_msg
@@ -54,8 +56,14 @@ class Scheduler(object):
         return True,"succed"
         
 
-    def stop_job(self):
+    def task_stop(self):
         pass
+    def task_all(self):
+
+        return self.task_queue.all()
+
+    def task_count(self):
+        return self.task_queue.count()
 
     def kill_job(self,task_id):
         self.task_queue.kill_task(task_id)

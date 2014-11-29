@@ -2,6 +2,7 @@
 from sqlalchemy.orm.exc import NoResultFound
 from scrapyc.server.core.project import Project
 from scrapyc.server.core.config import Config
+#from scrapyc.server.core.database import SafeSession
 import os
 import logging
 import threading
@@ -13,7 +14,7 @@ class ProjectQueue(object):
     def __init__(self, settings):
         super(ProjectQueue, self).__init__()
         self.settings = settings
-        #self.db_session = settings["db_session"]
+        #session = settings["db_session"]
         self.settings.set("project_queue",self)
 
         self.logger = logging.getLogger("ProjectQueue")
@@ -56,21 +57,23 @@ class ProjectQueue(object):
 
     def get(self,project_name):       
         if project_name in self._queue:
-            return self._queue[project_name]       
-        return None
+            return self._queue[project_name],""   
+        return None,"%s not exists" %project_name
+
     def start(self):
         pass
     def stop(self):
         pass
 
-from scrapyc.server.core.models import TaskModel,db_session
+from scrapyc.server.core.models import TaskModel
+from scrapyc.server.core.database import  SafeSession
 class HistoryQueue(object):
     """docstring for TaskDB"""
     def __init__(self, settings):
         super(HistoryQueue, self).__init__()
         self.settings = settings
         self.settings.set("history_queue",self)
-        self.db_session = db_session#settings["db_session"]
+        #session = db_session#settings["db_session"]
 
         self.logger = logging.getLogger("HistoryQueue")
         log_file = os.path.join(settings.get("LOG_PATH"),"history_queue.log")
@@ -81,50 +84,57 @@ class HistoryQueue(object):
 
 
     def count(self):       
-         r = self.db_session.query(TaskModel).count()        
-         self.db_session.remove()
-         return r
+        session = SafeSession()
+        r =session.query(TaskModel).count()        
+        
+        return r
 
     def all(self):
-    
-        r =  self.db_session.query(TaskModel).all()
-        self.db_session.remove()
+        session = SafeSession()
+        r =  session.query(TaskModel).all()
+       
         return r
 
 
     def get(self,task_id):
         try:
-            r= self.db_session.query(TaskModel).filter_by(task_id=task_id).one()
+            session = SafeSession()
+            r= session.query(TaskModel).filter_by(task_id=task_id).one()
         except NoResultFound, e:
             r = None
-        self.db_session.remove()
+       
         return r
 
     
     def remove_by_taskid(self,task_id):
         if not task_id or not  isinstance(str,task_id):
             return
-        for task in self.db_session.query(TaskModel).filter_by(task_id=task_id).all():
-            self.db_session.delete(task)
+        session = SafeSession()
+        for task in session.query(TaskModel).filter_by(task_id=task_id).all():
+            session.delete(task)
         
-        self.db_session.commit()
-        self.db_session.remove()
+        
+       
 
     def remove_by_project(self,project_name):
+
         if not project_name or not  isinstance(str,project_name):
             return
-        for task in self.db_session.query(TaskModel).filter_by(project_name=project).all():
-            self.db_session.delete(task)
+        session = SafeSession()
+        for task in session.query(TaskModel).filter_by(project_name=project).all():
+            session.delete(task)
         
-        self.db_session.commit()
-        self.db_session.remove()
+        
+       
    
     def put(self,task):
+
         tm = TaskModel.from_task(task)
         if tm:
-            self.db_session.add(tm)
-            self.db_session.commit()
-            self.db_session.remove()
+            session = SafeSession()
+            session.add(tm)  
+        else:
+            self.logger.error("init TaskModel object error %s",task.task_id )
 
     def start(self):
         pass
@@ -138,7 +148,7 @@ class TaskQueue(threading.Thread):
         self.settings = settings
         self.settings.set("task_queue",self)
         self._history_queue = self.settings["history_queue"]
-        self._max_proc = self.settings["MAX_RUN_TASK"]
+        self._max_proc = self.settings.get("MAX_RUN_TASK",10)
 
         self.logger = logging.getLogger("TaskQueue")
         log_file = os.path.join(self.settings.get("LOG_PATH"),"task_queue.log")
@@ -154,13 +164,16 @@ class TaskQueue(threading.Thread):
     def _do_pending(self):
 
         if len(self._running_queue) >= self._max_proc:
-                return
+            self.logger.debug("max running task %d",self._max_proc)
+            return
         try:
             task = self._pending_queue.get_nowait()
         except Queue.Empty, e:
+            return
             pass 
         if task:
             with self._lock:
+                self.logger.debug("put running queue %s",task.task_id)
                 self._running_queue[task.task_id] = task
             task.start()
         
@@ -168,8 +181,11 @@ class TaskQueue(threading.Thread):
         with self._lock:
             for task in self._running_queue.values():
                 if task.is_running():
+                    self.logger.debug("status check %s running",task.task_id)
                     continue
+                self.logger.debug("put history_queue %s",task.task_id)
                 self._history_queue.put(task)
+                del self._running_queue[task.task_id]
 
     def run(self):
         self.logger.info("start")
@@ -190,12 +206,16 @@ class TaskQueue(threading.Thread):
 
     def put(self,task):
         self._pending_queue.put(task)
+        self.logger.debug("put task to pending_queue %s %s %s ",task.task_id,task.project_name,task.spider)
         return True  
     
     def kill_task(self,task_id):
         if task_id not in self._running_queue:
             self.logger.warning("task not found %s",task_id)
             return "Not found"
+
+        self.logger.debug("killing task  %s",task_id)
+
         with self._lock:    
             self._running_queue[task_id].kill()
 
@@ -204,3 +224,9 @@ class TaskQueue(threading.Thread):
         with self._lock:
             for task in self._running_queue.values():
                 task.kill()
+
+    def all(self):        
+        return self._running_queue.values()
+
+    def count(self):
+        return len(self._running_queue)

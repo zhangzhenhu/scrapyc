@@ -26,3 +26,4 @@ PROJECT_PATH = os.path.join(WORK_PATH,"projects")
 HISTORY_PATH = os.path.join(WORK_PATH,"history")
 LOG_LEVEL = logging.DEBUG
 LOG_FORMATER = "%(asctime)s [%(filename)s::%(funcName)s:%(lineno)d] %(levelname)s %(message)s"
+MAX_RUN_TASK = 10

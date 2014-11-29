@@ -9,14 +9,21 @@ class SchedulerProxy(object):
 
     def task_start(self,project_name,spider_name,task_params):
 
-        return self._scheduler.start_job(project_name,spider_name,task_params)
+        return self._scheduler.task_start(project_name,spider_name,task_params)
 
     def task_kill(self,task_id):
         pass
 
     def task_all(self):
-        pass
-      
+        r = []
+        for t in self._scheduler.task_all():
+            r.append(t.to_dict())
+        return r
+    def task_count(self):
+        
+        return self._scheduler.task_count()
+
+
     def history_all(self):
         r = []
         for c in self._scheduler.history_all():

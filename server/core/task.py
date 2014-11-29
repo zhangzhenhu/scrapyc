@@ -163,8 +163,11 @@ class Task(threading.Thread):
         self._commands.put((self._stop,None))
 
 
-    def is_running(self):
-        return True if self.status == Task.Running else False
+    def is_finished(self):
+        if self.status not in [Task.Running,Task.Pending]:
+            return True
+        else:
+            return  False
 
 
 

@@ -86,12 +86,13 @@ class HistoryQueue(object):
     def count(self):       
         session = SafeSession()
         r =session.query(TaskModel).count()        
-        
+        SafeSession.remove()
         return r
 
     def all(self):
         session = SafeSession()
         r =  session.query(TaskModel).all()
+        SafeSession.remove()
        
         return r
 
@@ -100,6 +101,7 @@ class HistoryQueue(object):
         try:
             session = SafeSession()
             r= session.query(TaskModel).filter_by(task_id=task_id).one()
+            SafeSession.remove()
         except NoResultFound, e:
             r = None
        
@@ -112,6 +114,7 @@ class HistoryQueue(object):
         session = SafeSession()
         for task in session.query(TaskModel).filter_by(task_id=task_id).all():
             session.delete(task)
+        SafeSession.remove()
         
         
        
@@ -123,6 +126,7 @@ class HistoryQueue(object):
         session = SafeSession()
         for task in session.query(TaskModel).filter_by(project_name=project).all():
             session.delete(task)
+        SafeSession.remove()
         
         
        
@@ -133,6 +137,8 @@ class HistoryQueue(object):
         if tm:
             session = SafeSession()
             session.add(tm)  
+            session.commit()
+            SafeSession.remove()
         else:
             self.logger.error("init TaskModel object error %s",task.task_id )
 
@@ -180,8 +186,8 @@ class TaskQueue(threading.Thread):
     def _do_finished(self):
         with self._lock:
             for task in self._running_queue.values():
-                if task.is_running():
-                    self.logger.debug("status check %s running",task.task_id)
+                if not task.is_finished():
+                    self.logger.debug("status check %s %s",task.task_id,task.status)
                     continue
                 self.logger.debug("put history_queue %s",task.task_id)
                 self._history_queue.put(task)

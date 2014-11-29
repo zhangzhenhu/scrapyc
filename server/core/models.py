@@ -12,7 +12,7 @@ class TaskModel(Base):
     __tablename__ = "task"
     id = Column(Integer, Sequence('task_id_seq'), primary_key=True)
     task_id = Column(String(1060),unique=True)
-    name = Column(String(1024),unique=True)
+    name = Column(String(1024))
     desc = Column(String(4096))
     project_name =  Column(String(1024))
     project_version = Column(String(50))

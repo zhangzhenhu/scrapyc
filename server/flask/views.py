@@ -4,7 +4,10 @@
 #     do_something_with(contents)
 #     http://dormousehole.readthedocs.org/en/latest/api.html#application-object
 
-from crawler import app
-@app.route('/')
+from scrapyc.server.flask.app import flask_app
+from flask import render_template
+
+
+@flask_app.route('/')
 def index():
-    return 'Hello World!'
+    return render_template('index.html', flask_app=flask_app)

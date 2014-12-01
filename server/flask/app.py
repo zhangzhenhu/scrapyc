@@ -20,7 +20,7 @@ flask_app.logger.addHandler(logging.FileHandler(_log_file))
 
 flask_app.config.from_envvar('SCRAPYC_SETTINGS',silent=True)
 flask_app.config["scheduler"] = coreapp.scheduler
-flask_app.config["db_session"] = coreapp.config.get("db_session")
+#flask_app.config["db_session"] = coreapp.config.get("db_session")
 
 
 from scrapyc.server.flask.proxy import SchedulerProxy
@@ -28,9 +28,9 @@ _handler = XMLRPCHandler('api')
 _scheduler_proxy = SchedulerProxy(flask_app)
 _handler.register_instance(_scheduler_proxy)
 _handler.connect(flask_app, '/api')    
+flask_app.config["scheduler_proxy"] = _scheduler_proxy
 
-flask_app.run(debug=False)
-coreapp.clear()
+
     
 
 

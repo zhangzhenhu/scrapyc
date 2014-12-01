@@ -35,7 +35,7 @@ class Task(threading.Thread):
         self.end_time = None
 
         self.status = Task.Pending
-        self.task_id = "%s_%s_%s"%(self.project_name,self.create_time.strftime("%Y%m%d%H%M%S%f"),random.randint(100000,999999))
+        self.task_id = "%s_%s_%s"%(self.project_name,self.create_time.strftime("%Y%m%d%H%M%S"),random.randint(100000,999999))
        
         self.work_path = os.path.join(task_config["HISTORY_PATH"],self.task_id)
         self.log_path = os.path.join(self.work_path,"logs")

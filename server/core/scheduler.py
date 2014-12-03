@@ -40,18 +40,18 @@ class Scheduler(object):
         self.task_queue.stop()
         self.logger.info("stopped")
 
-    def task_start(self,project_name,spider_name,task_params):
+    def task_start(self,project_name,spider_name,task_name,spider_params):
         project,error_msg= self.project_queue.get(project_name)
         if not project:
             return False,error_msg
         task_config = {
-        "task_name":"test",
+        "task_name":task_name,
         "spider":spider_name,
         "desc":"",
         "HISTORY_PATH":self.settings["HISTORY_PATH"],
         }
         
-        task = Task(project,task_config,{})
+        task = Task(project,task_config,spider_params)
         self.task_queue.put(task)
         return True,"succed"
         
@@ -65,7 +65,8 @@ class Scheduler(object):
     def task_count(self):
         return self.task_queue.count()
 
-    def kill_job(self,task_id):
+    def task_kill(self,task_id):
+        
         self.task_queue.kill_task(task_id)
 
 
@@ -78,7 +79,8 @@ class Scheduler(object):
 
     def project_reload(self):
         return self.project_queue.reload()
-
+    def project_get(self,project_name):
+        return self.project_queue.get(project_name)
 
     def history_all(self):
 

@@ -7,9 +7,9 @@ class SchedulerProxy(object):
         self.app = app
         self._scheduler = app.config["scheduler"]
 
-    def task_start(self,project_name,spider_name,task_params):
+    def task_start(self,project_name,spider_name,task_name,spider_params):
 
-        return self._scheduler.task_start(project_name,spider_name,task_params)
+        return self._scheduler.task_start(project_name,spider_name,task_name,spider_params)
 
     def task_kill(self,task_id):
         pass
@@ -17,6 +17,7 @@ class SchedulerProxy(object):
     def task_all(self):
         r = []
         for t in self._scheduler.task_all():
+            
             r.append(t.to_dict())
         return r
     def task_count(self):
@@ -49,5 +50,8 @@ class SchedulerProxy(object):
 
     def project_reload(self):
         return self._scheduler.project_reload()
+
+    def project_get(self):
+        pass
 
 

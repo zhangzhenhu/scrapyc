@@ -13,13 +13,15 @@ flask_app = flask.Flask( __name__ )
 from scrapyc.server.core.app import coreapp
 coreapp.init()
 
+flask_app.config.from_envvar('SCRAPYC_SETTINGS',silent=True)
 
 _log_file = os.path.join(coreapp.config.get("LOG_PATH"),"flask.log")
 flask_app.logger.addHandler(logging.FileHandler(_log_file))
 
-
-flask_app.config.from_envvar('SCRAPYC_SETTINGS',silent=True)
+for _config in ["LOG_PATH","DATA_PATH","PROJECT_PATH","HISTORY_PATH"]:
+    flask_app.config[_config] = coreapp.config[_config]
 flask_app.config["scheduler"] = coreapp.scheduler
+
 #flask_app.config["db_session"] = coreapp.config.get("db_session")
 
 

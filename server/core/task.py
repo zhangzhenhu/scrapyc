@@ -32,7 +32,8 @@ class Task(threading.Thread):
         self.spider_params = spider_params
         self.name = task_config["task_name"]
         self.create_time = datetime.now()
-        self.end_time = None
+        self.end_time = datetime(1970,1,1)
+        self.start_time = datetime(1970,1,1)
 
         self.status = Task.Pending
         self.task_id = "%s_%s_%s"%(self.project_name,self.create_time.strftime("%Y%m%d%H%M%S"),random.randint(100000,999999))
@@ -72,6 +73,10 @@ class Task(threading.Thread):
         return safe_func
 
     def to_dict(self):
+        if self.status == self.Running:
+            run_time = str(datetime.now() - self.start_time)
+        else:
+            run_time = ""
         return {"task_id":self.task_id,
             "pid":self.pid,
             "name":self.name,
@@ -86,6 +91,7 @@ class Task(threading.Thread):
             "log_path":self.log_path,
             "uri":self.uri,
             "spider":self.spider,
+            "run_time":run_time,
 
         }
 

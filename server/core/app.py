@@ -38,10 +38,12 @@ class CoreApp(object):
 
         from scrapyc.server.core.scheduler import Scheduler
         self.scheduler = Scheduler(self.config)
+        
+        #self.scheduler.project_reload()
+    def start(self):
         self.scheduler.start()
-        self.scheduler.project_reload()
-
-    def clear(self):
+        
+    def stop(self):
         if self.scheduler:
             self.scheduler.stop() 
 

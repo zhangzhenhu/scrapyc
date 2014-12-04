@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>crontab</title>
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <!-- 新 Bootstrap 核心 CSS 文件 -->
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+  <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+
+  <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+  <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+  <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+  <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+  <script src="/static/js/flask.js"></script>
+</head>
+<body>
+  {% set apscheduler =  flask_app.config["apscheduler"]  %}
+  {% set _CLASSES = { "Running":"active","Failed":"danger","Pending":'info',"Succeed": 'success', 'Killed':"warning","Error":"danger"} %}
+
+
+
+
+  <div class="container">
+    <button type="button"  class="btn btn-primary btn-lg"  >ReLoad Projects</button>
+    <button type="button"  class="btn btn-primary btn-lg"  data-toggle="modal" data-target="#start_task">New Task</button>
+
+
+  </div>
+  <div class="container">
+    <h2>Jobs</h2>
+    <table class="table table-bordered">
+
+      <tbody>
+        <tr>
+          <th>Project</th>
+          <th>Author</th>
+          <th>Version</th>
+          <th>Spiders</th>
+          <th>LastestUpdate</th>
+        </tr>
+        {% for job in apscheduler.get_jobs() %}
+        <tr>
+          <td >{{job.name}}</td>
+          <td >{{job.args}}</td>
+          <td >{{job.kwargs }}</td>
+          <td >{{job.coalesce}}</td>
+          <td >{{job.max_instances}}</td>
+          <td >{{job.next_run_time}}</td>
+        </tr>
+        {% endfor %}
+        <!-- On cells (`td` or `th`) --> </tbody>
+    </table>
+  </div>
+  <div class="container">
+  <h2>Run</h2>
+      <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <th>Project</th>
+          <th>Version</th>
+          <th>TaskName</th>
+          <th>TaskId</th>
+          <th>CreateTime</th>
+          <th>StartTime</th>
+          <th>RunTime</th>
+          <th>Status</th>
+          <th>Log</th>
+          <th>Action</th>
+        </tr>
+      {% for task in scheduler.task_all() %}
+        <tr class="{{_CLASSES[task.status]}}">
+          <td >{{task["project_name"]}}</td>
+          <td >{{task["project_version"]}}</td>
+          <td >{{task["name"]}}</td>
+          <td >{{task["task_id"]}}</td>
+          <td>{{task["create_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
+          <td >{{task["start_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
+          <td >{{task["run_time"]}}</td>
+          <td>{{task["status"]}}</td>
+          <td>查看</td>
+          <td><!-- Indicates caution should be taken with this action -->
+                <button type="button" class="btn btn-warning  btn-xs" onclick=stop_job('{{task["task_id"]}}')>stop</button>
+
+                <!-- Indicates a dangerous or potentially negative action -->
+                <button type="button" class="btn btn-danger  btn-xs" onclick="kill_job('{{task["task_id"]}}')">kill</button>
+</td>
+        </tr>
+        {% endfor %}        
+        </tbody>
+        </table>
+  </div>
+
+
+  <div class="container">
+
+    <h2>History</h2>
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <th>Project</th>
+          <th>Version</th>
+          <th>TaskName</th>
+          <th>TaskId</th>
+          <th>CreateTime</th>
+          <th>StartTime</th>
+          <th>FinishedTime</th>
+          <th>Status</th>
+          <th>Log</th>
+        </tr>
+
+      {% for hist in scheduler.history_all() %}
+        <tr class="{{_CLASSES[hist.status]}}">
+          <td >{{hist["project_name"]}}</td>
+          <td >{{hist["project_version"]}}</td>
+          <td >{{hist["name"]}}</td>
+          <td >{{hist["task_id"]}}</td>
+          <td>{{hist["create_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
+          <td >{{hist["start_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
+          <td >{{hist["end_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
+          <td>{{hist["status"]}}</td>
+          <td>查看</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+
+  </div>
+
+</body>
+</html>

@@ -91,7 +91,7 @@ class HistoryQueue(object):
 
     def all(self):
         session = SafeSession()
-        r =  session.query(TaskModel).all()
+        r =  session.query(TaskModel).order_by(TaskModel.end_time.desc())
         SafeSession.remove()
        
         return r

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>scrapc</title>
+  <title>crontab</title>
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -24,9 +24,14 @@
   <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
   <script src="/static/js/flask.js"></script>
 </head>
-<body>
   {% set scheduler =  flask_app.config["scheduler_proxy"]  %}
-  {% set _CLASSES = { "Running":"active","Failed":"danger","Pending":'info',"Succeed": 'success', 'Killed':"warning","Error":"danger"} %}
+<body>
+  <div class="container">
+    <button type="button"  class="btn btn-primary btn-lg"  >ReLoad Projects</button>
+    <button type="button"  class="btn btn-primary btn-lg"  data-toggle="modal" data-target="#start_task">New Task</button>
+
+  </div>
+
   <div class="modal fade" id="start_task">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -38,6 +43,10 @@
           <h4 class="modal-title">New Task</h4>
         </div>
         <div class="modal-body">
+          <link rel="stylesheet" href="/static/css/bootstrap-datetimepicker.min.css" >
+          <script src="/static/js/bootstrap-datetimepicker.min.js"></script>
+          <script src="/static/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
           <form role="form" class="form-horizontal" id="form_new_task" method="post" action="/task_start"  autocomplete="on" onsubmit="return start_task();">
 
             <div class="form-group">
@@ -50,19 +59,18 @@
                 </select>
               </div>
 
-              <label for="Project" class="col-sm-2 control-label">Spider</label>
+              <label for="spider" class="col-sm-2 control-label">Spider</label>
               <div class="col-sm-4">
                 <select class="form-control" id="spider"  name="spider_name"></select>
               </div>
             </div>
 
-               <div class="form-group">
-            
+            <div class="form-group">
+
               <label for="task_name" class="col-sm-2 control-label" >task&nbsp;name</label>
-          
-                 <div class="col-sm-10">
-                <input type="text" class="form-control" id="task_name" name="task_name" value="">
-              </div>
+
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="task_name" name="task_name" value=""></div>
             </div>
 
             <div class="form-group">
@@ -73,10 +81,63 @@
                 <textarea class="form-control" rows="3" id="spider_params"  name="spider_params"></textarea>
                 <span class="help-block">eg: name=value (one line one param)</span>
               </div>
-              </div>
- 
+            </div>
+            <div class="form-group">
+              <label for="cron_type_none"  class=" col-sm-2 control-label">例行</label>
+              <label class="radio-inline col-sm-2 control-label" data-toggle="tooltip" data-placement="left" title="不例行，立即启动">
+                <input type="radio" name="cron_type" id="cron_type_none" value="no" checked="true"   >no</label>
+              <label class="radio-inline col-sm-2 control-label" data-toggle="tooltip" data-placement="left" title="每相隔特定时间执行一次">
+                <input type="radio" name="cron_type" id="cron_type_interval" value="interval"  >interval</label>
+              <label class="radio-inline col-sm-2 control-label"  data-toggle="tooltip" data-placement="left" title="未来某个特定时间点执行一次">
+                <input type="radio" name="cron_type" id="cron_type_date" value="date">date</label>
+              <label class="radio-inline col-sm-2 control-label"  data-toggle="tooltip" data-placement="left" title="类unix的crontab方式">
+                <input type="radio" name="cron_type" id="cron_type_cron" value="cron">crontab</label>
+            </div>
+
+            <div class="form-group">
+              <label for="cron_minute" class="col-sm-2 control-label">interval/cron:</label>
+              <div class="col-sm-2">
+                <input type="text" name="cron_minute" id="cron_minute" style="width:100%" placeholder="分钟"></div>
+              <div class="col-sm-2">
+                <input type="text" name="cron_hour" id="cron_hour" style="width:100%" placeholder="小时"></div>
+              <div class="col-sm-2">
+                <input type="text" name="cron_day" id="cron_day" style="width:100%" placeholder="天"></div>
+              <div class="col-sm-2">
+                <input type="text" name="cron_month" id="cron_month" style="width:100%" placeholder="月">
+                </div>
+                <div class="col-sm-2">
+                  <input type="text" name="cron_week" id="cron_week" style="width:100%" placeholder="星期"></div>
+                <!--               <label for="cron_hour" class="col-sm-3 control-label">
+                小时
+                <input type="text" name="cron_hour" id="cron_hour"></label>
+
+              <label for="cron_day" class="col-sm-2 control-label">天</label>
+              <div class="col-sm-1">
+                <input type="text" name="cron_day" id="cron_day"></div>
+
+              <label for="cron_month" class="col-sm-2 control-label">月</label>
+              <div class="col-sm-1">
+                <input type="text" name="cron_month" id="cron_month"></div>
+              -->
+            </div>
+
+            <div class="form-group">
+              <label for="start_date" class="col-sm-2 control-label">生效时间</label>
+              <div class="col-sm-4" data-toggle="tooltip" data-placement="left" title="interval/crontab类型的任务生效时间，date类型的执行时间">
+                <input class="datetimepicker" type="text" name="start_date" id="start_date"></div>
+
+              <label for="end_date" class="col-sm-2 control-label">失效时间</label>
+              <div class="col-sm-4"  data-toggle="tooltip" data-placement="left" title="interval/crontab类型的任务失效时间，date类型无需设置">
+                <input class="datetimepicker" type="text" name="end_date" id="end_date"></div>
+            </div>
+
           </form>
+
           <script type="text/javascript">
+
+
+
+
             var project_all = {{scheduler.project_all()|tojson|safe }}
               function update_spider_select () {
                           var project_name = $("#project").children('option:selected').val();
@@ -104,11 +165,28 @@
                    });
                  return false;
             }
+
+            function init (argument) {
+                          $('.datetimepicker').datetimepicker({
+                            format: 'yyyy-mm-dd hh:ii',
+                            language:"zh-CN",
+                            startDate:new Date(),
+                            todayHighlight:true,
+                            initialDate:new Date(),
+              });
+
+
+              // body...
+            }
             $(document).ready(function(){
-    
+                    init();
                     $("#project").change(update_spider_select);
                     update_spider_select();
+
             });
+
+
+
                                             // $.get({url:"/getspider?project="+project,async:false, dataType: "json",
                           //               success: function (data) {
 
@@ -127,111 +205,6 @@
       <!-- /.modal-content --> </div>
     <!-- /.modal-dialog --> </div>
   <!-- /.modal -->
-  <div class="container">
-    <button type="button"  class="btn btn-primary btn-lg"  >ReLoad Projects</button>
-    <button type="button"  class="btn btn-primary btn-lg"  data-toggle="modal" data-target="#start_task">New Task</button>
-
-
-  </div>
-  <div class="container">
-    <h2>Project</h2>
-    <table class="table table-bordered">
-
-      <tbody>
-        <tr>
-          <th>Project</th>
-          <th>Author</th>
-          <th>Version</th>
-          <th>Spiders</th>
-          <th>LastestUpdate</th>
-        </tr>
-        {% for project in scheduler.project_all() %}
-        <tr>
-          <td >{{project["project_name"]}}</td>
-          <td >{{project["author"]}}</td>
-          <td >{{project["version"]}}</td>
-          <td >{{",".join(project["spiders"])}}</td>
-          <td >{{project["latest_update"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
-        </tr>
-        {% endfor %}
-        <!-- On cells (`td` or `th`) --> </tbody>
-    </table>
-  </div>
-  <div class="container">
-  <h2>Run</h2>
-      <table class="table table-bordered">
-      <tbody>
-        <tr>
-          <th>Project</th>
-          <th>Version</th>
-          <th>TaskName</th>
-          <th>TaskId</th>
-          <th>CreateTime</th>
-          <th>StartTime</th>
-          <th>RunTime</th>
-          <th>Status</th>
-          <th>Log</th>
-          <th>Action</th>
-        </tr>
-      {% for task in scheduler.task_all() %}
-        <tr class="{{_CLASSES[task.status]}}">
-          <td >{{task["project_name"]}}</td>
-          <td >{{task["project_version"]}}</td>
-          <td >{{task["name"]}}</td>
-          <td >{{task["task_id"]}}</td>
-          <td>{{task["create_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
-          <td >{{task["start_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
-          <td >{{task["run_time"]}}</td>
-          <td>{{task["status"]}}</td>
-          <td>查看</td>
-          <td><!-- Indicates caution should be taken with this action -->
-                <button type="button" class="btn btn-warning  btn-xs" onclick=stop_job('{{task["task_id"]}}')>stop</button>
-
-                <!-- Indicates a dangerous or potentially negative action -->
-                <button type="button" class="btn btn-danger  btn-xs" onclick="kill_job('{{task["task_id"]}}')">kill</button>
-</td>
-        </tr>
-        {% endfor %}        
-        </tbody>
-        </table>
-  </div>
-
-
-  <div class="container">
-
-    <h2>History</h2>
-    <table class="table table-bordered">
-      <tbody>
-        <tr>
-          <th>Project</th>
-          <th>Version</th>
-          <th>TaskName</th>
-          <th>TaskId</th>
-          <th>CreateTime</th>
-          <th>StartTime</th>
-          <th>FinishedTime</th>
-          <th>Status</th>
-          <th>Log</th>
-        </tr>
-
-      {% for hist in scheduler.history_all() %}
-        <tr class="{{_CLASSES[hist.status]}}">
-          <td >{{hist["project_name"]}}</td>
-          <td >{{hist["project_version"]}}</td>
-          <td >{{hist["name"]}}</td>
-          <td >{{hist["task_id"]}}</td>
-          <td>{{hist["create_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
-          <td >{{hist["start_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
-          <td >{{hist["end_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
-          <td>{{hist["status"]}}</td>
-          <td>查看</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-
-    </table>
-
-  </div>
 
 </body>
 </html>

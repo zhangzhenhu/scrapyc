@@ -218,12 +218,24 @@ class TaskQueue(threading.Thread):
     def kill_task(self,task_id):
         if task_id not in self._running_queue:
             self.logger.warning("task not found %s",task_id)
-            return "Not found"
+            return False,"task_id:%s Not found"%task_id
 
         self.logger.debug("killing task  %s",task_id)
 
         with self._lock:    
             self._running_queue[task_id].kill()
+        return True,"success"
+        
+    def stop_task(self,task_id):
+        if task_id not in self._running_queue:
+            self.logger.warning("task not found %s",task_id)
+            return False,"task_id:%s Not found"%task_id
+
+        self.logger.debug("killing task  %s",task_id)
+
+        with self._lock:    
+            self._running_queue[task_id].stop()
+        return True,"success"
 
     def kill_all(self):
         self.logger.warning("kill all task...")

@@ -26,17 +26,11 @@
 </head>
 <body>
   {% set apscheduler =  flask_app.config["apscheduler"]  %}
-  {% set _CLASSES = { "Running":"active","Failed":"danger","Pending":'info',"Succeed": 'success', 'Killed':"warning","Error":"danger"} %}
+<div class="container">
 
 
 
-
-  <div class="container">
-    <button type="button"  class="btn btn-primary btn-lg"  >ReLoad Projects</button>
-    <button type="button"  class="btn btn-primary btn-lg"  data-toggle="modal" data-target="#start_task">New Task</button>
-
-
-  </div>
+</div>
   <div class="container">
     <h2>Jobs</h2>
     <table class="table table-bordered">
@@ -44,99 +38,40 @@
       <tbody>
         <tr>
           <th>Project</th>
-          <th>Author</th>
-          <th>Version</th>
-          <th>Spiders</th>
-          <th>LastestUpdate</th>
+          <th>Spider</th>
+          <th>TaskName</th>
+          <th>args</th>
+          <th>kwargs</th>
+          <th>next_run_time</th>
+          <th>action</th>
         </tr>
         {% for job in apscheduler.get_jobs() %}
         <tr>
-          <td >{{job.name}}</td>
+          <td >{{job.kwargs['project_name']}}</td>
+          <td >{{job.kwargs['spider_name']}}</td>
+          <td >{{job.kwargs['task_name']}}</td>
           <td >{{job.args}}</td>
           <td >{{job.kwargs }}</td>
-          <td >{{job.coalesce}}</td>
-          <td >{{job.max_instances}}</td>
           <td >{{job.next_run_time}}</td>
+
+          <td nowrap>
+
+          <!-- Indicates caution should be taken with this action -->
+                <button type="button" class="btn btn-warning  btn-xs confirm" onclick="remove_cronjob('{{job.id}}')">remove</button>
+
+                <!-- Indicates a dangerous or potentially negative action -->
+                <button type="button" class="btn btn-danger  btn-xs confirm" onclick="pause_cronjob('{{job.id}}')">pause</button>
+</td>          
         </tr>
         {% endfor %}
         <!-- On cells (`td` or `th`) --> </tbody>
     </table>
-  </div>
-  <div class="container">
-  <h2>Run</h2>
-      <table class="table table-bordered">
-      <tbody>
-        <tr>
-          <th>Project</th>
-          <th>Version</th>
-          <th>TaskName</th>
-          <th>TaskId</th>
-          <th>CreateTime</th>
-          <th>StartTime</th>
-          <th>RunTime</th>
-          <th>Status</th>
-          <th>Log</th>
-          <th>Action</th>
-        </tr>
-      {% for task in scheduler.task_all() %}
-        <tr class="{{_CLASSES[task.status]}}">
-          <td >{{task["project_name"]}}</td>
-          <td >{{task["project_version"]}}</td>
-          <td >{{task["name"]}}</td>
-          <td >{{task["task_id"]}}</td>
-          <td>{{task["create_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
-          <td >{{task["start_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
-          <td >{{task["run_time"]}}</td>
-          <td>{{task["status"]}}</td>
-          <td>查看</td>
-          <td><!-- Indicates caution should be taken with this action -->
-                <button type="button" class="btn btn-warning  btn-xs" onclick=stop_job('{{task["task_id"]}}')>stop</button>
-
-                <!-- Indicates a dangerous or potentially negative action -->
-                <button type="button" class="btn btn-danger  btn-xs" onclick="kill_job('{{task["task_id"]}}')">kill</button>
-</td>
-        </tr>
-        {% endfor %}        
-        </tbody>
-        </table>
+    <script type="text/javascript">
+    //$(".confirm").confirm();
+    </script>
   </div>
 
 
-  <div class="container">
-
-    <h2>History</h2>
-    <table class="table table-bordered">
-      <tbody>
-        <tr>
-          <th>Project</th>
-          <th>Version</th>
-          <th>TaskName</th>
-          <th>TaskId</th>
-          <th>CreateTime</th>
-          <th>StartTime</th>
-          <th>FinishedTime</th>
-          <th>Status</th>
-          <th>Log</th>
-        </tr>
-
-      {% for hist in scheduler.history_all() %}
-        <tr class="{{_CLASSES[hist.status]}}">
-          <td >{{hist["project_name"]}}</td>
-          <td >{{hist["project_version"]}}</td>
-          <td >{{hist["name"]}}</td>
-          <td >{{hist["task_id"]}}</td>
-          <td>{{hist["create_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
-          <td >{{hist["start_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
-          <td >{{hist["end_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
-          <td>{{hist["status"]}}</td>
-          <td>查看</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-
-    </table>
-
-  </div>
 
 </body>
 </html>

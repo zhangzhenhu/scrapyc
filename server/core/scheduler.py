@@ -67,9 +67,11 @@ class Scheduler(object):
 
     def task_kill(self,task_id):
         
-        self.task_queue.kill_task(task_id)
+        return self.task_queue.kill_task(task_id)
 
-
+    def task_stop(self,task_id):
+        
+        return self.task_queue.stop_task(task_id)
 
     def project_all(self):
         return self.project_queue.all()

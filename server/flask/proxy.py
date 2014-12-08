@@ -12,7 +12,11 @@ class SchedulerProxy(object):
         return self._scheduler.task_start(project_name,spider_name,task_name,spider_params)
 
     def task_kill(self,task_id):
-        pass
+        return self._scheduler.task_kill(task_id)
+ 
+    def task_stop(self,task_id):
+        return self._scheduler.task_stop(task_id)
+
 
     def task_all(self):
         r = []

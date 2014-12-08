@@ -39,9 +39,9 @@ class CoreApp(object):
         from scrapyc.server.core.scheduler import Scheduler
         self.scheduler = Scheduler(self.config)
         
-        #self.scheduler.project_reload()
     def start(self):
         self.scheduler.start()
+        self.scheduler.project_reload()
         
     def stop(self):
         if self.scheduler:

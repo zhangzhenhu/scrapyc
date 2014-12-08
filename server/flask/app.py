@@ -36,21 +36,19 @@ _handler.connect(flask_app, '/api')
 flask_app.config["scheduler_proxy"] = _scheduler_proxy
 
 
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.tornado import TornadoScheduler
 import os
 
 # The "apscheduler." prefix is hard coded
-apscheduler = BackgroundScheduler({
+apscheduler = TornadoScheduler({
     'apscheduler.jobstores.default': {
         'type': 'sqlalchemy',
         'url': 'sqlite:///'+os.path.join(flask_app.config["DATA_PATH"],"apscheduler.db")
     },
-    'apscheduler.executors.default': {
-        'class': 'apscheduler.executors.pool:ThreadPoolExecutor',
-        'max_workers': '20'
-    },
-    'apscheduler.job_defaults.coalesce': 'false',
+
+    'apscheduler.job_defaults.coalesce': 'true',
     'apscheduler.job_defaults.max_instances': '1',
+    #'apscheduler.timezone': 'CCT',
     
 }) 
 

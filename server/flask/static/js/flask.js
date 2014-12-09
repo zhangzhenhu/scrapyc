@@ -1,30 +1,30 @@
 function kill_job (task_id) {
-    $.post("/task_kill?task_id="+task_id,{},function(data,status){
+    $.getJSON("/task_kill?task_id="+task_id,{},function(data,status){
 
-            alert(data);
+            alert(data.msg);
   })
 }
 function stop_job (task_id) {
-    $.post("/task_stop?task_id="+task_id,{},function(data,status){
+    $.getJSON("/task_stop?task_id="+task_id,{},function(data,status){
 
-            alert(data);
+            alert(data.msg);
   })
 }
 function modify_cronjob (job_id) {
-    $.get("/cronjob_modify?job_id="+job_id,function(data,status){
+    $.getJSON("/cronjob_modify?job_id="+job_id,function(data,status){
 
-            alert(data);
+            alert(data.msg);
   })
 }
 function pause_cronjob (job_id) {
-    $.post("/cronjob_pause?job_id="+job_id,{},function(data,status){
+    $.getJSON("/cronjob_pause?job_id="+job_id,{},function(data,status){
 
-            alert(data);
+            alert(data.msg);
   })
 }
 function remove_cronjob (job_id) {
-    $.post("/cronjob_remove?job_id="+job_id,{},function(data,status){
+    $.getJSON("/cronjob_remove?job_id="+job_id,{},function(data,status){
 
-            alert(data);
+            alert(data.msg);
   })
 }

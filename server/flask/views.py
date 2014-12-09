@@ -5,7 +5,7 @@
 #     http://dormousehole.readthedocs.org/en/latest/api.html#application-object
 
 from scrapyc.server.flask.app import flask_app
-from flask import render_template
+from flask import render_template,jsonify
 from flask import request
 from datetime import datetime
 
@@ -46,7 +46,7 @@ def task_start():
 
         
     except  KeyError, e:
-        return e
+        return jsonify(ok=False,msg=str(e))
     params = {}
     for line in  spider_params.split():
         line = line.split("=",1)
@@ -58,10 +58,9 @@ def task_start():
     if cron_type == "no":
         scheduler = flask_app.config["scheduler_proxy"]
         ret,msg = scheduler.task_start(project_name,spider_name,task_name,params)
-        if ret == True:
-            return "Success"
-        else:
-            return msg
+        
+        return jsonify(ok=ret,msg="Success")
+
     elif cron_type == "interval":
         cron_minute = str2int( request.form["cron_minute"],0)
         cron_hour = str2int(request.form["cron_hour"],0)
@@ -115,31 +114,31 @@ def task_start():
             max_instances=1, replace_existing=True,
             run_date = start_date)
     else:
-        return "unkown cron_type:%s"%cron_type
+        return jsonify(ok=False,msg="unkown cron_type:%s"%cron_type)
     
     if job:
-        return 'success'
-    return "failed"
+        return jsonify(ok=True,msg='success')
+    return jsonify(ok=False,msg="failed")
 
     
 @flask_app.route('/task_kill',methods=['POST', 'GET'])
 def task_kill():
     task_id = request.args.get('task_id', '')
     if not task_id:
-        return {"ok":False,"msg":"no param:task_id"}
+        return jsonify(ok=False,msg="no param:task_id")
     scheduler = flask_app.config["scheduler_proxy"]
     ret,msg = scheduler.task_kill(task_id)
-    return {"ok":ret,"msg":msg}
+    return jsonify(ok=ret,msg=msg)
 
 
 @flask_app.route('/task_stop',methods=['POST', 'GET'])
 def task_stop():
     task_id = request.args.get('task_id', '')
     if not task_id:
-        return {"ok":False,"msg":"no param:task_id"}
+        return jsonify(ok=False,msg="no param:task_id")
     scheduler = flask_app.config["scheduler_proxy"]
     ret,msg = scheduler.task_stop(task_id)
-    return {"ok":ret,"msg":msg}
+    return  jsonify(ok=ret,msg=msg)
 
 @flask_app.route('/crontab')
 def crontab():
@@ -152,36 +151,36 @@ def new_task():
 
 @flask_app.route('/cronjob_modify')
 def cronjob_modify():
-    return {}
+    return jsonify()
 
-@flask_app.route('/cronjob_pause',methods=['POST'])
+@flask_app.route('/cronjob_pause',methods=['POST','GET'])
 def cronjob_pause(): 
     job_id = request.args.get('job_id', '')
     if not job_id:
-        return {"ok":False,"msg":"no param:job_id"}    
+        return jsonify(ok=False,msg="no param:job_id")
     apscheduler = flask_app.config["apscheduler"]
     job = apscheduler.get_job(job_id)
     if not job:
-        return  {"ok":False,"msg":"job not found.job_id:%s"%job_id}
-    apscheduler.pause_job(job)
-    return  {"ok":True,"msg":"success"}
+        return  jsonify(ok=False,msg="job not found.job_id:%s"%job_id)
+    job.pause()
+    return  jsonify(ok=True,msg="success")
 
-@flask_app.route('/cronjob_remove',methods=['POST'])
+@flask_app.route('/cronjob_remove',methods=['POST','GET'])
 def cronjob_remove():
     job_id = request.args.get('job_id', '')
     if not job_id:
-        return {"ok":False,"msg":"no param:job_id"}    
+        return jsonify(ok=False,msg="no param:job_id")
     apscheduler = flask_app.config["apscheduler"]
     job = apscheduler.get_job(job_id)
     if not job:
-        return  {"ok":False,"msg":"job not found.job_id:%s"%job_id}
-    apscheduler.pause_job(job)
-    return  {"ok":True,"msg":"success"}
+        return  jsonify(ok=False,msg="job not found.job_id:%s"%job_id)
+    job.remove()
+    return  jsonify(ok=True,msg="success")
 
-@flask_app.route('/cronjob_removeall',methods=['POST'])
+@flask_app.route('/cronjob_removeall',methods=['POST','GET'])
 def cronjob_removeall():
   
     apscheduler = flask_app.config["apscheduler"]
     apscheduler.remove_all_jobs()
-    return  {"ok":True,"msg":"success"}    
+    return  jsonify(ok=True,msg="success")
 

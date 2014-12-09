@@ -14,12 +14,6 @@ def start_job(project_name,spider_name,task_name,params):
     ret,msg = scheduler.task_start(project_name,spider_name,task_name,params)
     return ret,msg
 
-
-@flask_app.route('/')
-def index():
-    return render_template('index.html', flask_app=flask_app)
-
-
 def str2date(st):
     if not st:
         return None
@@ -33,6 +27,23 @@ def str2int(v,default=None):
     except Exception, e:
         return  default
 
+
+@flask_app.route('/')
+def index():
+    return render_template('index.html', flask_app=flask_app)
+
+
+@flask_app.route('/run_list',methods=['POST', 'GET'])
+def run_list():
+    return render_template('_runlist.html', flask_app=flask_app)
+
+@flask_app.route('/history_list',methods=['POST', 'GET'])
+def history_list():
+    return render_template('_historylist.html', flask_app=flask_app)
+
+@flask_app.route('/project_list',methods=['POST', 'GET'])
+def project_list():
+    return render_template('_projectlist.html', flask_app=flask_app)
 
 @flask_app.route('/task_start',methods=['POST', 'GET'])
 def task_start():
@@ -120,7 +131,8 @@ def task_start():
         return jsonify(ok=True,msg='success')
     return jsonify(ok=False,msg="failed")
 
-    
+   
+
 @flask_app.route('/task_kill',methods=['POST', 'GET'])
 def task_kill():
     task_id = request.args.get('task_id', '')

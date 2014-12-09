@@ -27,211 +27,49 @@
 <body>
   {% set scheduler =  flask_app.config["scheduler_proxy"]  %}
   {% set _CLASSES = { "Running":"active","Failed":"danger","Pending":'info',"Succeed": 'success', 'Killed':"warning","Error":"danger"} %}
-  <div class="modal fade" id="start_task">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">
-            <span aria-hidden="true">&times;</span>
-            <span class="sr-only">Close</span>
-          </button>
-          <h4 class="modal-title">New Task</h4>
-        </div>
-        <div class="modal-body">
-          <form role="form" class="form-horizontal" id="form_new_task" method="post" action="/task_start"  autocomplete="on" onsubmit="return start_task();">
+  
 
-            <div class="form-group">
-              <label for="project" class="col-sm-2 control-label">Project</label>
-              <div class="col-sm-4">
-                <select class="form-control" id="project"  name="project_name">
-                  {% for project in scheduler.project_all() %}
-                  <option>{{project["project_name"]}}</option>
-                  {% endfor %}
-                </select>
-              </div>
 
-              <label for="Project" class="col-sm-2 control-label">Spider</label>
-              <div class="col-sm-4">
-                <select class="form-control" id="spider"  name="spider_name"></select>
-              </div>
-            </div>
 
-               <div class="form-group">
-            
-              <label for="task_name" class="col-sm-2 control-label" >task&nbsp;name</label>
-          
-                 <div class="col-sm-10">
-                <input type="text" class="form-control" id="task_name" name="task_name" value="">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="spider_params" class="col-sm-2 control-label">spider&nbsp;params</label>
-            </div>
-            <div class="form-group">
-              <div class="col-sm-12">
-                <textarea class="form-control" rows="3" id="spider_params"  name="spider_params"></textarea>
-                <span class="help-block">eg: name=value (one line one param)</span>
-              </div>
-              </div>
- 
-          </form>
-          <script type="text/javascript">
-            var project_all = {{scheduler.project_all()|tojson|safe }}
-              function update_spider_select () {
-                          var project_name = $("#project").children('option:selected').val();
-                          $("#spider").empty()
-                          for ( var i   in project_all)
-                          {
-                            var project = project_all[i];
-                            if (project.project_name == project_name)
-                            {
-                              for (var j in project.spiders) {
-
-                                  $("#spider").append("<option>"+project.spiders[j]+"</option>");
-                                
-                              };
-                              
-                            }
-              }
-            }
-
-            function start_task () {
-                 $("#form_new_task").ajaxSubmit(function(message) {
-                        alert(message)
-                        // 对于表单提交成功后处理，message为提交页面operation.htm的返回内容
-                        return false;
-                   });
-                 return false;
-            }
-            $(document).ready(function(){
-    
-                    $("#project").change(update_spider_select);
-                    update_spider_select();
-            });
-                                            // $.get({url:"/getspider?project="+project,async:false, dataType: "json",
-                          //               success: function (data) {
-
-                                                
-                          //               },
-                          //               error: function (XMLHttpRequest, textStatus, errorThrown) {
-                          //                       alert(errorThrown);
-                          //               } });
-</script>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary" form="form_new_task">Start</button>
-        </div>
-      </div>
-      <!-- /.modal-content --> </div>
-    <!-- /.modal-dialog --> </div>
-  <!-- /.modal -->
   <div class="container">
+
+  {% from "_newtask.html" import render_newtask_modal %}
+  {{render_newtask_modal(flask_app)}}
+
+
     <button type="button"  class="btn btn-primary btn-lg"  >ReLoad Projects</button>
     <button type="button"  class="btn btn-primary btn-lg"  data-toggle="modal" data-target="#start_task">New Task</button>
 
 
-  </div>
-  <div class="container">
-    <h2>Project</h2>
-    <table class="table table-bordered">
 
-      <tbody>
-        <tr>
-          <th>Project</th>
-          <th>Author</th>
-          <th>Version</th>
-          <th>Spiders</th>
-          <th>LastestUpdate</th>
-        </tr>
-        {% for project in scheduler.project_all() %}
-        <tr>
-          <td >{{project["project_name"]}}</td>
-          <td >{{project["author"]}}</td>
-          <td >{{project["version"]}}</td>
-          <td >{{",".join(project["spiders"])}}</td>
-          <td >{{project["latest_update"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
-        </tr>
-        {% endfor %}
-        <!-- On cells (`td` or `th`) --> </tbody>
-    </table>
   </div>
-  <div class="container">
-  <h2>Run</h2>
-      <table class="table table-bordered">
-      <tbody>
-        <tr>
-          <th>Project</th>
-          <th>Version</th>
-          <th>TaskName</th>
-          <th>TaskId</th>
-          <th>CreateTime</th>
-          <th>StartTime</th>
-          <th>RunTime</th>
-          <th>Status</th>
-          <th>Log</th>
-          <th>Action</th>
-        </tr>
-      {% for task in scheduler.task_all() %}
-        <tr class="{{_CLASSES[task.status]}}">
-          <td >{{task["project_name"]}}</td>
-          <td >{{task["project_version"]}}</td>
-          <td >{{task["name"]}}</td>
-          <td >{{task["task_id"]}}</td>
-          <td>{{task["create_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
-          <td >{{task["start_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
-          <td >{{task["run_time"]}}</td>
-          <td>{{task["status"]}}</td>
-          <td>查看</td>
-          <td><!-- Indicates caution should be taken with this action -->
-                <button type="button" class="btn btn-warning  btn-xs" onclick=stop_job('{{task["task_id"]}}')>stop</button>
+  <div class="container" id="project_list">
 
-                <!-- Indicates a dangerous or potentially negative action -->
-                <button type="button" class="btn btn-danger  btn-xs" onclick="kill_job('{{task["task_id"]}}')">kill</button>
-</td>
-        </tr>
-        {% endfor %}        
-        </tbody>
-        </table>
+  </div>
+  <div class="container" id="run_list">
+
   </div>
 
 
-  <div class="container">
+  <div class="container" id="history_list">
 
-    <h2>History</h2>
-    <table class="table table-bordered">
-      <tbody>
-        <tr>
-          <th>Project</th>
-          <th>Version</th>
-          <th>TaskName</th>
-          <th>TaskId</th>
-          <th>CreateTime</th>
-          <th>StartTime</th>
-          <th>FinishedTime</th>
-          <th>Status</th>
-          <th>Log</th>
-        </tr>
 
-      {% for hist in scheduler.history_all() %}
-        <tr class="{{_CLASSES[hist.status]}}">
-          <td >{{hist["project_name"]}}</td>
-          <td >{{hist["project_version"]}}</td>
-          <td >{{hist["name"]}}</td>
-          <td >{{hist["task_id"]}}</td>
-          <td>{{hist["create_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
-          <td >{{hist["start_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
-          <td >{{hist["end_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
-          <td>{{hist["status"]}}</td>
-          <td>查看</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-
-    </table>
 
   </div>
+<script type="text/javascript">
 
+
+              $(document).ready(function(){
+                  load_project_list("project_list");
+                  load_run_list("run_list");
+                  load_history_list("history_list");
+                  window.setInterval(function  () {
+                      load_run_list("run_list");
+                      load_history_list("history_list");
+                    // body...
+                  },1000);
+            });
+
+</script>
 </body>
 </html>

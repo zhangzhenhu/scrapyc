@@ -35,13 +35,13 @@ class Task(threading.Thread):
         self.end_time = datetime(1970,1,1)
         self.start_time = datetime(1970,1,1)
 
+        self.spider = task_config["spider"]
         self.status = Task.Pending
-        self.task_id = "%s_%s_%s"%(self.project_name,self.create_time.strftime("%Y%m%d%H%M%S"),random.randint(100000,999999))
+        self.task_id = "%s_%s_%s_%s"%(self.project_name,self.spider,self.create_time.strftime("%Y%m%d%H%M%S"),random.randint(1000,9999))
        
         self.work_path = os.path.join(task_config["HISTORY_PATH"],self.task_id)
         self.log_path = os.path.join(self.work_path,"logs")
         self.data_path = os.path.join(self.work_path,"data")
-        self.spider = task_config["spider"]
         self.pid= None
         self.desc = task_config["desc"]
         self.uri = ""
@@ -55,7 +55,7 @@ class Task(threading.Thread):
         if not os.path.exists(self.data_path):
             os.makedirs(self.data_path)
 
-        self.task_env['SCRAPY_LOG_FILE'] = os.path.join(self.log_path,"scrapy.log")
+        self.task_env['SCRAPY_LOG_FILE'] = str(os.path.join(self.log_path,"scrapy.log"))
         #self.task_env['SCRAPY_LOG_FILE'] =
         self._stdout = open(os.path.join(self.log_path,"stdout.log"),"w")
         self._stderr = open(os.path.join(self.log_path,"stderr.log"),"w")
@@ -112,6 +112,7 @@ class Task(threading.Thread):
             cmdline.append(args)
         self.logger.debug("task run %s %s",self.task_id,cmdline)
         self.start_time =  datetime.now()
+        #print self.task_env
         self._p_hander = subprocess.Popen(cmdline,cwd = self.project.source_path,stdin=None, stdout=self._stdout, stderr=self._stderr,env=self.task_env)
 
         if not self._p_hander:

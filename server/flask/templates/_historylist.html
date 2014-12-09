@@ -1,0 +1,34 @@
+  {% set scheduler =  flask_app.config["scheduler_proxy"]  %}
+  {% set _CLASSES = { "Running":"active","Failed":"danger","Pending":'info',"Succeed": 'success', 'Killed':"warning","Error":"danger"} %}
+  
+<h2>History</h2>
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <th>Project</th>
+          <th>Version</th>
+          <th>TaskName</th>
+          <th>TaskId</th>
+          <th>CreateTime</th>
+          <th>StartTime</th>
+          <th>FinishedTime</th>
+          <th>Status</th>
+          <th>Log</th>
+        </tr>
+
+      {% for hist in scheduler.history_all() %}
+        <tr class="{{_CLASSES[hist.status]}}">
+          <td >{{hist["project_name"]}}</td>
+          <td >{{hist["project_version"]}}</td>
+          <td >{{hist["name"]}}</td>
+          <td >{{hist["task_id"]}}</td>
+          <td>{{hist["create_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
+          <td >{{hist["start_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
+          <td >{{hist["end_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
+          <td>{{hist["status"]}}</td>
+          <td>查看</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>

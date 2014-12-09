@@ -14,8 +14,9 @@
           <link rel="stylesheet" href="/static/css/bootstrap-datetimepicker.min.css" >
           <script src="/static/js/bootstrap-datetimepicker.min.js"></script>
           <script src="/static/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+          <script type="text/javascript" src="/static/js/jquery.form.js"></script>
           {% set scheduler =  flask_app.config["scheduler_proxy"]  %}
-          <form role="form" class="form-horizontal" id="form_new_task" method="post" action="/task_start"  autocomplete="on" onSubmit="return start_task()">
+          <form role="form" class="form-horizontal" id="form_new_task" method="post" action="/task_start"  autocomplete="on"  >
           
             <div class="form-group">
               <label for="project" class="col-sm-2 control-label">Project</label>
@@ -107,15 +108,15 @@
                           }
                    }
             }
-
-            function start_task () {
-                 $("#form_new_task").ajaxSubmit(function(data) {
-                        alert(data.msg)
-                        // 对于表单提交成功后处理，message为提交页面operation.htm的返回内容
-                        return false;
-                   });
-                 return false;
-            }
+            // $('#form_new_task').submit(function() {
+            
+            //      $("#this").ajaxSubmit(function(data) {
+            //             alert(data.msg)
+            //             // 对于表单提交成功后处理，message为提交页面operation.htm的返回内容
+            //             return false;
+            //        });
+            //      return false;
+            // });
 
             function init (argument) {
                           $('.datetimepicker').datetimepicker({
@@ -125,6 +126,13 @@
                             todayHighlight:true,
                             initialDate:new Date(),
               });
+              $('#form_new_task').ajaxForm(function(data){
+                                alert(data.msg)//弹出ajax请求后的回调结果
+                                $('#start_task').modal('hide');
+                                
+                                return false;
+            
+                });
 
             }
             $(document).ready(function(){

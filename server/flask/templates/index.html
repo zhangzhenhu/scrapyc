@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>scrapc</title>
+  <title>scrapy manager</title>
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -37,35 +37,43 @@
   {{render_newtask_modal(flask_app)}}
 
 
-    <button type="button"  class="btn btn-primary btn-lg"  >ReLoad Projects</button>
-    <button type="button"  class="btn btn-primary btn-lg"  data-toggle="modal" data-target="#start_task">New Task</button>
-
-
+  </div>
+  <div class="container" >
+    <h2>Project</h2>
+    <button type="button"  class="btn btn-primary btn-sm"  >ReLoad</button>
+    <div id="project_list"></div>
 
   </div>
-  <div class="container" id="project_list">
+  <div class="container">
+  <h2>Run</h2>
+  <div>
+  <button type="button"  class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#start_task">New</button>
+</div>
+  <div  id="run_list"></div>
 
   </div>
-  <div class="container" id="run_list">
+  <div class="container" >
+<h2>History</h2>
+<div  id="history_top">
 
-  </div>
+</div>
+</div>
+ 
 
 
-  <div class="container" id="history_list">
 
 
-
-  </div>
 <script type="text/javascript">
 
 
               $(document).ready(function(){
-                  load_project_list("project_list");
-                  load_run_list("run_list");
-                  load_history_list("history_list");
+                  load_module_page("project_list","/project_list");
+                  load_module_page("run_list","/run_list");
+                  load_module_page("history_top","/history/1/10");
+
                   window.setInterval(function  () {
-                      load_run_list("run_list");
-                      load_history_list("history_list");
+                  load_module_page("run_list","/run_list");
+                  load_module_page("history_top","/history/1/10");
                     // body...
                   },1000);
             });

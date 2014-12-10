@@ -34,7 +34,16 @@ class SchedulerProxy(object):
         for c in self._scheduler.history_all():
             r.append(c.to_dict())
         return r
+    def history_page(self,pagenum,pagecount=10):
+        r = []
+        items,cur,total_page,page_count,total_count = self._scheduler.history_queue.page(pagenum,pagecount)
+        for c in items:
+            r.append(c.to_dict())
+        return r,cur,total_page,page_count,total_count
 
+    def history_count(self):
+        return self._scheduler.history_queue.count()
+        pass
     def history_by_taskid(self,task_id):
         pass
 

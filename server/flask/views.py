@@ -37,9 +37,14 @@ def index():
 def run_list():
     return render_template('_runlist.html', flask_app=flask_app)
 
-@flask_app.route('/history_list',methods=['POST', 'GET'])
-def history_list():
-    return render_template('_historylist.html', flask_app=flask_app)
+@flask_app.route('/history/<int:pagenum>/<int:pagecount>',methods=['POST', 'GET'])
+def history(pagenum,pagecount=10):
+    return render_template('_history.html', flask_app=flask_app,pagenum=pagenum,pagecount=pagecount)
+
+@flask_app.route('/history/all/<int:pagenum>',methods=['POST', 'GET'])
+def history_all(pagenum=1):
+    return render_template('history.html', flask_app=flask_app,pagenum=pagenum)
+
 
 @flask_app.route('/project_list',methods=['POST', 'GET'])
 def project_list():

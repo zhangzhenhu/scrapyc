@@ -93,9 +93,18 @@ class HistoryQueue(object):
         session = SafeSession()
         r =  session.query(TaskModel).order_by(TaskModel.end_time.desc())
         SafeSession.remove()
-       
         return r
 
+    def page(self,index=1,page_count=10):
+        session = SafeSession()
+        if index<1:index=1
+        total_count = session.query(TaskModel).count()
+        total_page = (total_count+page_count-1)/page_count 
+        if index>total_page:index = total_page
+        r =  session.query(TaskModel).order_by(TaskModel.end_time.desc()).offset( (index -1)*page_count).limit(page_count)
+        SafeSession.remove()
+        
+        return r,index,total_page,page_count,total_count
 
     def get(self,task_id):
         try:

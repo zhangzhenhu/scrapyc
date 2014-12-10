@@ -1,0 +1,43 @@
+{% set scheduler =  flask_app.config["scheduler_proxy"]  %}
+{% set _CLASSES = { "Running":"active","Failed":"danger","Pending":'info',"Succeed": 'success', 'Killed':"warning","Error":"danger"} %}
+<table class="table table-bordered">
+  <tbody>
+    <tr>
+      <th>Project</th>
+      <th>Version</th>
+      <th>TaskName</th>
+      <th>TaskId</th>
+      <th>CreateTime</th>
+      <th>StartTime</th>
+      <th>FinishedTime</th>
+      <th>Status</th>
+      <th>Log</th>
+    </tr>
+    {% set hist_items,cur,total_page,page_count,total_count = scheduler.history_page(pagenum,pagecount) %}
+    {% for hist in hist_items %}
+    <tr class="{{_CLASSES[hist.status]}}">
+      <td >{{hist["project_name"]}}</td>
+      <td >{{hist["project_version"]}}</td>
+      <td >{{hist["name"]}}</td>
+      <td >{{hist["task_id"]}}</td>
+      <td>{{hist["create_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
+      <td >{{hist["start_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
+      <td >{{hist["end_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
+      <td>{{hist["status"]}}</td>
+      <td>查看</td>
+    </tr>
+    {% endfor %}
+    <tr>
+      <nav>
+        <ul class="pagination pagination-sm">
+
+          <li><span> 共{{total_count}}条记录 </span></li>
+          <li >
+            <a href="/history/all/1" target="blank">更多</a>
+          </li>
+        </ul>
+      </nav>
+    </tr>
+  </tbody>
+
+</table>

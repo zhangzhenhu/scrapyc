@@ -1,19 +1,25 @@
-#encoding=utf8
-import os
-from importlib import import_module
-from scrapyc.server.flask.app  import flask_app
+#!/home/spider/python/bin/python
 
-#import settings
-def main():
+# -*- coding: utf-8 -*-
 
+from scrapyc.server.flask.app import flask_app,coreapp
+from scrapyc.server.flask.views  import *
+from tornado.wsgi import WSGIContainer
+from tornado.httpserver import HTTPServer
+from tornado.ioloop import IOLoop
 
-    #app = create_app("")   
-    flask_app.debug = True
-    flask_app.run()
+def execute():
+    flask_app.config["coreapp"].start()
+    flask_app.config["apscheduler"].start()
+
+    #flask_app.run(debug=False)
+
+    http_server = HTTPServer(WSGIContainer(flask_app))
+    http_server.listen(5000)
+    IOLoop.instance().start()
+
+    flask_app.config["apscheduler"].shutdown(wait=True)
+    flask_app.config["coreapp"].stop()
 
 if __name__ == '__main__':
-    #default_setting_file = os.path.abspath( os.path.join(os.path.dirname(__file__)))
-    #default_setting = import_module(default_setting_file)
-    
-
-    main()
+    execute()

@@ -14,5 +14,5 @@ class DmozSpider(scrapy.Spider):
         for sel in response.xpath('//a/@href'):
             relative_url = sel.extract()
             abs_url =urljoin_rfc(base_url,relative_url)
-            print abs_url
-            #yield scrapy.Request(abs_url,callback=self.parse)
+            #print abs_url
+            yield scrapy.Request(abs_url,callback=self.parse)

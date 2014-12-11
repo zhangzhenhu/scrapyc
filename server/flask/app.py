@@ -5,15 +5,14 @@ import flask
 from flaskext.xmlrpc import XMLRPCHandler,Fault
 import logging
 
-os.environ["SCRAPYC_SETTINGS"] = "scrapyc.server.settings"
 flask_app = flask.Flask( __name__ )
-
-
-#project_settings = os.environ("SCRAPYC_SETTINGS")
 from scrapyc.server.core.app import coreapp
-coreapp.init()
 
-#flask_app.config.from_envvar('SCRAPYC_SETTINGS',silent=True)
+#os.environ["SCRAPYC_SETTINGS"] = "scrapyc.server.settings"
+if os.path.exists("./settings.py") or os.path.exists("./settings.pyc"):
+    coreapp.init("settings")
+else:
+    coreapp.init()
 
 _log_file = os.path.join(coreapp.config.get("LOG_PATH"),"flask.log")
 flask_app.logger.addHandler(logging.FileHandler(_log_file))

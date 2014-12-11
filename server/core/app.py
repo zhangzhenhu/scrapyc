@@ -11,23 +11,12 @@ class CoreApp(object):
     scheduler = None
     def __init__(self):
         super(CoreApp, self).__init__()
-
-
-        #_handler = XMLRPCHandler('api')
-        #_scheduler_proxy = SchedulerProxy(app)
-        #_handler.register_instance(scheduler_proxy)
-        #_handler.connect(app, '/api')    
-        #self.scheduler = 
-    #def from_other(self):
     def init(self,setting_module=None):
         
-        #FORMAT = "%(asctime)s [%(filename)s-%(funcName)s-%(lineno)d] %(levelname)s %(message)s"
-
-        #project_settings = os.environ("SCRAPYC_SETTINGS")
         if setting_module == None:
             setting_module = os.environ["SCRAPYC_SETTINGS"]
-
-        self.config.setmodule(setting_module)
+        if setting_module:
+            self.config.setmodule(setting_module)
         
         logging.basicConfig(format=self.config.get("LOG_FORMATER"),level=self.config.get("LOG_LEVEL",logging.INFO))
         
@@ -49,19 +38,6 @@ class CoreApp(object):
 
 coreapp = CoreApp()
 
-
-
-#app.config.from_object('scrapyc.server.crawler.default_settings')
-#app.config.from_envvar('SCRAPYC_SETTINGS',silent=True)
-
-
-
-
-#encoding=utf8
-#
-
-#import scrapyc.server.crawler.database
-#import scrapyc.server.crawler.views
 
     
 

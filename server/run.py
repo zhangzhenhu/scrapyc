@@ -15,7 +15,7 @@ def execute():
     #flask_app.run(debug=False)
 
     http_server = HTTPServer(WSGIContainer(flask_app))
-    http_server.listen(50000)
+    http_server.listen(8080,"0.0.0.0")
     IOLoop.instance().start()
 
     flask_app.config["apscheduler"].shutdown(wait=True)

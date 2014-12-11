@@ -8,6 +8,9 @@ import Queue
 import time
 import logging
 
+def get_valid_port(start=8000,end=9000):
+
+    pass
 class Task(threading.Thread):
     """docstring for Task"""
 
@@ -20,7 +23,7 @@ class Task(threading.Thread):
     Killing = "Killing"
     Error = "Error"
 
-    def __init__(self, project,task_config,spider_params,callback=None):
+    def __init__(self, project,task_config,spider_settings,callback=None):
         super(Task, self).__init__()
 
     #@classmethod
@@ -29,7 +32,7 @@ class Task(threading.Thread):
         self.project_name = project.name
         self.project_version = project.version
         self.task_config = task_config
-        self.spider_params = spider_params
+        self.spider_settings = spider_settings
         self.name = task_config["task_name"]
         self.create_time = datetime.now()
         self.end_time = datetime(1970,1,1)
@@ -45,7 +48,7 @@ class Task(threading.Thread):
         self.pid= None
         self.desc = task_config["desc"]
         self.uri = ""
-        self.spider_config = ""
+        self.spider_args = ""
         self.retcode = None
         self.runner = os.path.join(os.path.dirname(__file__),"runner.py")
 
@@ -54,8 +57,6 @@ class Task(threading.Thread):
             os.makedirs(self.log_path)
         if not os.path.exists(self.data_path):
             os.makedirs(self.data_path)
-
-        self.task_env['SCRAPY_LOG_FILE'] = str(os.path.join(self.log_path,"scrapy.log"))
         #self.task_env['SCRAPY_LOG_FILE'] =
         self._stdout = open(os.path.join(self.log_path,"stdout.log"),"w")
         self._stderr = open(os.path.join(self.log_path,"stderr.log"),"w")
@@ -64,7 +65,22 @@ class Task(threading.Thread):
         self._commands = Queue.Queue()
         self._callback = callback
         self.logger = logging.getLogger("TaskQueue")
-    
+        
+        
+        self.default_scrapy_settings={
+        "WEBSERVICE_ENABLED":"True",
+        "WEBSERVICE_LOGFILE":str(os.path.join(self.log_path,"webservice.log"))
+        "WEBSERVICE_PORT":"None",
+        "WEBSERVICE_HOST":"0.0.0.0",
+        }
+        self.default_spider_settings={
+        "WORK_PATH": self.work_path,
+        "LOG_PATH":self.log_path,
+        "DATA_PATH":self.data_path,
+        }
+        self.task_env['SCRAPY_LOG_FILE'] = str(os.path.join(self.log_path,"scrapy.log"))
+
+
     def _safe(func):
         print func
         def safe_func(self,* args, ** kwargs ):
@@ -72,44 +88,27 @@ class Task(threading.Thread):
                 return func( self,*args, **kwargs )
         return safe_func
 
-    def to_dict(self):
-        if self.status == self.Running:
-            run_time = str(datetime.now() - self.start_time)
-        else:
-            run_time = ""
-        return {"task_id":self.task_id,
-            "pid":self.pid,
-            "name":self.name,
-            "desc":self.desc,
-            "project_name":self.project_name,
-            "project_version":self.project_version,
-            "create_time":self.create_time,
-            "start_time":self.start_time,
-            "end_time":self.end_time,
-            "status":self.status,
-            "retcode":self.retcode,
-            "log_path":self.log_path,
-            "uri":self.uri,
-            "spider":self.spider,
-            "run_time":run_time,
-
-        }
-
    
     def run(self):
 
         if self.status != self.Pending:
             return
+        self.spider_args  = ""
+        for name,value in self.default_spider_settings.items(),self.spider_settings.items():
+            self.spider_args  += " -a %s=%s"%(name,value)
         
-        args = "-a work_path=%s"%self.work_path
-        for name,value in self.spider_params.items():
-            args += " -a %s=%s"%(name,value)
-        
-        self.spider_config = args
+        self.scrapy_args = ""
+        port = get_valid_port()
+        if not port:
+            self.status = Task.Error
+            self.logger.error("task start error %s no valid WEBSERVICE_PORT",self.task_id)
+            return
+        self.default_scrapy_settings["WEBSERVICE_PORT"]=port
+        for name,value in self.default_spider_settings.items():
+            self.scrapy_args += "-s %s=%s"%(name,value)
             
-        cmdline = [sys.executable,self.runner,"crawl",self.spider]
-        if args:
-            cmdline.append(args)
+        cmdline = [sys.executable,self.runner,"crawl",self.spider,self.scrapy_args,self.spider_args ]
+
         self.logger.debug("task run %s %s",self.task_id,cmdline)
         self.start_time =  datetime.now()
         #print self.task_env
@@ -175,6 +174,32 @@ class Task(threading.Thread):
             return True
         else:
             return  False
+
+    def to_dict(self):
+        if self.status == self.Running:
+            run_time = str(datetime.now() - self.start_time)
+        else:
+            run_time = ""
+        return {"task_id":self.task_id,
+            "pid":self.pid,
+            "name":self.name,
+            "desc":self.desc,
+            "project_name":self.project_name,
+            "project_version":self.project_version,
+            "create_time":self.create_time,
+            "start_time":self.start_time,
+            "end_time":self.end_time,
+            "status":self.status,
+            "retcode":self.retcode,
+            "log_path":self.log_path,
+            "work_path":self.work_path,
+            "data_path":self.data_path,
+            "uri":self.uri,
+            "spider":self.spider,
+            "run_time":run_time,
+            "spider_args":self.spider_args,
+
+        }
 
 
 

@@ -2,10 +2,10 @@
   
   <tbody>
   {% set scrapy_stats = webservice.cmd_get_global_stats(port=task.webservice_port)  %}
-  {%     for name, value in scrapy_stats.items() %}
+  {%     for name in scrapy_stats.keys().sort() %}
   <tr>
     <th>{{name}}</th>
-    <td> {{value}}</td>
+    <td> {{scrapy_stats[name]}}</td>
   </tr>
 
   {%endfor%}

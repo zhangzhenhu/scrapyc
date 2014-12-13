@@ -32,13 +32,15 @@
 
 
   <div class="container" >
+  <h2>Info</h2>
 <table class="table table-bordered">
   
   <tbody>
-  {%   for name, value in task.to_dict().items() %}
+  {% T = task.to_dict() %}
+  {%   for name in ["project","version","spider","status","name","task_id","commands","pid","create_time","start_time","run_time","work_path","log_path","data_path","webservice_port"] %}
   <tr>
     <th>{{name}}</th>
-    <td> {{value}}</td>
+    <td> {{T[name]}}</td>
   </tr>
 
   {%endfor%}
@@ -47,11 +49,15 @@
 
 
   </div>
-  <div class="container" id="task_stats">
 
+  <div class="container" >
+<h2>Stats</h2>
+<div id="task_stats"></div>
   </div>
 <div class="container">
-      <a href="">scrap.log</a><br>
+<h2>Log</h2>
+
+    <a href="">scrapy.log</a><br>
     <a href="">stdout.log</a><br>
     <a href="">stderr.log</a><br>
     

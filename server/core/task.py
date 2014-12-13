@@ -7,10 +7,23 @@ import threading
 import Queue
 import time
 import logging
-
+import os
+import socket
 def get_valid_port(start=8000,end=9000):
 
-    pass
+    def IsNotOpen(ip="127.0.0.1",port):
+        s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        try:
+            s.connect((ip,int(port)))
+            s.shutdown(2)
+            return False
+        except:
+            return True
+    for p in range(start,end):
+        if IsNotOpen(p):
+            return p
+
+
 class Task(threading.Thread):
     """docstring for Task"""
 

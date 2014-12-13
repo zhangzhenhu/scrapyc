@@ -40,7 +40,7 @@ class TaskModel(Base):
         tm.status = task.status
         tm.retcode = task.retcode
         tm.log_path = task.log_path
-        tm.spider_config = task.spider_settings
+        tm.spider_config = str(task.spider_settings)
         return tm
     def to_dict(self):
 

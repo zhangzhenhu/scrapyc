@@ -201,7 +201,7 @@ def cronjob_removeall():
     apscheduler.remove_all_jobs()
     return  jsonify(ok=True,msg="success")
 
-from scrapy-ws import cmd_get_global_stats
+#from scrapy-ws import cmd_get_global_stats
 
 @flask_app.route('/task/log/<task_id>',methods=['POST','GET'])
 def task_log(task_id): 

@@ -204,10 +204,10 @@ class Task(threading.Thread):
             run_time = ""
         return {"task_id":self.task_id,
             "pid":self.pid,
-            "name":self.name,
+            "task_name":self.name,
             "desc":self.desc,
             "project":self.project_name,
-            "project":self.project_version,
+            "version":self.project_version,
             "create_time":self.create_time,
             "start_time":self.start_time,
             "end_time":self.end_time,

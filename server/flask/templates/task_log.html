@@ -36,8 +36,8 @@
 <table class="table table-bordered">
   
   <tbody>
-  {% T = task.to_dict() %}
-  {%   for name in ["project","version","spider","status","name","task_id","commands","pid","create_time","start_time","run_time","work_path","log_path","data_path","webservice_port"] %}
+  {% set T = task.to_dict() %}
+  {%   for name in ["project","version","spider","status","task_name","task_id","commands","pid","create_time","start_time","run_time","work_path","log_path","data_path","webservice_port"] %}
   <tr>
     <th>{{name}}</th>
     <td> {{T[name]}}</td>

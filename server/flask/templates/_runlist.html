@@ -17,9 +17,9 @@
         </tr>
       {% for task in scheduler.task_all() %}
         <tr class="{{_CLASSES[task.status]}}">
-          <td >{{task["project_name"]}}</td>
-          <td >{{task["project_version"]}}</td>
-          <td >{{task["name"]}}</td>
+          <td >{{task["project"]}}</td>
+          <td >{{task["version"]}}</td>
+          <td >{{task["task_name"]}}</td>
           <td ><a href="/task/log/{{task["task_id"]}}">{{task["task_id"]}}</a></td>
           <td>{{task["create_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
           <td >{{task["start_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>

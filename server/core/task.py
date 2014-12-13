@@ -123,7 +123,7 @@ class Task(threading.Thread):
         for name,value in self.default_scrapy_settings.items():
             self.scrapy_args += " -s %s=%s"%(name,value)
             
-        cmdline = [sys.executable,self.runner,"crawl",self.spider,self.scrapy_args,self.spider_args ]
+        cmdline = [sys.executable,self.runner,"crawl","--pidfile=%s"%(os.path.join(self.work_path,"pid.log")),self.scrapy_args,self.spider_args, self.spider ]
         self.commands = " ".join(cmdline)
         self.logger.debug("task run %s %s",self.task_id,cmdline)
         self.start_time =  datetime.now()

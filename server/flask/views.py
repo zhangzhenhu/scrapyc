@@ -214,7 +214,7 @@ def task_log(task_id):
         abort(404)
     return render_template('task_log.html', flask_app=flask_app,task=task,webservice=ws)
 @flask_app.route('/task/stats/<task_id>',methods=['POST','GET'])
-def task_log(task_id): 
+def task_stats(task_id): 
     task = flask_app.config["scheduler"].task_queue.get_task(task_id)
     if not task:
         abort(404)

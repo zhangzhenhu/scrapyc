@@ -69,7 +69,7 @@ class Task(threading.Thread):
         
         self.default_scrapy_settings={
         "WEBSERVICE_ENABLED":"True",
-        "WEBSERVICE_LOGFILE":str(os.path.join(self.log_path,"webservice.log"))
+        "WEBSERVICE_LOGFILE":str(os.path.join(self.log_path,"webservice.log")),
         "WEBSERVICE_PORT":"None",
         "WEBSERVICE_HOST":"0.0.0.0",
         }

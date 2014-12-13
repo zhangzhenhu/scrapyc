@@ -117,7 +117,7 @@ class Task(threading.Thread):
         self.webservice_port = get_valid_port()
         if not self.webservice_port:
             self.status = Task.Error
-            self.logger.error("task start error %s no valid WEBSERVICE_PORT",self.task_id)
+            self.logger.error("%s no valid WEBSERVICE_PORT",self.task_id)
             return
         self.default_scrapy_settings["WEBSERVICE_PORT"]= self.webservice_port
         for name,value in self.default_scrapy_settings.items():

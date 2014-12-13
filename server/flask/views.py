@@ -202,11 +202,11 @@ def cronjob_removeall():
     return  jsonify(ok=True,msg="success")
 
 #from scrapy-ws import cmd_get_global_stats
-
+from scrapyc.server.flask import ws
 @flask_app.route('/task/log/<task_id>',methods=['POST','GET'])
 def task_log(task_id): 
     task = flask_app.config["scheduler"].task_queue.get_task(task_id)
     if not task:
         abort(404)
-    return render_template('task_log.html', flask_app=flask_app,task=task)
+    return render_template('task_log.html', flask_app=flask_app,task=task,webservice=ws)
 

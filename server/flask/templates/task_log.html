@@ -39,8 +39,8 @@
     
   </div>
   <div class="container">
-  {% from scrapyc.server.flask.ws import cmd_get_global_stats %}
-  {% set scrapy_stats = cmd_get_global_stats(port=task.webservice_port)  %}
+
+  {% set scrapy_stats = webservice.cmd_get_global_stats(port=task.webservice_port)  %}
   {%     for name, value in scrapy_stats.items() %}
   {{name}} : {{value}} <br>
   {%endfor%}

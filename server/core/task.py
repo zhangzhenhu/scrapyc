@@ -112,18 +112,18 @@ class Task(threading.Thread):
             self.default_spider_settings[name] = value
 
 
-        self.scrapy_args = ""
+        #self.scrapy_args = ""
         self.webservice_port = get_valid_port()
         if not self.webservice_port:
             self.status = Task.Error
             self.logger.error("%s no valid WEBSERVICE_PORT",self.task_id)
             return
-            
+
         self.default_scrapy_settings["WEBSERVICE_PORT"]= self.webservice_port
         cmdline = [sys.executable,self.runner,"crawl","--pidfile=%s"%(os.path.join(self.work_path,"pid.log"))]
 
         for name,value in self.default_scrapy_settings.items():
-            self.scrapy_args += "--set=%s=%s"%(name,value)
+            #self.scrapy_args += "--set=%s=%s"%(name,value)
             cmdline.append("--set=%s=%s"%(name,value))
         
         for name,value in self.default_spider_settings.items():

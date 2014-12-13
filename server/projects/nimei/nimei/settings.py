@@ -9,7 +9,7 @@
 #
 
 BOT_NAME = 'nimei'
-
+LOG_LEVEL = 'DEBUG'
 SPIDER_MODULES = ['nimei.spiders']
 NEWSPIDER_MODULE = 'nimei.spiders'
 

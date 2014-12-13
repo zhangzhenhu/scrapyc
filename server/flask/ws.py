@@ -19,35 +19,35 @@ from scrapy.utils.jsonrpc import jsonrpc_client_call, JsonRpcError
 
 
 
-def cmd_stop(args, opts):
+def cmd_stop(host="127.0.0.1",port=0):
     """stop <spider> - stop a running spider"""
-    jsonrpc_call(opts, 'crawler/engine', 'close_spider', args[0])
+    jsonrpc_call(host,port, 'crawler/engine', 'close_spider')
 
 def cmd_list_running(args, opts):
     """list-running - list running spiders"""
-    for x in json_get(opts, 'crawler/engine/open_spiders'):
+    for x in json_get(host,port, 'crawler/engine/open_spiders'):
         print(x)
 
 def cmd_list_available(args, opts):
     """list-available - list name of available spiders"""
-    for x in jsonrpc_call(opts, 'crawler/spiders', 'list'):
+    for x in jsonrpc_call(host,port, 'crawler/spiders', 'list'):
         print(x)
 
 def cmd_list_resources(args, opts):
     """list-resources - list available web service resources"""
-    for x in json_get(opts, '')['resources']:
+    for x in json_get(host,port, '')['resources']:
         print(x)
 
-def cmd_get_spider_stats( host="127.0.0.1",port=0,args=[]):
+def cmd_get_spider_stats( spider,host="127.0.0.1",port=0):
     """get-spider-stats <spider> - get stats of a running spider"""
-    stats = jsonrpc_call(opts, 'stats', 'get_stats', args[0])
+    stats = jsonrpc_call(host,port, 'stats', 'get_stats', spider)
     return stats
     for name, value in stats.items():
         print("%-40s %s" % (name, value))
 
-def cmd_get_global_stats(host="127.0.0.1",port=0,args=[]):
+def cmd_get_global_stats(host="127.0.0.1",port=0):
     """get-global-stats - get global stats"""
-    stats = jsonrpc_call(host,port, 'stats', 'get_stats',*args)
+    stats = jsonrpc_call(host,port, 'stats', 'get_stats')
     return stats
     for name, value in stats.items():
         print("%-40s %s" % (name, value))

@@ -13,7 +13,6 @@
           <th>StartTime</th>
           <th>RunTime</th>
           <th>Status</th>
-          <th>Log</th>
           <th>Action</th>
         </tr>
       {% for task in scheduler.task_all() %}
@@ -21,14 +20,14 @@
           <td >{{task["project_name"]}}</td>
           <td >{{task["project_version"]}}</td>
           <td >{{task["name"]}}</td>
-          <td >{{task["task_id"]}}</td>
+          <td ><a href="/task/log/{{task["task_id"]}}">{{task["task_id"]}}</a></td>
           <td>{{task["create_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
           <td >{{task["start_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
           <td >{{task["run_time"]}}</td>
           <td>{{task["status"]}}</td>
-          <td><a href="/task/log/{{task["task_id"]}}">查看</a></td>
+ 
           <td><!-- Indicates caution should be taken with this action -->
-                <button type="button" class="btn btn-warning  btn-xs" onclick=stop_job('{{task["task_id"]}}')>stop</button>
+                <button type="button" class="btn btn-warning  btn-xs" onclick="stop_job('{{task["task_id"]}}')">stop</button>
 
                 <!-- Indicates a dangerous or potentially negative action -->
                 <button type="button" class="btn btn-danger  btn-xs" onclick="kill_job('{{task["task_id"]}}')">kill</button>

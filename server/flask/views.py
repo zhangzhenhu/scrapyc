@@ -148,14 +148,7 @@ def task_kill():
     return jsonify(ok=ret,msg=msg)
 
 
-@flask_app.route('/task/stop',methods=['POST', 'GET'])
-def task_stop():
-    task_id = request.args.get('task_id', '')
-    if not task_id:
-        return jsonify(ok=False,msg="no param:task_id")
-    scheduler = flask_app.config["scheduler_proxy"]
-    ret,msg = scheduler.task_stop(task_id)
-    return  jsonify(ok=ret,msg=msg)
+
 
 @flask_app.route('/crontab')
 def crontab():
@@ -203,6 +196,17 @@ def cronjob_removeall():
 
 #from scrapy-ws import cmd_get_global_stats
 from scrapyc.server.flask import ws
+@flask_app.route('/task/stop/<task_id>',methods=['POST', 'GET'])
+def task_stop(task_id):
+    task = flask_app.config["scheduler"].task_queue.get_task(task_id)
+    if not task:
+        #abort(404)
+        return jsonify(ok=False,msg="no task:task_id")
+
+    ws.cmd_stop(port=task.webservice_port,spider=task.spider)
+    return  jsonify(ok=ret,msg="success")
+
+
 @flask_app.route('/task/log/<task_id>',methods=['POST','GET'])
 def task_log(task_id): 
     task = flask_app.config["scheduler"].task_queue.get_task(task_id)

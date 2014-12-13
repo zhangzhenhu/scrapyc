@@ -5,7 +5,7 @@ function kill_job (task_id) {
   })
 }
 function stop_job (task_id) {
-    $.getJSON("/task_stop?task_id="+task_id,{},function(data,status){
+    $.getJSON("/task/stop/"+task_id,{},function(data,status){
 
             alert(data.msg);
   })

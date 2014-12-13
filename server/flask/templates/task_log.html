@@ -35,7 +35,7 @@
 <table class="table table-bordered">
   
   <tbody>
-  {% set scrapy_stats = task.to_dict.items()  %}
+  {% set scrapy_stats = task.to_dict().items()  %}
   {%     for name, value in scrapy_stats.items() %}
   <tr>
     <th>{{name}}</th>

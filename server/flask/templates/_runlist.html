@@ -26,7 +26,7 @@
           <td >{{task["start_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
           <td >{{task["run_time"]}}</td>
           <td>{{task["status"]}}</td>
-          <td>查看</td>
+          <td><a href="/task/log/{{task["task_id"]}}">查看</a></td>
           <td><!-- Indicates caution should be taken with this action -->
                 <button type="button" class="btn btn-warning  btn-xs" onclick=stop_job('{{task["task_id"]}}')>stop</button>
 

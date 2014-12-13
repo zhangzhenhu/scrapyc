@@ -138,7 +138,7 @@ def task_start():
 
    
 
-@flask_app.route('/task_kill',methods=['POST', 'GET'])
+@flask_app.route('/task/kill',methods=['POST', 'GET'])
 def task_kill():
     task_id = request.args.get('task_id', '')
     if not task_id:
@@ -148,7 +148,7 @@ def task_kill():
     return jsonify(ok=ret,msg=msg)
 
 
-@flask_app.route('/task_stop',methods=['POST', 'GET'])
+@flask_app.route('/task/stop',methods=['POST', 'GET'])
 def task_stop():
     task_id = request.args.get('task_id', '')
     if not task_id:
@@ -209,4 +209,11 @@ def task_log(task_id):
     if not task:
         abort(404)
     return render_template('task_log.html', flask_app=flask_app,task=task,webservice=ws)
+@flask_app.route('/task/stats/<task_id>',methods=['POST','GET'])
+def task_log(task_id): 
+    task = flask_app.config["scheduler"].task_queue.get_task(task_id)
+    if not task:
+        abort(404)
+    return render_template('_scrapy_stats.html', flask_app=flask_app,task=task,webservice=ws)
+
 

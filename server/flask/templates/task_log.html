@@ -32,21 +32,44 @@
 
 
   <div class="container" >
-
-    <a href="">scrap.log</a>
-    <a href="">stdout.log</a>
-    <a href="">stderr.log</a>
-    
-  </div>
-  <div class="container">
-
-  {% set scrapy_stats = webservice.cmd_get_global_stats(port=task.webservice_port)  %}
+<table class="table table-bordered">
+  
+  <tbody>
+  {% set scrapy_stats = task.to_dict.items()  %}
   {%     for name, value in scrapy_stats.items() %}
-  {{name}} : {{value}} <br>
+  <tr>
+    <th>{{name}}</th>
+    <td> {{value}}</td>
+  </tr>
+
   {%endfor%}
+  </tbody>
+</table>
+
+
   </div>
+  <div class="container" id="task_stats">
+
+  </div>
+<div class="container">
+      <a href="">scrap.log</a><br>
+    <a href="">stdout.log</a><br>
+    <a href="">stderr.log</a><br>
+    
+</div>
+<script type="text/javascript">
 
 
+              $(document).ready(function(){
+                  load_module_page("task_stats","/task/stats/{{task.task_id}}");
+
+
+                  window.setInterval(function  () {
+                    load_module_page("task_stats","/task/stats/{{task.task_id}}");
+                  },10000);
+            });
+
+</script>
 
 </body>
 </html>

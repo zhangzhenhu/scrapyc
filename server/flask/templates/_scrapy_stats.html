@@ -1,0 +1,13 @@
+<table class="table table-bordered">
+  
+  <tbody>
+  {% set scrapy_stats = webservice.cmd_get_global_stats(port=task.webservice_port)  %}
+  {%     for name, value in scrapy_stats.items() %}
+  <tr>
+    <th>{{name}}</th>
+    <td> {{value}}</td>
+  </tr>
+
+  {%endfor%}
+  </tbody>
+</table>

@@ -216,10 +216,12 @@ class Task(threading.Thread):
             "log_path":self.log_path,
             "work_path":self.work_path,
             "data_path":self.data_path,
-            "uri":self.uri,
+            #"uri":self.uri,
             "spider":self.spider,
             "run_time":run_time,
-            "spider_args":self.spider_args,
+            #"spider_args":self.spider_args,
+            "commands":self.commands,
+            "webservice_port":self.webservice_port,
 
         }
 

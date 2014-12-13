@@ -257,3 +257,9 @@ class TaskQueue(threading.Thread):
 
     def count(self):
         return len(self._running_queue)
+    def get_task(self,task_id):
+        
+        if task_id in self._running_queue:
+            return self._running_queue[task_id]
+        else:
+            return None

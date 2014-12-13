@@ -79,7 +79,7 @@ class Task(threading.Thread):
         "DATA_PATH":self.data_path,
         }
         self.task_env['SCRAPY_LOG_FILE'] = str(os.path.join(self.log_path,"scrapy.log"))
-
+        self.webservice_port = 0
 
     def _safe(func):
         print func
@@ -98,12 +98,12 @@ class Task(threading.Thread):
             self.spider_args  += " -a %s=%s"%(name,value)
         
         self.scrapy_args = ""
-        port = get_valid_port()
-        if not port:
+        self.webservice_port = get_valid_port()
+        if not self.webservice_port:
             self.status = Task.Error
             self.logger.error("task start error %s no valid WEBSERVICE_PORT",self.task_id)
             return
-        self.default_scrapy_settings["WEBSERVICE_PORT"]=port
+        self.default_scrapy_settings["WEBSERVICE_PORT"]= self.webservice_port
         for name,value in self.default_spider_settings.items():
             self.scrapy_args += "-s %s=%s"%(name,value)
             

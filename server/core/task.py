@@ -94,9 +94,11 @@ class Task(threading.Thread):
         if self.status != self.Pending:
             return
         self.spider_args  = ""
-        for name,value in self.default_spider_settings.items(),self.spider_settings.items():
+        for name,value in self.spider_settings.items():
             self.spider_args  += " -a %s=%s"%(name,value)
-        
+        for name,value in self.default_spider_settings.items():
+            self.spider_args  += " -a %s=%s"%(name,value)
+
         self.scrapy_args = ""
         self.webservice_port = get_valid_port()
         if not self.webservice_port:

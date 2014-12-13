@@ -38,25 +38,25 @@ def cmd_list_resources(args, opts):
     for x in json_get(opts, '')['resources']:
         print(x)
 
-def cmd_get_spider_stats( host="127.0.0.1",port,args):
+def cmd_get_spider_stats( host="127.0.0.1",port=0,args=[]):
     """get-spider-stats <spider> - get stats of a running spider"""
     stats = jsonrpc_call(opts, 'stats', 'get_stats', args[0])
     return stats
     for name, value in stats.items():
         print("%-40s %s" % (name, value))
 
-def cmd_get_global_stats(host="127.0.0.1",port,args=[])
+def cmd_get_global_stats(host="127.0.0.1",port=0,args=[]):
     """get-global-stats - get global stats"""
-    stats = jsonrpc_call(host="127.0.0.1",port, 'stats', 'get_stats',*args)
+    stats = jsonrpc_call(host,port, 'stats', 'get_stats',*args)
     return stats
     for name, value in stats.items():
         print("%-40s %s" % (name, value))
 
-def get_wsurl(host="127.0.0.1",port, path):
+def get_wsurl(host,port, path):
     return urljoin("http://%s:%s/"% (host, port), path)
 
-def jsonrpc_call(host="127.0.0.1",port, path, method, *args, **kwargs):
-    url = get_wsurl(host="127.0.0.1",port, path)
+def jsonrpc_call(host,port, path, method, *args, **kwargs):
+    url = get_wsurl(host,port, path)
     return jsonrpc_client_call(url, method, *args, **kwargs)
 
 def json_get(opts, path):

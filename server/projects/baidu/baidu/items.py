@@ -1,23 +1,23 @@
 #encoding=utf8
 from scrapyc.server.utils.sqlalchemyitem import AlchemyBase,AlchemyItem
-from sqlalchemy import Column, Integer, ForeignKey, String,DateTime,Sequence
+from sqlalchemy import Column,BigInteger, Integer, ForeignKey, String,DateTime,Sequence
 
 
 class BaiduUser(AlchemyBase):
     """docstring for BaiduUser"""
     __tablename__ = 'baidu_user'
-    uk = Column(Integer, Sequence('baidu_user_uk_seq'), primary_key=True)
+    uk = Column(BigInteger, Sequence('baidu_user_uk_seq'), primary_key=True)
     username = Column(String(255))
-    pubshare_count = Column(Integer)
-    secshare_cnt = Column(Integer)
-    fans_count = Column(Integer)
-    follow_count = Column(Integer)
+    pubshare_count = Column(BigInteger)
+    secshare_cnt = Column(BigInteger)
+    fans_count = Column(BigInteger)
+    follow_count = Column(BigInteger)
     intro = Column(String(4096))
-    album_count = Column(Integer)
-    tui_user_count = Column(Integer)
-    c2c_user_sell_count = Column(Integer)
-    c2c_user_buy_count = Column(Integer)
-    c2c_user_product_count = Column(Integer)
+    album_count = Column(BigInteger)
+    tui_user_count = Column(BigInteger)
+    c2c_user_sell_count = Column(BigInteger)
+    c2c_user_buy_count = Column(BigInteger)
+    c2c_user_product_count = Column(BigInteger)
     avatar_url = Column(String(1024))
     last_insert_time = Column(DateTime)
     last_update_time= Column(DateTime)
@@ -31,18 +31,18 @@ class BaiduShare(AlchemyBase):
     feed_type = Column(String(30))
     album_id= Column(String(255))
     shareid = Column(String(255))
-    uk = Column(Integer)
+    uk = Column(BigInteger)
     category = Column(Integer)
-    feed_time = Column(Integer)
+    feed_time = Column(BigInteger)
     title = Column(String(1024))
     filecount = Column(Integer)
     public = Column(Integer)
     shorturl = Column(String(1024))
     source_uid = Column(String(255))
     source_id = Column(String(255))
-    vCnt = Column(Integer)
-    dCnt = Column(Integer)
-    tCnt = Column(Integer)
+    vCnt = Column(BigInteger)
+    dCnt = Column(BigInteger)
+    tCnt = Column(BigInteger)
     description = Column(String(4096))
     is_valid =  Column(Integer)
     last_crawl_time = Column(DateTime)
@@ -51,14 +51,14 @@ class BaiduShare(AlchemyBase):
 class BaiduFile(AlchemyBase):
     __tablename__ = 'baidu_file'
     fs_id = Column(String(255), Sequence('baidu_file_id_seq'), primary_key=True)
-    uk = Column(Integer)
+    uk = Column(BigInteger)
     shareid = Column(String(255))
     data_id = Column(String(255))
     album_id = Column(String(255))
     server_filename = Column(String(4096))
     category = Column(Integer)
     isdir = Column(Integer)
-    size = Column(Integer)
+    size = Column(BigInteger)
     path = Column(String(2048))
     md5 = Column(String(255))
     sign = Column(String(255))
@@ -79,4 +79,7 @@ class BaiduShareItem(AlchemyItem):
 class BaiduFileItem(AlchemyItem):
     """docstring for BaiduUserItem"""
     alchemy_model=BaiduFile
-            
+           
+if __name__ == "__main__" :
+    import pdb
+    pdb.set_trace()

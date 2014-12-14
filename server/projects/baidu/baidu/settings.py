@@ -18,7 +18,7 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, lik
 
 
 ITEM_PIPELINES = {
-    'scrapyc.server.utils.sqlalchemypipelines.AlchemyPipeline',30,
+    'scrapyc.server.utils.sqlalchemypipelines.AlchemyPipeline':30,
     #'baidu.pipelines.BaiduPipeline': 30,
 }
 

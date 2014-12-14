@@ -6,18 +6,17 @@ if 'django' in optional_features:
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, ForeignKey, String
 AlchemyBase = declarative_base()
-
+from sqlalchemy.orm.attributes import InstrumentedAttribute
 class AlchemyItemMeta(ItemMeta):
 
     def  __new__(mcs, class_name, bases, attrs):
         cls = super(AlchemyItemMeta, mcs).__new__(mcs, class_name, bases, attrs)
-        cls.fields = cls.fields.copy()
-
+        #cls.fields = cls.fields.copy()
         if cls.alchemy_model:
             cls._model_fields = []
             #cls._model_meta = cls.sqlalchemy_model._meta
-            for name,obj in vars(cls).items():
-                if isinstance(obj, Column):
+            for name,obj in vars(cls.alchemy_model).items():
+                if isinstance(obj,InstrumentedAttribute):
                     if name not in cls.fields:
                         cls.fields[name] = Field()
                     cls._model_fields.append(name)

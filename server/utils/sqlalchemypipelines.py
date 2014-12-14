@@ -10,7 +10,7 @@ from scrapy.conf import settings
 
 from scrapyc.server.utils.sqlalchemyitem import AlchemyBase,AlchemyItem
 
-class SQLAlchemyPipeline(object):
+class AlchemyPipeline(object):
 
     def open_spider(self,spider):
         self.settings =  spider.settings

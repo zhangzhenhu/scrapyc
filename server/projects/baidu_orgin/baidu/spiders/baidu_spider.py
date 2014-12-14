@@ -143,7 +143,7 @@ class BaiduSpider(scrapy.Spider):
                     record['filelist'] += pp['filelist'] 
             else :
                 record['album_id']=''
-            yield BaiduShareItem(feed_type=record['feed_type'],
+            yield BaiduShareItem(table_action="update",feed_type=record['feed_type'],
                                 album_id=record['album_id'],
                                 shareid=record['shareid'],
                                 uk=record['uk'],
@@ -164,7 +164,7 @@ class BaiduSpider(scrapy.Spider):
                                 last_crawl_time=str(datetime.datetime.now())
                         )
             for file in record['filelist']:
-                yield BaiduFileItem(
+                yield BaiduFileItem(table_action="update",
                                         fs_id=file['fs_id'],
                                         uk=record['uk'],
                                         shareid=record['shareid'],
@@ -204,7 +204,7 @@ class BaiduSpider(scrapy.Spider):
             return
 
         for file in jp['list']:
-                yield BaiduFileItem(
+                yield BaiduFileItem(table_action="update",
                                     fs_id=file['fs_id'],
                                     uk=uk,
                                     shareid=shareid,
@@ -233,7 +233,7 @@ class BaiduSpider(scrapy.Spider):
         uk=int(param_dict['query_uk'][0])
         self.log("GET baidu user info succ. uk:%s url:%s"%(uk,response.url),level=scrapy.log.INFO)
         userinfo=jp['user_info']
-        return BaiduUserItem(uk=uk,
+        return BaiduUserItem(uk=uk,table_action="update",
                             username=userinfo["uname"],
                             pubshare_count=userinfo["pubshare_count"],
                             fans_count=userinfo["fans_count"],
@@ -265,7 +265,7 @@ class BaiduSpider(scrapy.Spider):
         self.log("GET baidu user fanlist succ. uk:%s url:%s"%(uk,response.url),level=scrapy.log.INFO)
         for userinfo in fans_list:
             
-            yield BaiduUserItem(
+            yield BaiduUserItem(table_action="update",
                             uk=userinfo["fans_uk"],    
                             username=userinfo["fans_uname"],
                             pubshare_count=userinfo["pubshare_count"],
@@ -301,7 +301,7 @@ class BaiduSpider(scrapy.Spider):
         self.log("GET baidu user follow_list succ. uk:%s url:%s"%(uk,response.url),level=scrapy.log.INFO)
         for userinfo in follow_list:
             
-            yield BaiduUserItem(
+            yield BaiduUserItem(table_action="update",
                             uk=userinfo["follow_uk"],    
                             username=userinfo["follow_uname"],
                             pubshare_count=userinfo["pubshare_count"],

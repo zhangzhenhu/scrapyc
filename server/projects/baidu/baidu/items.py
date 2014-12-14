@@ -1,18 +1,18 @@
 #encoding=utf8
 from scrapyc.server.utils.sqlalchemyitem import AlchemyBase,AlchemyItem
-from sqlalchemy import Column,BigInteger, Integer, ForeignKey, String,DateTime,Sequence
+from sqlalchemy import Column,BigInteger, Integer,TEXT, ForeignKey, String,DateTime,Sequence
 
 
 class BaiduUser(AlchemyBase):
     """docstring for BaiduUser"""
     __tablename__ = 'baidu_user'
     uk = Column(BigInteger, Sequence('baidu_user_uk_seq'), primary_key=True)
-    username = Column(String(255))
+    username = Column(String(4096))
     pubshare_count = Column(BigInteger)
     secshare_cnt = Column(BigInteger)
     fans_count = Column(BigInteger)
     follow_count = Column(BigInteger)
-    intro = Column(String(4096))
+    intro = Column(TEXT)
     album_count = Column(BigInteger)
     tui_user_count = Column(BigInteger)
     c2c_user_sell_count = Column(BigInteger)
@@ -34,7 +34,7 @@ class BaiduShare(AlchemyBase):
     uk = Column(BigInteger)
     category = Column(Integer)
     feed_time = Column(BigInteger)
-    title = Column(String(1024))
+    title = Column(String(4096))
     filecount = Column(Integer)
     public = Column(Integer)
     shorturl = Column(String(1024))
@@ -43,7 +43,7 @@ class BaiduShare(AlchemyBase):
     vCnt = Column(BigInteger)
     dCnt = Column(BigInteger)
     tCnt = Column(BigInteger)
-    description = Column(String(4096))
+    description = Column(TEXT)
     is_valid =  Column(Integer)
     last_crawl_time = Column(DateTime)
 

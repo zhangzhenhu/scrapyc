@@ -70,20 +70,13 @@ class BaiduFile(AlchemyBase):
 class BaiduUserItem(AlchemyItem):
     """docstring for BaiduUserItem"""
     alchemy_model=BaiduUser
-    def __init__(self, arg=None):
-        super(BaiduUserItem, self).__init__()
-        self.arg = arg
+
         
 class BaiduShareItem(AlchemyItem):
     """docstring for BaiduUserItem"""
     alchemy_model=BaiduShare
-    def __init__(self, arg=None):
-        super(BaiduShareItem, self).__init__()
-        self.arg = arg
 
 class BaiduFileItem(AlchemyItem):
     """docstring for BaiduUserItem"""
     alchemy_model=BaiduFile
-    def __init__(self, arg=None):
-        super(BaiduFileItem, self).__init__()
-        self.arg = arg                
+            

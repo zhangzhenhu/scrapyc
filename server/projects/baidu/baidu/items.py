@@ -59,7 +59,7 @@ class BaiduFile(AlchemyBase):
     category = Column(Integer)
     isdir = Column(Integer)
     size = Column(Integer)
-    path = Column(String)
+    path = Column(String(2048))
     md5 = Column(String(255))
     sign = Column(String(255))
     shorturl = Column(String(255))

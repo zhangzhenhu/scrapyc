@@ -2,7 +2,7 @@
 from scrapyc.server.utils.sqlalchemyitem import AlchemyBase,AlchemyItem
 
 
- class BaiduUser(AlchemyBase):
+class BaiduUser(AlchemyBase):
      """docstring for BaiduUser"""
      __tablename__ = 'baidu_user'
     uk = Column(Integer, Sequence('baidu_user_uk_seq'), primary_key=True)

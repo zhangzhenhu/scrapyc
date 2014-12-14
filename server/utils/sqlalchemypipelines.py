@@ -4,6 +4,7 @@
 # See: http://doc.scrapy.org/topics/item-pipeline.html
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
+#encoding=utf8
 from sqlalchemy.exc import SQLAlchemyError
 from scrapy.conf import settings
 
@@ -24,7 +25,7 @@ class SQLAlchemyPipeline(object):
 
     def process_item(self, item, spider):
         if isinstance(item, AlchemyItem):
-            self.session.add(item.model)
+            self.session.merge(item.model)
             try:
                 self.session.commit()
             except SQLAlchemyError, e:

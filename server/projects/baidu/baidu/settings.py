@@ -44,4 +44,4 @@ M_WANGPANWU_URLS=["http://www.wangpanwu.com/zjgx/list_%d.html"%(i)  for i in ran
 M_SQLDB_CONF={"host":"localhost","port":3306,"user":"wangpan","passwd":"wangpan","db":"wangpan","charset":'utf8'}
 M_BAIDU_USER_LIST=[2650954819,]
 M_BAIDU_SQL_USER=""
-
+SQLALCHEMY_ENGINE_URL="mysql://wangpan:wangpan@localhost/wangpan"

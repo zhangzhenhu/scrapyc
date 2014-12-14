@@ -1,3 +1,4 @@
+#encoding=utf8
 from scrapyc.server.utils.sqlalchemyitem import AlchemyBase,AlchemyItem
 
 

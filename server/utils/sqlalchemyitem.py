@@ -16,7 +16,7 @@ class AlchemyItemMeta(ItemMeta):
         if cls.alchemy_model:
             cls._model_fields = []
             #cls._model_meta = cls.sqlalchemy_model._meta
-            for name,obj in vars(cls).items()):
+            for name,obj in vars(cls).items():
                 if isinstance(obj, Column):
                     if name not in cls.fields:
                         cls.fields[name] = Field()

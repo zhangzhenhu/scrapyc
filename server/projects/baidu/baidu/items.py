@@ -1,5 +1,6 @@
 #encoding=utf8
 from scrapyc.server.utils.sqlalchemyitem import AlchemyBase,AlchemyItem
+from sqlalchemy import Column, Integer, ForeignKey, String,DateTime,Sequence
 
 
 class BaiduUser(AlchemyBase):

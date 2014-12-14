@@ -3,8 +3,8 @@ from scrapyc.server.utils.sqlalchemyitem import AlchemyBase,AlchemyItem
 
 
 class BaiduUser(AlchemyBase):
-     """docstring for BaiduUser"""
-     __tablename__ = 'baidu_user'
+    """docstring for BaiduUser"""
+    __tablename__ = 'baidu_user'
     uk = Column(Integer, Sequence('baidu_user_uk_seq'), primary_key=True)
     username = Column(String(255))
     pubshare_count = Column(Integer)

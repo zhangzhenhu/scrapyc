@@ -25,7 +25,7 @@ DOWNLOAD_DELAY = 10
 #LOG_FILE="log.txt"
 CONCURRENT_REQUESTS=16
 CONCURRENT_REQUESTS_PER_DOMAIN=8
-CONCURRENT_REQUESTS_PER_IP=0
+CONCURRENT_REQUESTS_PER_IP=2
 
 M_WANGPANWU_URLS=["http://www.wangpanwu.com/zjgx/list_%d.html"%(i)  for i in range(1,51)]+ \
               ["http://www.wangpanwu.com/zjgx/video/list_%d.html"%(i)  for i in range(1,51)]+ \
@@ -44,4 +44,6 @@ M_WANGPANWU_URLS=["http://www.wangpanwu.com/zjgx/list_%d.html"%(i)  for i in ran
 M_SQLDB_CONF={"host":"localhost","port":3306,"user":"wangpan","passwd":"wangpan","db":"wangpan","charset":'utf8'}
 M_BAIDU_USER_LIST=[2650954819,]
 M_BAIDU_SQL_USER=""
+M_SOURCE = "manual"
+M_ACTION = ["userInfo","userFollow"]
 SQLALCHEMY_ENGINE_URL="mysql://wangpan:wangpan@localhost/wangpan"

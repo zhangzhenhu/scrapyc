@@ -19,3 +19,4 @@ Flask-SQLAlchemy
 Flask-WTF
 Flask-XML-RPC
 MySQLdb
+selenium

@@ -6,7 +6,7 @@ from flaskext.xmlrpc import XMLRPCHandler,Fault
 import logging
 
 flask_app = flask.Flask( __name__ )
-from scrapyc.server.core.app import coreapp
+from ..core.app import coreapp
 
 #os.environ["SCRAPYC_SETTINGS"] = "scrapyc.server.settings"
 if os.path.exists("./settings.py") or os.path.exists("./settings.pyc"):
@@ -27,7 +27,7 @@ flask_app.config["scheduler"] = coreapp.scheduler
 #flask_app.config["db_session"] = coreapp.config.get("db_session")
 
 
-from scrapyc.server.flask.proxy import SchedulerProxy
+from .proxy import SchedulerProxy
 _handler = XMLRPCHandler('api')
 _scheduler_proxy = SchedulerProxy(flask_app)
 _handler.register_instance(_scheduler_proxy)

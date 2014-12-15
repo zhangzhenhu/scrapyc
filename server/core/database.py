@@ -3,8 +3,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker,scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 import os
-from scrapyc.server.core import SqlSession
-from scrapyc.server.core.app import coreapp
+from . import SqlSession
+from .app import coreapp
 
 
 _db_file=coreapp.config.get("DATA_PATH",None) 

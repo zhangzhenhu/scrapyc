@@ -2,8 +2,8 @@
 
 # -*- coding: utf-8 -*-
 
-from scrapyc.server.flask.app import flask_app,coreapp
-from scrapyc.server.flask.views  import *
+from .app import flask_app,coreapp
+from .views  import *
 
 from tornado.wsgi import WSGIContainer
 from tornado.httpserver import HTTPServer

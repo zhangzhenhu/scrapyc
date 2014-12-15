@@ -4,7 +4,7 @@
 #     do_something_with(contents)
 #     http://dormousehole.readthedocs.org/en/latest/api.html#application-object
 
-from scrapyc.server.flask.app import flask_app
+from .app import flask_app
 from flask import render_template,jsonify,abort
 from flask import request
 from datetime import datetime

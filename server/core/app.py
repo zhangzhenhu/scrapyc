@@ -1,7 +1,7 @@
 import os
 import sys
 import logging
-from scrapyc.server.core.settings import Settings
+from .settings import Settings
 
 
 

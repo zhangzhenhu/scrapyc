@@ -85,6 +85,7 @@ class Task(threading.Thread):
         "WEBSERVICE_LOGFILE":str(os.path.join(self.log_path,"webservice.log")),
         "WEBSERVICE_PORT":0,
         "WEBSERVICE_HOST":"0.0.0.0",
+        "LOGSTATS_DUMP_FILE":os.path.join(self.log_path,"stats.log"),
         }
         self.default_spider_settings={
         "WORK_PATH": self.work_path,

@@ -207,12 +207,21 @@ def task_stop(task_id):
     return  jsonify(ok=ret,msg="success")
 
 
-@flask_app.route('/task/log/<task_id>',methods=['POST','GET'])
+@flask_app.route('/task/log/<task_state>/<task_id>',methods=['POST','GET'])
 def task_log(task_id): 
-    task = flask_app.config["scheduler"].task_queue.get_task(task_id)
-    if not task:
-        abort(404)
-    return render_template('task_log.html', flask_app=flask_app,task=task,webservice=ws)
+    if task_state == "run":
+        task = flask_app.config["scheduler"].task_queue.get_task(task_id)
+        if not task:
+            abort(404)
+        return render_template('task_log_run.html', flask_app=flask_app,task=task,webservice=ws)
+    elif task_state == "hist":
+        task = flask_app.config["scheduler"].history_queue.get(task_id)
+        if not task:
+            abort(404)
+        return render_template('task_log_hist.html', flask_app=flask_app,task=task,webservice=ws)
+    
+    abort(404)
+
 @flask_app.route('/task/stats/<task_id>',methods=['POST','GET'])
 def task_stats(task_id): 
     task = flask_app.config["scheduler"].task_queue.get_task(task_id)

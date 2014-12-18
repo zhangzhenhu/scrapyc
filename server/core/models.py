@@ -5,7 +5,7 @@ from datetime import datetime
 
 from .database import Base,db_engine
 import os,sys
-
+import cPickle as pickle
 
 class TaskModel(Base):
     """docstring for Task"""
@@ -16,13 +16,16 @@ class TaskModel(Base):
     desc = Column(String(4096))
     project_name =  Column(String(1024))
     project_version = Column(String(50))
+    spider = Column(String(1024))
+    commands = Column(String(4096))
     create_time = Column(DateTime)
     start_time = Column(DateTime)
     end_time = Column(DateTime)
     status = Column(String(20))
     retcode = Column(Integer)
-    #work_path = Column(String(4096))
+    work_path = Column(String(4096))
     log_path = Column(String(4096))
+    data_path = Column(String(4096))
     #uri = Column(String(4096))
     spider_config = Column(String(40960))
 
@@ -42,20 +45,33 @@ class TaskModel(Base):
         tm.log_path = task.log_path
         tm.spider_config = str(task.spider_settings)
         return tm
+    def stats(self):
+        if self.log_path:
+            fd=os.path.join(self.log_path,'stats.log')
+            if not os.path.exists(fd):
+                return {}
+            with open(fd, 'rb') as f:
+                stats = pickle.load(f, protocol=2)
+            return stats
+            
     def to_dict(self):
 
         return {
     "task_id" : self.task_id, 
-    "name" : self.name, 
+    "task_name" : self.name, 
+    "spider":self.spider,
     "desc" : self.desc,
-    "project_name" : self.project_name,
-    "project_version" : self.project_version,
+    "project" : self.project_name,
+    "version" : self.project_version,
+    "commands":self.commands,
     "create_time" : self.create_time,
     "start_time" : self.start_time,
     "end_time" : self.end_time,
     "status" : self.status,
     "retcode " : self.retcode,
     "log_path" : self.log_path,
+    "work_path":self.work_path,
+    "data_path":self.data_path,
     "spider_config" : self.spider_config,
 
         }

@@ -11,7 +11,6 @@
       <th>StartTime</th>
       <th>FinishedTime</th>
       <th>Status</th>
-      <th>Log</th>
     </tr>
     {% set hist_items,cur,total_page,page_count,total_count = scheduler.history_page(pagenum,pagecount) %}
     {% for hist in hist_items %}
@@ -19,12 +18,11 @@
       <td >{{hist["project_name"]}}</td>
       <td >{{hist["project_version"]}}</td>
       <td >{{hist["name"]}}</td>
-      <td >{{hist["task_id"]}}</td>
+      <td ><a href="/task/log/hist/{{task["task_id"]}}" target="blank">{{hist["task_id"]}}</a></td>
       <td>{{hist["create_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
       <td >{{hist["start_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
       <td >{{hist["end_time"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
       <td>{{hist["status"]}}</td>
-      <td>查看</td>
     </tr>
     {% endfor %}
     <tr>

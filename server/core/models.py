@@ -37,12 +37,15 @@ class TaskModel(Base):
         tm.desc = task.desc
         tm.project_name = task.project_name
         tm.project_version = task.project_version
+        tm.commands = task.commands
         tm.create_time = task.create_time
         tm.start_time = task.start_time
         tm.end_time = task.end_time
         tm.status = task.status
         tm.retcode = task.retcode
+        tm.work_path = task.work_path
         tm.log_path = task.log_path
+        tm.data_path = task.data_path
         tm.spider_config = str(task.spider_settings)
         return tm
     def stats(self):

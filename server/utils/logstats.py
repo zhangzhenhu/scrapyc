@@ -14,7 +14,7 @@ class LogStats(object):
 
     @classmethod
     def from_crawler(cls, crawler):
-        dump_file = crawler.settings.getfloat('LOGSTATS_DUMP_FILE')
+        dump_file = crawler.settings.get('LOGSTATS_DUMP_FILE')
         if not dump_file:
            raise NotConfigured
         o = cls(crawler.stats, dump_file)

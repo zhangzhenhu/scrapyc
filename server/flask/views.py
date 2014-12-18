@@ -208,7 +208,7 @@ def task_stop(task_id):
 
 
 @flask_app.route('/task/log/<task_state>/<task_id>',methods=['POST','GET'])
-def task_log(task_id): 
+def task_log(task_state,task_id): 
     if task_state == "run":
         task = flask_app.config["scheduler"].task_queue.get_task(task_id)
         if not task:

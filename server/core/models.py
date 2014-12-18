@@ -54,7 +54,7 @@ class TaskModel(Base):
             if not os.path.exists(fd):
                 return {}
             with open(fd, 'rb') as f:
-                stats = pickle.load(f, protocol=2)
+                stats = pickle.load(f)
             return stats
             
     def to_dict(self):

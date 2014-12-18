@@ -16,6 +16,6 @@ NEWSPIDER_MODULE = 'nimei.spiders'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'nimei (+http://www.yourdomain.com)'
 EXTENSIONS = {
-'scrapyc.server.untils.logstats.LogStats':200,
+'scrapyc.server.utils.logstats.LogStats':200,
 }
 #DOWNLOAD_HANDLERS={'http':'scrapyc.server.utils.PhantomJSDownloadHandler.PhantomJSDownloadHandler',}

@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.exc import SQLAlchemyError
 from scrapy.conf import settings
 
-from scrapyc.server.utils.sqlalchemyitem import AlchemyBase,AlchemyItem
+from .sqlalchemyitem import AlchemyBase,AlchemyItem
 
 class AlchemyPipeline(object):
 

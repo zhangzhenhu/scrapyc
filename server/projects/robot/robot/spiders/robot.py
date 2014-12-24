@@ -3,8 +3,8 @@ from scrapy.utils.response import get_base_url
 from w3lib.url import urljoin_rfc
 
 from scrapy import signals
-class DmozSpider(scrapy.Spider):
-    name = "dmoz"
+class RobotSpider(scrapy.Spider):
+    name = "robot"
     allowed_domains = ["sina.cn"]
     start_urls = [
         "http://news.sina.cn/",

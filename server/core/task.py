@@ -56,7 +56,7 @@ class Task(threading.Thread):
         self.task_id = "%s_%s_%s_%s"%(self.project_name,self.spider,self.create_time.strftime("%Y%m%d%H%M%S"),random.randint(1000,9999))
        
         self.work_path = os.path.join(task_config["HISTORY_PATH"],self.task_id)
-        self.log_path = os.path.join(self.work_path,"logs")
+        self.log_path = os.path.join(self.work_path,"log")
         self.data_path = os.path.join(self.work_path,"data")
         self.pid= None
         self.desc = task_config["desc"]
@@ -125,11 +125,11 @@ class Task(threading.Thread):
 
         for name,value in self.default_scrapy_settings.items():
             #self.scrapy_args += "--set=%s=%s"%(name,value)
-            cmdline.append("'--set=%s=%s'"%(name,value))
+            cmdline.append("--set=%s=%s"%(name,value))
         
         for name,value in self.default_spider_settings.items():
-            self.spider_args  += "-a '%s=%s'"%(name,value)
-            cmdline.append("-a '%s=%s'"%(name,value))
+            self.spider_args  += "-a %s=%s"%(name,value)
+            cmdline.append("-a %s=%s"%(name,value))
 
         cmdline.append(self.spider)
         self.commands = " ".join(cmdline)

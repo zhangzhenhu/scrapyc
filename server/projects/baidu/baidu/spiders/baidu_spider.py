@@ -71,11 +71,11 @@ class BaiduSpider(scrapy.Spider):
         if "db" in self.M_SOURCE:
             if not self.M_BAIDU_SQL_USER:
                 self.M_BAIDU_SQL_USER = self.settings.get("M_BAIDU_SQL_USER")
-            self.log("[M_BAIDU_SQL_USER] %s" %M_BAIDU_SQL_USER,level=log.INFO)
+            self.log("[M_BAIDU_SQL_USER] %s" %self.M_BAIDU_SQL_USER,level=log.INFO)
         if "manual" in self.M_SOURCE:
             if not self.M_BAIDU_USER_LIST:
                 self.M_BAIDU_USER_LIST = self.settings.get("M_BAIDU_USER_LIST")
-            self.log("[M_BAIDU_USER_LIST] %s" %M_BAIDU_USER_LIST,level=log.INFO)
+            self.log("[M_BAIDU_USER_LIST] %s" %self.M_BAIDU_USER_LIST,level=log.INFO)
             
             if  type(self.M_BAIDU_USER_LIST) != list:
                 self.M_BAIDU_USER_LIST = self.M_BAIDU_USER_LIST.strip().split()
@@ -95,7 +95,8 @@ class BaiduSpider(scrapy.Spider):
             self.sql_conn.commit()
                 
         requests=[]
-        self.M_ACTIONS=self.settings.get("M_ACTION")
+        if not self.M_ACTIONS:
+            self.M_ACTIONS=self.settings.get("M_ACTION",["userInfo"])
         
     
         self.log("[M_ACTION] %s"%(self.M_ACTIONS))

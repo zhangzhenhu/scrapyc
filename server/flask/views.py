@@ -64,7 +64,7 @@ def task_start():
     except  KeyError, e:
         return jsonify(ok=False,msg=str(e))
     params = {}
-    for line in  spider_params.split():
+    for line in  spider_params.split("\n"):
         line = line.split("=",1)
         if len(line)  !=2 :
             continue

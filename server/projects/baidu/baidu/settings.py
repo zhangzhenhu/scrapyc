@@ -7,7 +7,7 @@
 #
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #
-LOG_LEVEL = 'DEBUG'
+LOG_LEVEL = 'INFO'
 BOT_NAME = 'baidu'
 
 SPIDER_MODULES = ['baidu.spiders']

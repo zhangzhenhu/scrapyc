@@ -384,7 +384,7 @@ class WangPanWuSpider(scrapy.Spider):
             if link :
                 uk=link[0].split("/")[2][1:]
                
-                ret_items.append( BaiduUserItem(uk=uk,table_action="update",last_insert_time=str(datetime.datetime.now())))
+                ret_items.append( BaiduUserItem(uk=uk,last_insert_time=str(datetime.datetime.now())))
                 
         return ret_items
                 
@@ -400,6 +400,6 @@ class WangPanWuSpider(scrapy.Spider):
         
         if link :
             uk=link[0].split("/")[2][1:]
-            return BaiduUserItem(uk=uk,table_action="update",last_insert_time=str(datetime.datetime.now()))
+            return BaiduUserItem(uk=uk,last_insert_time=str(datetime.datetime.now()))
                 
        

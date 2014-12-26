@@ -18,7 +18,7 @@ class BaiduSpider(scrapy.Spider):
     start_urls = []
     
     def __init__(self,*args, **kwargs):
-        scrapy.Spider.__init(self,*args, **kwargs)
+        scrapy.Spider.__init__(self,*args, **kwargs)
         self.log(kwargs,level=log.INFO)
         if "M_BAIDU_USER_LIST" in kwargs:
             self.M_BAIDU_USER_LIST= kwargs["M_BAIDU_USER_LIST"]

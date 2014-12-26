@@ -18,10 +18,11 @@ class BaiduSpider(scrapy.Spider):
     start_urls = []
     
     def __init__(self,*args, **kwargs):
-        scrapy.Spider.__init__(self,*args, **kwargs)
-        #self.log(str(kwargs),level=log.INFO)
-        print kwargs
         
+        super(BaiduSpider, self).__init__(*args, **kwargs)
+        #self.log(str(kwargs),level=log.INFO)
+        print "[-------fuck-------]",kwargs
+
         if "M_BAIDU_USER_LIST" in kwargs:
             self.M_BAIDU_USER_LIST= kwargs["M_BAIDU_USER_LIST"]
         else:

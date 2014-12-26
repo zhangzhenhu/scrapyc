@@ -19,6 +19,7 @@ class BaiduSpider(scrapy.Spider):
     
     def __int__(self,*args, **kwargs):
         scrapy.Spider.__init(self,*args, **kwargs)
+        self.log(kwargs,level=log.INFO)
         if "M_BAIDU_USER_LIST" in kwargs:
             self.M_BAIDU_USER_LIST= kwargs["M_BAIDU_USER_LIST"]
         else:
@@ -66,12 +67,12 @@ class BaiduSpider(scrapy.Spider):
         #M_BAIDU_SQL_USER=None
         #M_BAIDU_USER_LIST=None
         
-        self.log("[M_SOURCE] %s "%M_SOURCE)
-        if "db" in M_SOURCE:
+        self.log("[M_SOURCE] %s "%self.M_SOURCE)
+        if "db" in self.M_SOURCE:
             if not self.M_BAIDU_SQL_USER:
                 self.M_BAIDU_SQL_USER = self.settings.get("M_BAIDU_SQL_USER")
             self.log("[M_BAIDU_SQL_USER] %s" %M_BAIDU_SQL_USER,level=log.INFO)
-        if "manual" in M_SOURCE:
+        if "manual" in self.M_SOURCE:
             if not self.M_BAIDU_USER_LIST:
                 self.M_BAIDU_USER_LIST = self.settings.get("M_BAIDU_USER_LIST")
             self.log("[M_BAIDU_USER_LIST] %s" %M_BAIDU_USER_LIST,level=log.INFO)

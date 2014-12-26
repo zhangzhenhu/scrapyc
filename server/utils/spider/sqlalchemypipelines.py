@@ -14,7 +14,8 @@ class AlchemyPipeline(object):
 
     def open_spider(self,spider):
         self.settings =  spider.settings
-        engine = create_engine(settings['SQLALCHEMY_ENGINE_URL'],encoding='utf8',convert_unicode=True,charset='utf8',use_unicode=0)
+        charset = self.settings.get("SQLALCHEMY_CHARSET","utf8")
+        engine = create_engine(settings['SQLALCHEMY_ENGINE_URL'],encoding=charset,convert_unicode=True,charset=charset,use_unicode=0)
         AlchemyBase.metadata.bind = engine
         self.session = scoped_session(sessionmaker(engine))()
         # TODO: Don't drop all. Find a way to update existing entries.

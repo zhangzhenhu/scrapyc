@@ -181,7 +181,7 @@ class BaiduSpider(scrapy.Spider):
                                 vCnt=record['vCnt'],
                                 dCnt=record['dCnt'],
                                 tCnt=record['tCnt'],
-                                description=record['desc'].encode("utf8"),
+                                description=record['desc'],
                                 is_valid=1,
                                 last_crawl_time=str(datetime.datetime.now())
                         )
@@ -192,11 +192,11 @@ class BaiduSpider(scrapy.Spider):
                                         shareid=record['shareid'],
                                         album_id=record['album_id'],
                                         data_id=record['data_id'],
-                                        server_filename=file['server_filename'].encode("utf8"),
+                                        server_filename=file['server_filename'],
                                         category=file['category'],
                                         isdir=file['isdir'],
                                         size=file['size'],
-                                        path=file['path'].encode("utf8"),
+                                        path=file['path'],
                                         md5=file['md5'],
                                         sign=file['sign'],
                                         shorturl=record['shorturl'],
@@ -230,11 +230,11 @@ class BaiduSpider(scrapy.Spider):
                                     fs_id=file['fs_id'],
                                     uk=uk,
                                     shareid=shareid,
-                                    server_filename=file['server_filename'].encode("utf8"),
+                                    server_filename=file['server_filename'],
                                     category=file['category'],
                                     isdir=file['isdir'],
                                     size=file['size'],
-                                    path=file['path'].encode("utf8"),
+                                    path=file['path'],
                                     md5=file['md5'],
                                     #sign=file['sign'],
                                     #time_stamp=file['time_stamp'],
@@ -256,11 +256,11 @@ class BaiduSpider(scrapy.Spider):
         self.log("GET baidu user info succ. uk:%s url:%s"%(uk,response.url),level=scrapy.log.INFO)
         userinfo=jp['user_info']
         return BaiduUserItem(uk=uk,
-                            username=userinfo["uname"].encode("utf8"),
+                            username=userinfo["uname"],
                             pubshare_count=userinfo["pubshare_count"],
                             fans_count=userinfo["fans_count"],
                             follow_count=userinfo["follow_count"],
-                            intro=userinfo["intro"].encode("utf8"),
+                            intro=userinfo["intro"],
                             album_count=userinfo["album_count"],
                             tui_user_count=userinfo["tui_user_count"],
                             c2c_user_sell_count=userinfo["c2c_user_sell_count"],
@@ -289,13 +289,13 @@ class BaiduSpider(scrapy.Spider):
             
             yield BaiduUserItem(
                             uk=userinfo["fans_uk"],    
-                            username=userinfo["fans_uname"].encode("utf8"),
+                            username=userinfo["fans_uname"],
                             pubshare_count=userinfo["pubshare_count"],
                             fans_count=userinfo["fans_count"],
                             follow_count=userinfo["follow_count"],
-                            intro=userinfo["intro"].encode("utf8"),
+                            intro=userinfo["intro"],
                             album_count=userinfo["album_count"],
-                            avatar_url=userinfo["avatar_url"].encode("utf8"),
+                            avatar_url=userinfo["avatar_url"],
                             last_insert_time=str(datetime.datetime.now())
                             )
             if "userFollowInfinite" in self.M_ACTIONS:
@@ -325,11 +325,11 @@ class BaiduSpider(scrapy.Spider):
             
             yield BaiduUserItem(
                             uk=userinfo["follow_uk"],    
-                            username=userinfo["follow_uname"].encode("utf8"),
+                            username=userinfo["follow_uname"],
                             pubshare_count=userinfo["pubshare_count"],
                             fans_count=userinfo["fans_count"],
                             follow_count=userinfo["follow_count"],
-                            intro=userinfo["intro"].encode("utf8"),
+                            intro=userinfo["intro"],
                             album_count=userinfo["album_count"],
                             avatar_url=userinfo["avatar_url"],
                             last_insert_time=str(datetime.datetime.now())

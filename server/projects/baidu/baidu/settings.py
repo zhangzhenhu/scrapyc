@@ -48,3 +48,4 @@ M_BAIDU_SQL_USER=""
 M_SOURCE = "manual"
 M_ACTION = ["userInfo","userFollow"]
 SQLALCHEMY_ENGINE_URL="mysql://wangpan:wangpan@localhost/wangpan?charset=utf8"
+SQLALCHEMY_CHARSET = "utf8"

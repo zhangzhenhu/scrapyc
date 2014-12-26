@@ -127,11 +127,11 @@ class Task(threading.Thread):
             #self.scrapy_args += "--set=%s=%s"%(name,value)
             cmdline.append("--set=%s=%s"%(name,value))
         
+        cmdline.append(self.spider)
         for name,value in self.default_spider_settings.items():
             self.spider_args  += "-a '%s=%s'"%(name,value)
             cmdline.append("-a '%s=%s'"%(name,value))
 
-        cmdline.append(self.spider)
         self.commands = " ".join(cmdline)
         self.logger.debug("task run %s %s",self.task_id,cmdline)
         self.start_time =  datetime.now()

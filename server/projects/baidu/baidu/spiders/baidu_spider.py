@@ -99,7 +99,7 @@ class BaiduSpider(scrapy.Spider):
             self.M_ACTIONS=self.settings.get("M_ACTION",["userInfo"])
         
     
-        self.log("[M_ACTION] %s"%(self.M_ACTIONS))
+        self.log("[M_ACTION] %s"%(self.M_ACTIONS),level=log.INFO)
         self.log("select total %d uk"%len(self.uk_list),level=log.INFO)
         for uk in self.uk_list:
             if not uk:continue

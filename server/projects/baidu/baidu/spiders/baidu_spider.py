@@ -18,26 +18,29 @@ class BaiduSpider(scrapy.Spider):
     start_urls = []
     
     def __init__(self,*args, **kwargs):
-        
         super(BaiduSpider, self).__init__(*args, **kwargs)
-        #self.log(str(kwargs),level=log.INFO)
-        print "[-------fuck-------]",kwargs
+        self._kwargs = kwargs
 
-        if "M_BAIDU_USER_LIST" in kwargs:
-            self.M_BAIDU_USER_LIST= kwargs["M_BAIDU_USER_LIST"]
+    def init_from_cmdline(self):
+        
+        #self.log(str(kwargs),level=log.INFO)
+        print "[-------fuck-------]",self._kwargs
+
+        if "M_BAIDU_USER_LIST" in self._kwargs:
+            self.M_BAIDU_USER_LIST= self._kwargs["M_BAIDU_USER_LIST"]
         else:
             self.M_BAIDU_USER_LIST = None
-        if "M_SOURCE" in kwargs:
-            self.M_SOURCE = kwargs["M_SOURCE"]
+        if "M_SOURCE" in self._kwargs:
+            self.M_SOURCE = self._kwargs["M_SOURCE"]
         else:
             self.M_SOURCE = None
-        if "M_BAIDU_SQL_USER" in kwargs:
-            self.M_BAIDU_SQL_USER = kwargs["M_BAIDU_SQL_USER"]
+        if "M_BAIDU_SQL_USER" in self._kwargs:
+            self.M_BAIDU_SQL_USER = self._kwargs["M_BAIDU_SQL_USER"]
         else:
             self.M_BAIDU_SQL_USER = None
 
-        if "M_ACTION" in kwargs:
-            self.M_ACTIONS = kwargs["M_ACTION"]
+        if "M_ACTION" in self._kwargs:
+            self.M_ACTIONS = self._kwargs["M_ACTION"]
         else:
             self.M_ACTIONS = None
 
@@ -57,6 +60,9 @@ class BaiduSpider(scrapy.Spider):
                                            callback=self.parseShareList)
     
     def start_requests(self):
+
+        self.init_from_cmdline()
+        
         M_SQLDB_CONF = self.settings.get("M_SQLDB_CONF")
         assert M_SQLDB_CONF, "Please set SQL DATABASE conf in baidu/settings.py ! eg:M_SQLDB_CONF={'host':'localhost','port':3306,'user':'wangpan','passwd':'wangpan','db':'wangpan'}"
         self._msql_config=M_SQLDB_CONF

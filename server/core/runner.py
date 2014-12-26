@@ -17,7 +17,8 @@ def project_environment():
        print path 
     print "[cmdline]"
     print sys.argv
-
+    sys.stderr.flush()
+    sys.stdout.flush()
     
 
    

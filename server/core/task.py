@@ -125,11 +125,11 @@ class Task(threading.Thread):
 
         for name,value in self.default_scrapy_settings.items():
             #self.scrapy_args += "--set=%s=%s"%(name,value)
-            cmdline.append("--set=%s='%s'"%(name,value))
+            cmdline.append("'--set=%s=%s'"%(name,value))
         
         for name,value in self.default_spider_settings.items():
-            self.spider_args  += "-a %s='%s'"%(name,value)
-            cmdline.append("-a %s='%s'"%(name,value))
+            self.spider_args  += "-a '%s=%s'"%(name,value)
+            cmdline.append("-a '%s=%s'"%(name,value))
 
         cmdline.append(self.spider)
         self.commands = " ".join(cmdline)

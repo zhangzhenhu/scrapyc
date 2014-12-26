@@ -17,10 +17,25 @@ class BaiduSpider(scrapy.Spider):
     allowed_domains = [ ]
     start_urls = []
     
-    def __int__(self):
-        scrapy.Spider.__init(self)
+    def __int__(self,*args, **kwargs):
+        scrapy.Spider.__init(self,*args, **kwargs)
+        if "M_BAIDU_USER_LIST" in kwargs:
+            self.M_BAIDU_USER_LIST= kwargs["M_BAIDU_USER_LIST"]
+        else:
+            self.M_BAIDU_USER_LIST = None
+        if "M_SOURCE" in kwargs:
+            self.M_SOURCE = kwargs["M_SOURCE"]
+        else:
+            self.M_SOURCE = None
+        if "M_BAIDU_SQL_USER" in kwargs:
+            self.M_BAIDU_SQL_USER = kwargs["M_BAIDU_SQL_USER"]
+        else:
+            self.M_BAIDU_SQL_USER = None
 
-
+        if "M_ACTION" in kwargs:
+            self.M_ACTIONS = kwargs["M_ACTION"]
+        else:
+            self.M_ACTIONS = None
 
     def requestUserInfo(self,uk):
         return scrapy.Request('http://pan.baidu.com/pcloud/user/getinfo?query_uk=%d&t=%d&channel=chunlei&clienttype=0&web=1'%(uk,int(time.time())),
@@ -46,32 +61,34 @@ class BaiduSpider(scrapy.Spider):
         #self.sql_conn=MySQLdb.connect(**M_SQLDB_CONF) 
         #self.sql_cursor = self.sql_conn.cursor()
 
-        M_SOURCE = self.settings.get("M_SOURCE")
-        M_BAIDU_SQL_USER=None
-        M_BAIDU_USER_LIST=None
+        if not self.M_SOURCE:
+            self.M_SOURCE = self.settings.get("M_SOURCE")
+        #M_BAIDU_SQL_USER=None
+        #M_BAIDU_USER_LIST=None
         
         self.log("[M_SOURCE] %s "%M_SOURCE)
         if "db" in M_SOURCE:
-            M_BAIDU_SQL_USER = self.settings.get("M_BAIDU_SQL_USER")
+            if not self.M_BAIDU_SQL_USER:
+                self.M_BAIDU_SQL_USER = self.settings.get("M_BAIDU_SQL_USER")
             self.log("[M_BAIDU_SQL_USER] %s" %M_BAIDU_SQL_USER,level=log.INFO)
         if "manual" in M_SOURCE:
-            
-            M_BAIDU_USER_LIST = self.settings.get("M_BAIDU_USER_LIST")
+            if not self.M_BAIDU_USER_LIST:
+                self.M_BAIDU_USER_LIST = self.settings.get("M_BAIDU_USER_LIST")
             self.log("[M_BAIDU_USER_LIST] %s" %M_BAIDU_USER_LIST,level=log.INFO)
             
-            if  type(M_BAIDU_USER_LIST) != list:
-                M_BAIDU_USER_LIST = M_BAIDU_USER_LIST.strip().split()
+            if  type(self.M_BAIDU_USER_LIST) != list:
+                self.M_BAIDU_USER_LIST = self.M_BAIDU_USER_LIST.strip().split()
             
                 
         
         #self._sql_str="select uk from baidu_user;"
         self.uk_list=[]
        
-        if M_BAIDU_USER_LIST :
-            self.uk_list += M_BAIDU_USER_LIST
-        elif M_BAIDU_SQL_USER:        
+        if self.M_BAIDU_USER_LIST :
+            self.uk_list += self.M_BAIDU_USER_LIST
+        elif self.M_BAIDU_SQL_USER:        
             cursor = self.sql_conn.cursor()     
-            cursor.execute(M_BAIDU_SQL_USER)
+            cursor.execute(self.M_BAIDU_SQL_USER)
             for row in cursor.fetchall():
                 self.uk_list.append( row[0])
             self.sql_conn.commit()

@@ -391,9 +391,10 @@ class WangPanWuSpider(scrapy.Spider):
                 
     def _parse_ziyuan_list(self,response):
 
-        ret_items=[]
+        ret=[]
         for link in response.xpath('//span[@class="slink"]//a/@href').extract():
-            yield scrapy.Request(link, callback=self._parse_detail_page)
+            ret.append(scrapy.Request(link, callback=self._parse_detail_page))
+        return ret
  
 
     def _parse_detail_page(self,response):

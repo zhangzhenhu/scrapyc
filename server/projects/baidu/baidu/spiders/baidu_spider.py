@@ -378,6 +378,7 @@ class WangPanWuSpider(scrapy.Spider):
         
             
     def _parse_user_list(self, response):
+        self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         ret_items=[]
         for sel in response.xpath('//span[@class="tou2"]'):
             
@@ -390,7 +391,7 @@ class WangPanWuSpider(scrapy.Spider):
         return ret_items
                 
     def _parse_ziyuan_list(self,response):
-
+        self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         ret=[]
         for link in response.xpath('//span[@class="slink"]//a/@href').extract():
             ret.append(scrapy.Request(link, callback=self._parse_detail_page))
@@ -398,6 +399,7 @@ class WangPanWuSpider(scrapy.Spider):
  
 
     def _parse_detail_page(self,response):
+        self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         link=response.xpath('//div[@class="dr_box"]//a[1]/@href').extract()
         
         if link :

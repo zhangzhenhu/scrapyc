@@ -1,5 +1,5 @@
 #encoding=utf8
-from scrapyc.server.utils.sqlalchemyitem import AlchemyBase,AlchemyItem
+from scrapyc.server.utils.spider.sqlalchemyitem import AlchemyBase,AlchemyItem
 from sqlalchemy import Column,BigInteger, Integer,TEXT, ForeignKey, String,DateTime,Sequence
 
 

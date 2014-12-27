@@ -18,10 +18,12 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, lik
 
 
 ITEM_PIPELINES = {
-    'scrapyc.server.utils.sqlalchemypipelines.AlchemyPipeline':30,
+    'scrapyc.server.utils.spider.sqlalchemypipelines.AlchemyPipeline':30,
     #'baidu.pipelines.BaiduPipeline': 30,
 }
-
+EXTENSIONS = {
+'scrapyc.server.utils.spider.logstats.LogStats':200,
+}
 DOWNLOAD_DELAY = 5  
 #LOG_FILE="log.txt"
 CONCURRENT_REQUESTS=16

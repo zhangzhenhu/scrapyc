@@ -1,7 +1,6 @@
 from scrapy.item import Field, Item, ItemMeta
 from scrapy import optional_features
-if 'django' in optional_features:
-    from django.core.exceptions import ValidationError
+
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, ForeignKey, String

@@ -203,7 +203,7 @@ def task_stop(task_id):
         #abort(404)
         return jsonify(ok=False,msg="no task:task_id")
 
-    ws.cmd_stop(port=task.webservice_port)
+    ws.cmd_stop(port=task.webservice_port,task.spider)
     return  jsonify(ok=ret,msg="success")
 
 

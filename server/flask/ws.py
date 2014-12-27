@@ -19,9 +19,9 @@ from scrapy.utils.jsonrpc import jsonrpc_client_call, JsonRpcError
 
 
 
-def cmd_stop(host="127.0.0.1",port=0):
+def cmd_stop(host="127.0.0.1",port=0,spider):
     """stop <spider> - stop a running spider"""
-    jsonrpc_call(host,port, 'crawler/engine', 'close_spider')
+    jsonrpc_call(host,port, 'crawler/engine', 'close_spider',spider)
 
 def cmd_list_running(args, opts):
     """list-running - list running spiders"""

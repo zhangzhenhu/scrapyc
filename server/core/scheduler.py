@@ -40,7 +40,7 @@ class Scheduler(object):
         self.task_queue.stop()
         self.logger.info("stopped")
 
-    def task_start(self,project_name,spider_name,task_name,spider_params):
+    def task_start(self,project_name,spider_name,task_name,srcapy_config,spider_config):
         project,error_msg= self.project_queue.get(project_name)
         if not project:
             return False,error_msg
@@ -51,7 +51,7 @@ class Scheduler(object):
         "HISTORY_PATH":self.settings["HISTORY_PATH"],
         }
         
-        task = Task(project,task_config,spider_params)
+        task = Task(project,task_config,srcapy_config,spider_config)
         self.task_queue.put(task)
         return True,"succed"
         

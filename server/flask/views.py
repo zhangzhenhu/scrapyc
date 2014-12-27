@@ -8,24 +8,14 @@ from .app import flask_app
 from flask import render_template,jsonify,abort
 from flask import request
 from datetime import datetime
+from .utils import str2date,str2dict,str2int
 
 def start_job(project_name,spider_name,task_name,params):
     scheduler = flask_app.config["scheduler_proxy"]
     ret,msg = scheduler.task_start(project_name,spider_name,task_name,params)
     return ret,msg
 
-def str2date(st):
-    if not st:
-        return None
-    spl = st.replace(":"," ").replace("-"," ").split()
-    return datetime(*[ int(x) for x in spl])
-def str2int(v,default=None):
-    v=v.strip()
-    if not v:return default
-    try:
-        return int(v)
-    except Exception, e:
-        return  default
+
 
 
 @flask_app.route('/')
@@ -53,27 +43,23 @@ def project_list():
 @flask_app.route('/task_start',methods=['POST', 'GET'])
 def task_start():
     try:
-        print request.form
+        #print request.form
         project_name = request.form["project_name"].strip()
         spider_name = request.form["spider_name"].strip()
         task_name = request.form["task_name"].strip()
-        spider_params = request.form["spider_params"].strip()
+        spider_config = str2dict(request.form["spider_config"].strip())
+        scrapy_config = str2dict(request.form["scrapy_config"].strip())
         cron_type = request.form["cron_type"].strip()
 
         
     except  KeyError, e:
         return jsonify(ok=False,msg=str(e))
-    params = {}
-    for line in  spider_params.split("\n"):
-        line = line.split("=",1)
-        if len(line)  !=2 :
-            continue
-        params[line[0]] = line[1]
+
 
     apscheduler = flask_app.config["apscheduler"]
     if cron_type == "no":
         scheduler = flask_app.config["scheduler_proxy"]
-        ret,msg = scheduler.task_start(project_name,spider_name,task_name,params)
+        ret,msg = scheduler.task_start(project_name,spider_name,task_name,scrapy_config,spider_config)
         
         return jsonify(ok=ret,msg="Success")
 

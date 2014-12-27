@@ -36,7 +36,7 @@ class Task(threading.Thread):
     Killing = "Killing"
     Error = "Error"
 
-    def __init__(self, project,task_config,spider_settings,callback=None):
+    def __init__(self, project,task_config,scrapy_settings,spider_settings,callback=None):
         super(Task, self).__init__()
 
     #@classmethod
@@ -46,6 +46,7 @@ class Task(threading.Thread):
         self.project_version = project.version
         self.task_config = task_config
         self.spider_settings = spider_settings
+        self.scrapy_settings = scrapy_settings
         self.name = task_config["task_name"]
         self.create_time = datetime.now()
         self.end_time = datetime(1970,1,1)
@@ -95,6 +96,13 @@ class Task(threading.Thread):
         self.task_env['SCRAPY_LOG_FILE'] = str(os.path.join(self.log_path,"scrapy.log"))
         self.webservice_port = 0
 
+        for name,value in self.spider_settings.items():
+            self.default_spider_settings[name] = value
+
+        for name,value in self.scrapy_settings.items():
+            self.default_scrapy_settings[name] = value
+
+
     def _safe(func):
         print func
         def safe_func(self,* args, ** kwargs ):
@@ -108,11 +116,6 @@ class Task(threading.Thread):
         if self.status != self.Pending:
             return
         self.spider_args  = ""
-        for name,value in self.spider_settings.items():
-            #self.spider_args  += " -a %s=%s"%(name,value)
-            self.default_spider_settings[name] = value
-
-
         #self.scrapy_args = ""
         self.webservice_port = get_valid_port()
         if not self.webservice_port:
@@ -133,7 +136,7 @@ class Task(threading.Thread):
             cmdline.append("-a%s=%s"%(name,value))
 
         self.commands = " ".join(cmdline)
-        self.logger.debug("task run %s %s",self.task_id,cmdline)
+        self.logger.debug("task run %s",self.task_id)
         self.start_time =  datetime.now()
         #print self.task_env
         self._p_hander = subprocess.Popen(cmdline,cwd = self.project.source_path,stdin=None, stdout=self._stdout, stderr=self._stderr,env=self.task_env)

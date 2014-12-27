@@ -369,7 +369,7 @@ class WangPanWuSpider(scrapy.Spider):
         return scrapy.Spider.start_requests(self)
 
     def parse(self,response):
-        self.log("Crawled (%d) <GET %s >",response.status,response.url,level=scrapy.log.INFO)
+        self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         for rule in self.rules:
             if rule[0].match(response.url):
                 return rule[1](response)

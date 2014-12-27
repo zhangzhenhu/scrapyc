@@ -7,9 +7,9 @@ class SchedulerProxy(object):
         self.app = app
         self._scheduler = app.config["scheduler"]
 
-    def task_start(self,project_name,spider_name,task_name,spider_params):
+    def task_start(self,* args, ** kwargs):
 
-        return self._scheduler.task_start(project_name,spider_name,task_name,spider_params)
+        return self._scheduler.task_start(* args, ** kwargs)
 
     def task_kill(self,task_id):
         return self._scheduler.task_kill(task_id)

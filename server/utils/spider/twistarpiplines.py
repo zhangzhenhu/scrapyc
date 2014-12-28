@@ -35,7 +35,7 @@ class TwistarItem(Item):
 
     #a DBObject class
     sql_model = None
-
+    charset="utf-8"
     def __init__(self, *args, **kwargs):
         super(TwistarItem, self).__init__(*args, **kwargs)
         self._instance = None
@@ -47,8 +47,12 @@ class TwistarItem(Item):
         if self._instance is None:
             # modelargs = dict((k, self.get(k)) for k in self._values
             #                  if k in self._model_fields)
-
-            self._instance = self.sql_model(**self)
+            args={}
+            for key,value in self.items():
+                if isinstance(value,unicode):
+                    value=value.encode(self.charset)
+                args[key] = value
+            self._instance = self.sql_model(**args)
         return self._instance
 
     @property

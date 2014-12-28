@@ -90,16 +90,16 @@ class BaiduFile(object):
 
 class BaiduUserItem(TwistarItem):
     """docstring for BaiduUserItem"""
-    alchemy_model=BaiduUser
+    sql_model=BaiduUser
 
         
 class BaiduShareItem(TwistarItem):
     """docstring for BaiduUserItem"""
-    alchemy_model=BaiduShare
+    sql_model=BaiduShare
 
 class BaiduFileItem(TwistarItem):
     """docstring for BaiduUserItem"""
-    alchemy_model=BaiduFile
+    sql_model=BaiduFile
 
 
 

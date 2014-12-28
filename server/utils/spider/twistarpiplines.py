@@ -61,6 +61,7 @@ class TwistarPipeline(object):
 
     def open_spider(self,spider):
         self.settings =  spider.settings
+        self.log=spider.log
         sql_url = settings['TWISTAR_DB_URL']
         conn_arg = parse_sql_url(sql_url)
         drivername = conn_arg.pop("drivername")
@@ -70,8 +71,18 @@ class TwistarPipeline(object):
         
 
     def process_item(self, item, spider):
+
+
         if isinstance(item,TwistarItem):
-            item.model
+            def _save_done(obj):
+                self.log("[save item] %s"%obj )
+
+            def _pre_save(sobj,tobj):
+                if sobj:
+                    tobj.id=sobj.id
+                tobj.save().addCallback(_save_done)
+                
+            item.model.__class__.findBy(uk=item.uk).addCallback(save,item)
  
 
         return item

@@ -19,7 +19,7 @@ class TwistarItemMeta(ItemMeta):
         if cls.sql_model:
             cls._model_fields = []
             #cls._model_meta = cls.sqlalchemy_model._meta
-            tablename = cls.sql_model.tablename()
+            tablename = cls.sql_model.tablename
             #attrs = {}
             if Registry.SCHEMAS.has_key(tablename):
                 for name in Registry.SCHEMAS[tablename]:
@@ -81,7 +81,7 @@ class TwistarPipeline(object):
                 if sobj:
                     tobj.id=sobj.id
                 tobj.save().addCallback(_save_done)
-                
+
             item.model.__class__.findBy(uk=item.uk).addCallback(save,item)
  
 

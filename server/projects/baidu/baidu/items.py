@@ -102,7 +102,7 @@ class BaiduUserItem(TwistarItem):
     last_update_time= Field()
     @property
     def uniq_filter(self):
-        return "uk=%s"%self['uk']
+        return {"uk":self['uk']}
         
 class BaiduShareItem(TwistarItem):
     """docstring for BaiduUserItem"""
@@ -128,7 +128,7 @@ class BaiduShareItem(TwistarItem):
     last_crawl_time = Field()
     @property
     def uniq_filter(self):
-        return "data_id=%s"%self['data_id']
+        return {"data_id":self['data_id']}
 
 
 class BaiduFileItem(TwistarItem):
@@ -152,7 +152,7 @@ class BaiduFileItem(TwistarItem):
     last_crawl_time = Field()
     @property
     def uniq_filter(self):
-        return "fs_id=%s"%self['fs_id']
+        return {"fs_id":self['fs_id']}
 
 
            

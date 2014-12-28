@@ -90,7 +90,7 @@ class TwistarPipeline(object):
                     tobj.id=sobj[0].id
                 tobj.save().addCallback(_save_done)
             if item.uniq_filter:
-                item.dbcls.find(where=item.uniq_filter).addCallback(_pre_save,item.dbobject)
+                item.dbcls.findBy(**item.uniq_filter).addCallback(_pre_save,item.dbobject)
             else:
                 item.dbobject.save().addCallback(_save_done)
 

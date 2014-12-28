@@ -31,7 +31,7 @@ class TwistarItemMeta(ItemMeta):
 
 class TwistarItem(Item):
 
-    __metaclass__ = TwistarItemMeta
+    #__metaclass__ = TwistarItemMeta
 
     #a DBObject class
     sql_model = None
@@ -45,9 +45,10 @@ class TwistarItem(Item):
     @property
     def dbobject(self):
         if self._instance is None:
-            modelargs = dict((k, self.get(k)) for k in self._values
-                             if k in self._model_fields)
-            self._instance = self.sql_model(**modelargs)
+            # modelargs = dict((k, self.get(k)) for k in self._values
+            #                  if k in self._model_fields)
+
+            self._instance = self.sql_model(**self)
         return self._instance
 
     @property
@@ -72,7 +73,6 @@ class TwistarPipeline(object):
 
     def process_item(self, item, spider):
 
-
         if isinstance(item,TwistarItem):
             def _save_done(obj):
                 self.log("[save item] %s"%obj )
@@ -82,7 +82,7 @@ class TwistarPipeline(object):
                     tobj.id=sobj.id
                 tobj.save().addCallback(_save_done)
 
-            item.model.__class__.findBy(uk=item.uk).addCallback(save,item)
+            item.dbcls.findBy(uk=item.uk).addCallback(save,item)
  
 
         return item

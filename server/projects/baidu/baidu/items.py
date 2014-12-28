@@ -69,39 +69,81 @@ from scrapyc.server.utils.spider.twistarpiplines import TwistarItem,DBObject
 class BaiduUser(DBObject):
     """docstring for BaiduUser"""
     TABLENAME="baidu_user"
-    def __init__(self, arg):
-        super(BaiduUser, self).__init__()
-        self.arg = arg
+
 
 class BaiduShare(DBObject):
     """docstring for BaiduUser"""
     TABLENAME="baidu_share"
-    def __init__(self, arg):
-        super(BaiduUser, self).__init__()
-        self.arg = arg
+
 
 class BaiduFile(DBObject):
     """docstring for BaiduUser"""
     TABLENAME="baidu_file"
-    def __init__(self, arg):
-        super(BaiduUser, self).__init__()
-        self.arg = arg
+
 
 
 class BaiduUserItem(TwistarItem):
     """docstring for BaiduUserItem"""
     sql_model=BaiduUser
+    uk = Field()
+    username = Field()
+    pubshare_count = Field()
+    secshare_cnt = Field()
+    fans_count = Field()
+    follow_count = Field()
+    intro = Field()
+    album_count = Field()
+    tui_user_count = Field()
+    c2c_user_sell_count = Field()
+    c2c_user_buy_count = Field()
+    c2c_user_product_count = Field()
+    avatar_url = Field()
+    last_insert_time = Field()
+    last_update_time= Field()
 
         
 class BaiduShareItem(TwistarItem):
     """docstring for BaiduUserItem"""
     sql_model=BaiduShare
+    data_id = Field()
+    feed_type = Field()
+    album_id= Field()
+    shareid = Field()
+    uk = Field()
+    category = Field()
+    feed_time = Field()
+    title = Field()
+    filecount = Field()
+    public = Field()
+    shorturl = Field()
+    source_uid = Field()
+    source_id = Field()
+    vCnt = Field()
+    dCnt = Field()
+    tCnt = Field()
+    description = Field()
+    is_valid = Field()
+    last_crawl_time = Field()
 
 class BaiduFileItem(TwistarItem):
     """docstring for BaiduUserItem"""
     sql_model=BaiduFile
 
-
+    fs_id = Field()
+    uk = Field()
+    shareid = Field()
+    data_id = Field()
+    album_id = Field()
+    server_filename = Field()
+    category = Field()
+    isdir = Field()
+    size = Field()
+    path = Field()
+    md5 = Field()
+    sign = Field()
+    shorturl = Field()
+    is_valid = Field()
+    last_crawl_time = Field()
 
 
 

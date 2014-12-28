@@ -152,7 +152,7 @@ def translate_connect_args(drivername, **kw):
     "MySQLdb":{'host':'host','database':'db','username':'user','password':'passwd'},
     }
     translated = {}
-    schema = SCHEMAS['drivername']
+    schema = SCHEMAS[drivername]
     for sname,tname in schema.items():
             if sname in kw:
                 translated[tname] = kw[sname]

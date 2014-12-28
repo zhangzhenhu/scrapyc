@@ -14,7 +14,7 @@ from scrapy.item import Field, Item, ItemMeta
 class TwistarItemMeta(ItemMeta):
 
     def  __new__(mcs, class_name, bases, attrs):
-        cls = super(TwistartemMeta, mcs).__new__(mcs, class_name, bases, attrs)
+        cls = super(TwistarItemMeta, mcs).__new__(mcs, class_name, bases, attrs)
         #cls.fields = cls.fields.copy()
         if cls.sql_model:
             cls._model_fields = []

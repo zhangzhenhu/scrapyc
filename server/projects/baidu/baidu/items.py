@@ -100,7 +100,9 @@ class BaiduUserItem(TwistarItem):
     avatar_url = Field()
     last_insert_time = Field()
     last_update_time= Field()
-
+    @property
+    def uniq_filter(self):
+        return "uk=%s"%self['uk']
         
 class BaiduShareItem(TwistarItem):
     """docstring for BaiduUserItem"""
@@ -124,6 +126,10 @@ class BaiduShareItem(TwistarItem):
     description = Field()
     is_valid = Field()
     last_crawl_time = Field()
+    @property
+    def uniq_filter(self):
+        return "data_id=%s"%self['data_id']
+
 
 class BaiduFileItem(TwistarItem):
     """docstring for BaiduUserItem"""
@@ -144,7 +150,9 @@ class BaiduFileItem(TwistarItem):
     shorturl = Field()
     is_valid = Field()
     last_crawl_time = Field()
-
+    @property
+    def uniq_filter(self):
+        return "fs_id=%s"%self['fs_id']
 
 
            

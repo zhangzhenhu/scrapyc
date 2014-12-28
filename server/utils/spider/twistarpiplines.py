@@ -54,7 +54,9 @@ class TwistarItem(Item):
     @property
     def dbcls(self):
         return self.sql_model
-
+    @property
+    def uniq_filter(self):
+        pass
 
 
 #TWISTAR_DB_URL="MySQLdb://wangpan:wangpan@localhost/wangpan?charset=utf8"
@@ -87,6 +89,9 @@ class TwistarPipeline(object):
                 if sobj:
                     tobj.id=sobj[0].id
                 tobj.save().addCallback(_save_done)
-            item.dbcls.findBy(uk=item['uk']).addCallback(_pre_save,item)
-            
+            if item.uniq_filter:
+                item.dbcls.find(where=item.uniq_filter).addCallback(_pre_save,item.dbobject)
+            else:
+                item.dbobject.save().addCallback(_save_done)
+
         return item

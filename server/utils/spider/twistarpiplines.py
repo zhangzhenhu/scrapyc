@@ -82,7 +82,7 @@ class TwistarPipeline(object):
                     tobj.id=sobj.id
                 tobj.save().addCallback(_save_done)
 
-            item.dbcls.findBy(uk=item.uk).addCallback(save,item)
+            item.dbcls.findBy(uk=item['uk']).addCallback(save,item)
  
 
         return item

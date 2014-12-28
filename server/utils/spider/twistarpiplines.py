@@ -10,7 +10,7 @@ from twistar.dbobject import DBObject
 from scrapy.conf import settings
 from ..url import parse_sql_url,translate_connect_args
 from scrapy.item import Field, Item, ItemMeta
-
+from scrapy import log
 class TwistarItemMeta(ItemMeta):
 
     def  __new__(mcs, class_name, bases, attrs):
@@ -80,10 +80,10 @@ class TwistarPipeline(object):
         
 
     def process_item(self, item, spider):
-
+        self.log("[process item] %s"%item,level=log.INFO )
         if isinstance(item,TwistarItem):
             def _save_done(obj):
-                self.log("[save item] %s"%obj )
+                self.log("[save item] %s"%obj,level=log.INFO )
 
             def _pre_save(sobj,tobj):
                 if sobj:

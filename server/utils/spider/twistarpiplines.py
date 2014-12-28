@@ -8,7 +8,7 @@ from twisted.enterprise import adbapi
 from twistar.registry import Registry
 from twistar.dbobject import DBObject
 from scrapy.conf import settings
-from ..url import parse_sql_url
+from ..url import parse_sql_url,translate_connect_args
 from scrapy.item import Field, Item, ItemMeta
 
 class TwistarItemMeta(ItemMeta):
@@ -66,11 +66,12 @@ class TwistarPipeline(object):
         sql_url = settings['TWISTAR_DB_URL']
         conn_arg = parse_sql_url(sql_url)
         drivername = conn_arg.pop("drivername")
+        conn_arg = translate_connect_args(drivername,**conn_arg)
         try:
             conn_arg["port"] = int(conn_arg["port"])
         except:
             conn_arg["port"] = 3306
-            
+
         Registry.DBPOOL = adbapi.ConnectionPool(drivername, **conn_arg)
 
 

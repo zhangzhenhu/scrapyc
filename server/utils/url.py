@@ -135,7 +135,7 @@ class URL(object):
         else:
             return cls
 
-def translate_connect_args(self,drivername, **kw):
+def translate_connect_args(drivername, **kw):
     """Translate url attributes into a dictionary of connection arguments.
 
     Returns attributes of this url (`host`, `database`, `username`,

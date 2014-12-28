@@ -80,10 +80,10 @@ class TwistarPipeline(object):
         
 
     def process_item(self, item, spider):
-        self.log("[process item] %s"%item,level=log.INFO )
+        self.log("[process item] %s"%item,level=log.DEBUG )
         #if isinstance(item,TwistarItem):
         def _save_ok(obj):
-            self.log("[save item succeed] %s"%obj,level=log.INFO )
+            self.log("[save item succeed] %s"%obj,level=log.DEBUG )
         
         def _save_err(obj):
             self.log("[save item failed] %s"%obj,level=log.ERROR )
@@ -91,7 +91,7 @@ class TwistarPipeline(object):
         def _update(sobj,tobj):
             if sobj:
                 tobj.id=sobj[0].id
-            self.log("[update item] %s"%tobj,level=log.INFO )
+            self.log("[update item] %s"%tobj,level=log.DEBUG )
             defer = tobj.save()
             defer.addCallback(_save_ok)
             defer.addErrback(_save_err)

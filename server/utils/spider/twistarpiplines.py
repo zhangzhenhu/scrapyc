@@ -66,6 +66,11 @@ class TwistarPipeline(object):
         sql_url = settings['TWISTAR_DB_URL']
         conn_arg = parse_sql_url(sql_url)
         drivername = conn_arg.pop("drivername")
+        try:
+            conn_arg["port"] = int(conn_arg["port"])
+        except:
+            conn_arg["port"] = 3306
+            
         Registry.DBPOOL = adbapi.ConnectionPool(drivername, **conn_arg)
 
 
@@ -82,7 +87,7 @@ class TwistarPipeline(object):
                     tobj.id=sobj.id
                 tobj.save().addCallback(_save_done)
 
-            item.dbcls.findBy(uk=item['uk']).addCallback(save,item)
+            item.dbcls.findBy(uk=item['uk']).addCallback(_pre_save,item)
  
 
         return item

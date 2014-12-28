@@ -85,7 +85,7 @@ class TwistarPipeline(object):
 
             def _pre_save(sobj,tobj):
                 if sobj:
-                    tobj.id=sobj.id
+                    tobj.id=sobj[0].id
                 tobj.save().addCallback(_save_done)
 
             item.dbcls.findBy(uk=item['uk']).addCallback(_pre_save,item)

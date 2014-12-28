@@ -1,5 +1,5 @@
 #encoding=utf8
-from scrapyc.server.utils.spider.twistarpiplines import TwistarItem
+from scrapyc.server.utils.spider.twistarpiplines import TwistarItem,DBObject
 #from sqlalchemy import Column,BigInteger, Integer,TEXT, ForeignKey, String,DateTime,Sequence
 
 
@@ -66,21 +66,21 @@ from scrapyc.server.utils.spider.twistarpiplines import TwistarItem
 #     is_valid = Column(Integer)
 #     last_crawl_time= Column(DateTime)
 
-class BaiduUser(object):
+class BaiduUser(DBObject):
     """docstring for BaiduUser"""
     TABLENAME="baidu_user"
     def __init__(self, arg):
         super(BaiduUser, self).__init__()
         self.arg = arg
 
-class BaiduShare(object):
+class BaiduShare(DBObject):
     """docstring for BaiduUser"""
     TABLENAME="baidu_share"
     def __init__(self, arg):
         super(BaiduUser, self).__init__()
         self.arg = arg
 
-class BaiduFile(object):
+class BaiduFile(DBObject):
     """docstring for BaiduUser"""
     TABLENAME="baidu_file"
     def __init__(self, arg):

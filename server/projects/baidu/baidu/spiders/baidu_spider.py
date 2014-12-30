@@ -252,7 +252,7 @@ class BaiduSpider(scrapy.Spider):
     def  parseUserInfo(self,response):
         jp=json.loads(response.body)
         if jp['errno'] != 0 :
-            self.log("GET baidu user infor error! errno:%d url:%s"%(jp['errno'],response.url),level=scrapy.log.WARNING)
+            self.log("GET baidu user info error! errno:%d url:%s"%(jp['errno'],response.url),level=scrapy.log.WARNING)
             return
         
         #print jp

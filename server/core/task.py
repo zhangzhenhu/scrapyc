@@ -158,7 +158,12 @@ class Task(threading.Thread):
                 cmd_func(args)
             except  Queue.Empty, e:
                 pass
+            except Exception,e:
+                self.logger.error("[%s:%d] %s",self.task_id,self.pid,str(e))
             time.sleep(5)
+        self.logger.info("[%s:%d] will stop",self.task_id,self.pid)
+        
+
         self.end_time = datetime.now()
         self._update_status()
         if callable(self._callback):

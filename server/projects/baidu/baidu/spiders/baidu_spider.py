@@ -253,7 +253,7 @@ class BaiduSpider(scrapy.Spider):
         jp=json.loads(response.body)
         if jp['errno'] != 0 :
             self.log("GET baidu user info error! errno:%d url:%s"%(jp['errno'],response.url),level=scrapy.log.WARNING)
-            return
+            return response.request
         
         #print jp
         o = urlparse.urlparse(response.url)
@@ -280,7 +280,7 @@ class BaiduSpider(scrapy.Spider):
         jp=json.loads(response.body)
         if jp['errno'] != 0 :
             self.log("GET baidu user fanlist error! errno:%d url:%s"%(jp['errno'],response.url),level=scrapy.log.WARNING)
-            return
+            return response.request
         
         #print jp
         o = urlparse.urlparse(response.url)
@@ -316,7 +316,7 @@ class BaiduSpider(scrapy.Spider):
         jp=json.loads(response.body)
         if jp['errno'] != 0 :
             self.log("GET baidu user fanlist error! errno:%d url:%s"%(jp['errno'],response.url),level=scrapy.log.WARNING)
-            return
+            return response.request
         
         #print jp
         o = urlparse.urlparse(response.url)

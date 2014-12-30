@@ -29,7 +29,7 @@ DOWNLOAD_DELAY = 5
 #LOG_FILE="log.txt"
 CONCURRENT_REQUESTS=16
 CONCURRENT_REQUESTS_PER_DOMAIN=4
-CONCURRENT_REQUESTS_PER_IP=2
+CONCURRENT_REQUESTS_PER_IP=1
 
 M_WANGPANWU_URLS=["http://www.wangpanwu.com/zjgx/list_%d.html"%(i)  for i in range(1,51)]+ \
               ["http://www.wangpanwu.com/zjgx/video/list_%d.html"%(i)  for i in range(1,51)]+ \

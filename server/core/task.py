@@ -9,6 +9,7 @@ import time
 import logging
 import os
 import socket
+from scrapyc.server.flask import ws
 def get_valid_port(start=8000,end=9000):
 
     def IsNotOpen(ip="127.0.0.1",port=0):
@@ -187,15 +188,17 @@ class Task(threading.Thread):
         #self._pre_status = Task.Killing
         self._commands.put((self._kill,None))
 
-    def _stop(self,args):
-        self._p_hander.terminate()
-        self._pre_status = Task.Stopping
+    #def _stop(self,args):
+        #self._pre_status = Task.Stopping
+        #return ws.cmd_stop(port=self.webservice_port,spider=self.spider)
+        #self._p_hander.terminate()
 
     def stop(self):
         if self.status != Task.Running:
-            return
-        self._commands.put((self._stop,None))
-
+            return False
+        #self._commands.put((self._stop,None))
+        self._pre_status = Task.Stopping
+        return ws.cmd_stop(port=self.webservice_port,spider=self.spider)
 
     def is_finished(self):
         if self.status not in [Task.Running,Task.Pending]:

@@ -189,7 +189,8 @@ def task_stop(task_id):
         #abort(404)
         return jsonify(ok=False,msg="no task:task_id")
     try:
-        ws.cmd_stop(port=task.webservice_port,spider=task.spider)
+        task.stop()
+        #ws.cmd_stop(port=task.webservice_port,spider=task.spider)
         return  jsonify(ok=True,msg="success")
     except Exception, e:
         #raise e

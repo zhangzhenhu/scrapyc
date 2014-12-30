@@ -188,9 +188,12 @@ def task_stop(task_id):
     if not task:
         #abort(404)
         return jsonify(ok=False,msg="no task:task_id")
-
-    ws.cmd_stop(port=task.webservice_port,spider=task.spider)
-    return  jsonify(ok=ret,msg="success")
+    try:
+        ws.cmd_stop(port=task.webservice_port,spider=task.spider)
+        return  jsonify(ok=True,msg="success")
+    except Exception, e:
+        #raise e
+        return jsonify(ok=False,msg=str(e))
 
 
 @flask_app.route('/task/log/<task_state>/<task_id>',methods=['POST','GET'])

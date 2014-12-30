@@ -80,6 +80,9 @@ class TwistarPipeline(object):
 
         Registry.DBPOOL = adbapi.ConnectionPool(drivername, **conn_arg)
 
+        self.spider=spider
+        self.stats = self.spider.crawler.stats
+
 
         
 
@@ -88,13 +91,19 @@ class TwistarPipeline(object):
         #if isinstance(item,TwistarItem):
         def _save_ok(obj):
             self.log("[save item succeed] %s"%obj,level=log.DEBUG )
+            self.stats.inc_value("twistar_pipeline/save_succeed")
         
         def _save_err(obj):
             self.log("[save item failed] %s"%obj,level=log.ERROR )
+            self.stats.inc_value("twistar_pipeline/save_failed")
 
         def _update(sobj,tobj):
             if sobj:
                 tobj.id=sobj[0].id
+                self.stats.inc_value("twistar_pipeline/update")
+            else:
+                self.stats.inc_value("twistar_pipeline/new")
+
             self.log("[update item] %s"%tobj,level=log.DEBUG )
             defer = tobj.save()
             defer.addCallback(_save_ok)

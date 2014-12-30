@@ -36,6 +36,7 @@ class Task(threading.Thread):
     Stopping = "Stopping"
     Killing = "Killing"
     Error = "Error"
+    Stopped = "Stopped"
 
     def __init__(self, project,task_config,scrapy_settings,spider_settings,callback=None):
         super(Task, self).__init__()
@@ -174,7 +175,7 @@ class Task(threading.Thread):
         if self._pre_status == Task.Killing:
             self.status = Task.Killed
         elif self._pre_status == Task.Stopping:
-            self.status = Task.Stoped
+            self.status = Task.Stopped
         elif self.retcode == 0:
             self.status = Task.Succeed
         else:

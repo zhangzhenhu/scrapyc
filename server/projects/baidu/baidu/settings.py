@@ -53,3 +53,7 @@ M_ACTION = ["userInfo","userFollow"]
 SQLALCHEMY_ENGINE_URL="mysql://wangpan:wangpan@localhost/wangpan?charset=utf8"
 SQLALCHEMY_CHARSET = "utf8"
 TWISTAR_DB_URL="MySQLdb://wangpan:wangpan@localhost/wangpan?charset=utf8"
+
+# M_BAIDU_SQL_USER=select uk from baidu_user
+# M_ACTION=userFollow+userInfo+userFollowInfinite
+# M_SOURCE=db

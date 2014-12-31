@@ -13,7 +13,7 @@ from optparse import OptionParser
 class Framwork(object):
     """docstring for framwork"""
     def __init__(self, arg):
-        super(framwork, self).__init__()
+        super(Framwork, self).__init__()
         self.settings = arg
         self.work_queue = {}
         self.components={}
@@ -68,7 +68,7 @@ class Framwork(object):
         handle.close()
         return True
 
-    def run():
+    def run(self):
         if not self._init_data():
             return False
         resume = self.settings.get("RESUME")
@@ -94,7 +94,7 @@ def main(setting):
 if __name__ == '__main__':
 
     parser = OptionParser()
-    parser.add_option("-i", "--file", dest="filename",
+    parser.add_option("-i", "--file", dest="file",
                       help="input FILE", metavar="FILE")
     parser.add_option("-q", "--quiet",
                       action="store_false", dest="verbose", default=True,

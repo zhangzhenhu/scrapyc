@@ -46,7 +46,7 @@ class Component(_threading.Thread):
 
 
     def _run_cmd(self):
-        self._stdin = open(self.in_file,"w")
+        self._stdin = open(self.in_file,"r")
         self._stdout = open(self.out_file,"w")
         self._stderr = open(self.err_file,"w")
         subprocess.call(self.cmd,stderr=self._stderr,stdout=self._stdout,stdin=self._stdin,shell=True)

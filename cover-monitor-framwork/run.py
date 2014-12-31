@@ -7,7 +7,7 @@ from utils.misc import load_object
 from utils.setting import Settings
 from case import Case
 import cPickle as pickle
-class framwork(object):
+class Framwork(object):
     """docstring for framwork"""
     def __init__(self, arg):
         super(framwork, self).__init__()
@@ -69,20 +69,24 @@ class framwork(object):
         if not self._init_data():
             return False
         resume = self.settings.get("RESUME")
+        self._load_component()
+        self._load_strategy()
         if resume :
             pass
         else:
-            self._load_component()
-            self._load_strategy()
+            self._run_component()
         
-        self._run_component()
         self._run_strategy()
-        
+        for case in self.input_data:
+            print case
 
 
 def main():
     setting = Settings()
     setting.setmodule("settings")
+    fr = Framwork(setting)
+    fr.run()
+
     print setting.get("COMPONENTS")   
 
 if __name__ == '__main__':

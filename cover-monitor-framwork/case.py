@@ -12,11 +12,59 @@ class Case(object):
         self.other=line[1:]
         self._target = self.objurl
         self.data = {}
+        self._close = False
+        self._result = {
+
+        }
+        self._result_schema = [       
+        "conclusion",
+        "reason",
+        "basis",
+        "additional",
+        "solution",
+        "owner",
+        ]
+
+
+    @property
     def target(self):
         return self._target
-    def set_target(self,target):
-        self._target = target
-        
-    def set_data(name,value):
+    @target.setter
+    def target(self, value):
+        self._target = value
+    
+    def get_data(self,name):
+        if name in self.data:
+            return self.data[name]
+        else:
+            return None
+
+    def set_data(self,name,value):
         self.data[name]=value
+
+    def set_result(self,name,value):
+        if name in self._result_schema:
+            self._result[name]=value
+            return True
+        return False
+        
+    @property
+    def close(self):
+        return self._close
+    @close.setter
+    def close(self, value):
+        self._close = value
+
+
+    def __str__(self):
+        s = self.objurl + "\t".join(self.other)
+        for key in self._result_schema:
+            if key in self._result:
+                v = self._result[key]
+            else:
+                v = ""
+            s += "\t" + v
+        return s
+
+
         

@@ -8,4 +8,4 @@ class Linkbase(Component):
 
 
     name = "linkbase"
-    cmd = "sh -x ./tools/linkbase/linkbase.sh "
+    cmd = "sh -x ./tools/linkbase/seekglobal.sh "

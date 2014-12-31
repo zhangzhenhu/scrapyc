@@ -8,7 +8,7 @@ from utils.setting import Settings
 from case import Case
 import cPickle as pickle
 from optparse import OptionParser
-
+import os
 
 class Framwork(object):
     """docstring for framwork"""

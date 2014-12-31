@@ -7,7 +7,7 @@ JOBDIR = os.path.join(WORDIR,"history")
 
 COMPONENTS = {
     # "component.ccdb" :None,
-    "component.linkbase" :None,
+    "component.linkbase.Linkbase" :None,
     # "component.l2patch" :None,
     # "component.l2base" :None,
     # "component.robots" :None,

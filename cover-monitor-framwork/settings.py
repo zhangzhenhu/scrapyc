@@ -1,4 +1,8 @@
 
+import os
+
+WORDIR=os.getcwd()
+JOBDIR = os.path.join(WORDIR,"history")
 
 
 COMPONENTS = {

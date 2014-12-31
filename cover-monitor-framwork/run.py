@@ -7,6 +7,9 @@ from utils.misc import load_object
 from utils.setting import Settings
 from case import Case
 import cPickle as pickle
+from optparse import OptionParser
+
+
 class Framwork(object):
     """docstring for framwork"""
     def __init__(self, arg):
@@ -81,14 +84,26 @@ class Framwork(object):
             print case
 
 
-def main():
-    setting = Settings()
-    setting.setmodule("settings")
+def main(setting):
+
     fr = Framwork(setting)
     fr.run()
 
-    print setting.get("COMPONENTS")   
+    #print setting.get("COMPONENTS")   
 
 if __name__ == '__main__':
-    main()
+
+    parser = OptionParser()
+    parser.add_option("-i", "--file", dest="filename",
+                      help="input FILE", metavar="FILE")
+    parser.add_option("-q", "--quiet",
+                      action="store_false", dest="verbose", default=True,
+                      help="don't print status messages to stdout")
+
+    (options, args) = parser.parse_args()
+    setting = Settings()
+    setting.setmodule("settings")
+    setting.set("INPUT_FILE",options.file)
+
+    main(setting)
 

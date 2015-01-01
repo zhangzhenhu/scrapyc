@@ -35,11 +35,7 @@ class Framwork(object):
         for com in self.components.values():
             com.join()
             #self.base_data[com.name] = com.result
-        jobdir = self.settings.get("JOBDIR","./data")
-        fname = os.path.join(jobdir,"dump.raw")
-        f=open(fname,"wb")
-        pickle.dump(self.input_data,f)
-        f.close()
+
 
 
     def _load_strategy(self):
@@ -68,14 +64,29 @@ class Framwork(object):
         handle.close()
         return True
 
+    def dump(self):
+        jobdir = self.settings.get("JOBDIR","./data")
+        fname = os.path.join(jobdir,"dump.raw")
+        f=open(fname,"wb")
+        pickle.dump(self.input_data,f)
+        f.close()        
+        pass
+    def load(self):
+        jobdir = self.settings.get("JOBDIR","./data")
+        fname = os.path.join(jobdir,"dump.raw")
+        f=open(fname,"r")
+        self.input_data = pickle.load(f)
+        f.close()        
+        pass
     def run(self):
         if not self._init_data():
             return False
         resume = self.settings.get("RESUME")
         self._load_component()
         self._load_strategy()
+        resume = True
         if resume :
-            pass
+            self.load()
         else:
             #self._run_component()
             pass

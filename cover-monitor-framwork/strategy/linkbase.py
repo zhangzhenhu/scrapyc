@@ -3,9 +3,7 @@ from .strategy import Strategy
 
 class Linkbase(Strategy):
     """docstring for Linkbase"""
-    def __init__(self, arg):
-        super(Linkbase, self).__init__()
-        self.arg = arg
+
 
     def run(self,data):
 

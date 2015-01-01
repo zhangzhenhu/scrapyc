@@ -3,9 +3,7 @@ from .strategy import Strategy
 
 class CCDB(Strategy):
     """docstring for CCDB"""
-    def __init__(self, arg):
-        super(CCDB, self).__init__()
-        self.arg = arg
+
 
     def run(self,data):
         for case in data:

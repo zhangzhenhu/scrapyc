@@ -7,5 +7,5 @@ class Linkbase(Component):
     """docstring for Linkbase"""
 
 
-    name = "linkbase"
+    name = "l2base"
     cmd = "sh -x ./tools/linkbase/seekglobal_l2.sh "

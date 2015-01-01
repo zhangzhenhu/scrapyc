@@ -88,8 +88,8 @@ class Framwork(object):
         if resume :
             self.load()
         else:
-            #self._run_component()
-            pass
+            self._run_component()
+            self.dump()
         self._run_strategy()
         for case in self.input_data:
             print case

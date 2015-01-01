@@ -35,7 +35,7 @@ class Component(_threading.Thread):
         f = open(fname,"r")
         for line in f.readlines():
             line = line.strip().split("\t")
-            obj = line[0]
+            obj = line[0].strip()
             data = {}
             for item in line[1:]:
                 name,value = item.split(":",1)

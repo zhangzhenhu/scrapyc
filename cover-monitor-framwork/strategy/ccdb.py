@@ -58,6 +58,6 @@ class CCDB(Strategy):
         else:
 
             case.set_result("conclusion","noproblem")
-            case.set_result("reason","wise=%d&&weight=%d&&flag=%s"%(wise,weight,flag)
+            case.set_result("reason","wise=%d&&weight=%d&&flag=%s"%(wise,weight,flag))
             case.close = True
             return

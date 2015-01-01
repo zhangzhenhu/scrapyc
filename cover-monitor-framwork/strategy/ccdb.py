@@ -8,34 +8,56 @@ class CCDB(Strategy):
         self.arg = arg
 
     def run(self,data):
-
         for case in data:
-            if ld.close:
+            if case.close:
                 continue
-            ccdb = case.get_date("ccdb")
-            if  ccdb["ACK"] != "OK":
-                continue
+            self.wiseccdb(case)
+            if not case.close:
+                self.pcccb(case)
 
-            weight = int(ccdb.get("weight"))
-            wise = int(ccdb.get("Wise"))
-            flag = ccdb.get("flag")
-            #weight = ccdb.get("weight")
-            if weight <=10 and weight != 9:
-                case.set_result("conclusion","low-weight")
-                case.set_result("reason","weight=%d"%weight)
-                case.close = True
-                continue
-            elif flag == "MARKDEL":
-                case.set_result("conclusion","markdel")
-                case.set_result("reason","flag=%s"%flag)
-                case.close = True
-                continue
-            else:
+    def wiseccdb(self,case):
+        ccdb = case.get_date("wiseccdb")
+        if  ccdb["ACK"] != "OK":
+            return
+        if weight <=10 and weight != 9:
+            case.set_result("conclusion","low-weight")
+            case.set_result("reason","weight=%d"%weight)
+            case.close = True
+            return
+        elif flag == "MARKDEL":
+            case.set_result("conclusion","markdel")
+            case.set_result("reason","flag=%s"%flag)
+            case.close = True
+            return
+        else:
 
-                case.set_result("conclusion","noproblem")
-                case.set_result("reason","wise=%d&&weight=%d&&flag=%s"%(wise,weight,flag)
-                case.close = True
-                continue
+            case.set_result("conclusion","noproblem")
+            case.set_result("reason","wise=%d&&weight=%d&&flag=%s"%(wise,weight,flag)
+            case.close = True
+            return
 
+    def pcccb(self,case):
+        ccdb = case.get_date("pcccdb")
+        if  ccdb["ACK"] != "OK":
+            return
 
-        pass
+        weight = int(ccdb.get("weight"))
+        wise = int(ccdb.get("Wise"))
+        flag = ccdb.get("flag")
+        #weight = ccdb.get("weight")
+        if weight <=10 and weight != 9:
+            case.set_result("conclusion","low-weight")
+            case.set_result("reason","weight=%d"%weight)
+            case.close = True
+            return
+        elif flag == "MARKDEL":
+            case.set_result("conclusion","markdel")
+            case.set_result("reason","flag=%s"%flag)
+            case.close = True
+            return
+        else:
+
+            case.set_result("conclusion","noproblem")
+            case.set_result("reason","wise=%d&&weight=%d&&flag=%s"%(wise,weight,flag)
+            case.close = True
+            return

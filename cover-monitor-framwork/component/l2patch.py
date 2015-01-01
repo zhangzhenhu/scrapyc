@@ -3,8 +3,8 @@ from .component import Component
 
 
 
-class Linkbase(Component):
-    """docstring for Linkbase"""
+class L2Patch(Component):
+    """docstring for L2Patch"""
 
 
     name = "l2patch"

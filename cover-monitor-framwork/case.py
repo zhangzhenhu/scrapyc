@@ -1,4 +1,4 @@
-
+import threading
 
 
 class Case(object):
@@ -12,6 +12,7 @@ class Case(object):
         self.other=line[1:]
         self._target = self.objurl
         self.data = {}
+        self._lock = threading.RLock()
         self._close = False
         self._result = {
 
@@ -40,7 +41,9 @@ class Case(object):
             return None
 
     def set_data(self,name,value):
-        self.data[name]=value
+        if self._lock.acquire():
+            self.data[name]=value
+        self._lock.release()
 
     def set_result(self,name,value):
         if name in self._result_schema:

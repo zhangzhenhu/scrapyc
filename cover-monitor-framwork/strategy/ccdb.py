@@ -14,7 +14,7 @@ class CCDB(Strategy):
                 self.pcccb(case)
 
     def wiseccdb(self,case):
-        ccdb = case.get_date("wiseccdb")
+        ccdb = case.get_data("wiseccdb")
         if  ccdb["ACK"] != "OK":
             return
         if weight <=10 and weight != 9:
@@ -35,7 +35,7 @@ class CCDB(Strategy):
             return
 
     def pcccb(self,case):
-        ccdb = case.get_date("pcccdb")
+        ccdb = case.get_data("pcccdb")
         if  ccdb["ACK"] != "OK":
             return
 

@@ -10,7 +10,7 @@ class Linkbase(Strategy):
         for case in data:
             if ld.close:
                 continue
-            ld = case.get_date("linkbase")
+            ld = case.get_data("linkbase")
 
             urlnew = ld.get("urlnew")
             if urlnew == "CHK" :
@@ -22,13 +22,13 @@ class Linkbase(Strategy):
                 case.close = True
                 continue
 
-            l2patch = case.get_date("l2patch")
+            l2patch = case.get_data("l2patch")
             if l2patch and l2patch["del_reason"] != "-" :
                 case.set_result("conclusion","lbdel")
                 case.set_result("reason",l2patch["del_reason"])
                 case.close = True
                 continue
-            l2base = case.get_date("l2base")
+            l2base = case.get_data("l2base")
             
             if l2base and l2base["del_reason"] != "-" :
                 case.set_result("conclusion","lbdel")

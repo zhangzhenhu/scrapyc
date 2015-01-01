@@ -55,10 +55,12 @@ class Component(_threading.Thread):
         self._stdout.close()
 
     def run(self):
-        
+        print "[Component:%s] start" %self.name
         self._dump_case()
         self._run_cmd()
         self.parse(self.out_file)
+        print "[Component:%s] finished" %self.name
+
 
 
         pass

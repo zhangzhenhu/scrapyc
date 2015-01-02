@@ -15,7 +15,7 @@ class CCDB(Strategy):
 
     def wiseccdb(self,case):
         ccdb = case.get_data("wiseccdb")
-        if  ccdb["ACK"] != "OK":
+        if  ccdb["Last-mod-time"]  == "-":
             return
         if weight <=10 and weight != 9:
             case.set_result("conclusion","low-weight")

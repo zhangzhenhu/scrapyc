@@ -40,7 +40,7 @@ class Framwork(object):
 
     def _load_strategy(self):
         coms = self.settings.get("STRATEGIES")
-        for com,attrs in coms.items():
+        for com in coms:
             comcls = load_object(com)
             self.strategies.append(comcls(self.settings))
 

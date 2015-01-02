@@ -17,10 +17,10 @@ COMPONENTS = {
 STRATEGIES = {
     "strategy.ccdb.CCDB":None,
     "strategy.linkbase.Linkbase":None,
+    "strategy.close.Close":None,
     "strategy.output.Output":None,
     "strategy.statistic.Statistic":None,
     # "strategy.weight":None,
     # "strategy.valid":None,
-    # "strategy.del":None,
     
 }

@@ -12,82 +12,22 @@
 </style>
 </head>
 <body bgcolor="white" margin="0">
-	<h1>Image竞品覆盖率对比结果如下：</h1>
-	
-	<p>
-		天级监控，测试版
-	</p>
-	</br>
-	<table align="center" style="FONT-SIZE: 16px; face: Verdana" cellspacing="1" cellpadding="4" bgcolor="#000000" border="1">
-		<tr bgcolor="gray" align="center">
-			<th>整体情况</th>
-			<th>数量/占比</th>
-		</tr>
+	<h1>覆盖率分析结果如下：</h1>
 
-		<tr bgcolor="white" align="center">
-			<td>抽样样本数量</td>
-			<td>${TDATA["total"]}</td>
-		</tr>
-		<tr bgcolor="white" align="center">
-			<td>有效样本数量</td>
-			<td>${TDATA["valid"]}</td>
-		</tr>
-		<tr bgcolor="#DBDB70" align="center">
-			<td>Baidu索引覆盖率占比：</td>
-			<td>
-				${TDATA["index"]}/${TDATA["total"]}=${"%.2f" % (TDATA["index"]*100.0/TDATA["valid"])}%
-			</td>
-		</tr>
-		<tr bgcolor="#DBDB70" align="center">
-			<td>Baidu收录覆盖率占比：</td>
-			<td>
-				${TDATA["spider"]}/${TDATA["total"]}=${"%.2f"%(TDATA["spider"]*100.0/TDATA["valid"])}%
-			</td>
-		</tr>
-		<tr bgcolor="white" align="center">
-			<td>Google覆盖率占比：</td>
-			<td></td>
-		</tr>
-		<tr bgcolor="white" align="center">
-			<td>Sogou覆盖率占比：</td>
-			<td></td>
-		</tr>
-		<tr bgcolor="white" align="center">
-			<td>Qh360覆盖率占比：</td>
-			<td></td>
-		</tr>
-	</table>
-	<span>
-		<li>
-			注:该url抽样含无价值页面(未经pm标注)，本覆盖率仅供参考，但其变化率有监控意义。
-		</li>
-		<li>
-			注:有效抽样数量=抽样样本数量- ${" - ".join(INVALID_TYPE)}
-		</li>
-		<li>
-			注:索引覆盖率计算公式：${"+".join(INDEX_TYPE)}/有效抽样数量
-		</li>
-		<li>
-			
-				注:收录覆盖率计算公式：(${" + ".join(SPIDER_TYPE)})/有效抽样数量
-			
-		</li>
-	</span>
-	<p>
-		以下为抽样数据在自动问题追查平台的分析case结果：
-		<table align="center" style="FONT-SIZE: 14px; face: Verdana" cellspacing="1" cellpadding="4" border="1">
-			<thead>
-				<tr  align="center">
-					<th>各类case</th>
-					<th>本轮case数量</th>
-					<th>本轮case占比</th>
-					<th>上轮case数量</th>
-					<th>上轮case占比</th>
-					<th>case占比差值</th>
-				</tr>
-			</thead>
-			<tbody>
-				<%
+</br>
+
+<p>
+
+	<table align="center" style="FONT-SIZE: 14px; face: Verdana" cellspacing="1" cellpadding="4" border="1">
+		<thead>
+			<tr  align="center">
+				<th>各类case</th>
+				<th>case数量</th>
+				<th>case占比</th>
+			</tr>
+		</thead>
+		<tbody>
+			<%
 					ALL_TYPE=[]
 					for item in sorted(TDATA["stat"].iteritems(), key=lambda d:d[1]["percent"], reverse = True ):
 						ALL_TYPE.append(item[0])
@@ -95,8 +35,8 @@
 						if  type not in  ALL_TYPE:
 							ALL_TYPE.append(type);
 				%>
-				%for  key in ALL_TYPE:
-				<%
+			%for  key in ALL_TYPE:
+			<%
 					if  key in INVALID_TYPE : continue
 					tcount=TDATA["stat"][key]["count"] if key in  TDATA["stat"] else 0
 					tpercent=TDATA["stat"][key]["percent"] if key in  TDATA["stat"] else 0.00   
@@ -109,64 +49,53 @@
 						_class="image"
 					else:
 						_class="spider"
-					if change >0 : 
+					if change >
+			0 : 
 						_class +=" bad"
-					elif change < 0 :
+					elif change
+			< 0 :
 						_class +=" good"
 				%>
 
-					<tr  align="center" class="${_class}" style='color:${"red" if change >0 else "green" }' >
-						<td>${key}</td>
-						<td>${tcount}</td>
-						<td>${"%.2f"%tpercent}%</td>
-						<td>${pcount}</td>
-						<td>${"%.2f"%ppercent}%</td>
+				<tr  align="center" class="${_class}" style='color:${"red" if change >
+					0 else "green" }' >
+					<td>${key}</td>
+					<td>${tcount}</td>
+					<td>${"%.2f"%tpercent}%</td>
+					<td>${pcount}</td>
+					<td>${"%.2f"%ppercent}%</td>
 
-						<td>${"%.2f"%change}%</td>
-					</tr>
+					<td>${"%.2f"%change}%</td>
+				</tr>
 				%endfor
 
 
 							
 					% for  key in INVALID_TYPE:
-					<%
+				<%
 						tcount=TDATA["stat"][key]["count"] if key in  TDATA["stat"] else 0
 						tpercent=TDATA["stat"][key]["percent"] if key in  TDATA["stat"] else 0.00   
 						pcount=PDATA["stat"][key]["count"] if key in  PDATA["stat"] else 0   
 						ppercent=PDATA["stat"][key]["percent"] if key in  PDATA["stat"] else 0.00
 
 					%>
-					<tr  align="center" class="invalid">
-						<td>${key}</td>
-						<td>${tcount}</td>
-						<td>NULL</td>
-						<td>${pcount}</td>
-						<td>NULL</td>
+				<tr  align="center" class="invalid">
+					<td>${key}</td>
+					<td>${tcount}</td>
+					<td>NULL</td>
+					<td>${pcount}</td>
+					<td>NULL</td>
 
-						<td>NULL</td>
-					</tr>
-					%endfor
-				</tbody>
+					<td>NULL</td>
+				</tr>
+				%endfor
+			</tbody>
 
-				<tr>
-					<td colspan="6" bgcolor="white">注:红色表示case占比较上周增加，绿色表示case占比较上周减少；</tr>
-				</table>
-				<p>
-					如需参考具体抽样和追查结果，请参看：
-					<table align="center" style="FONT-SIZE: 12px; face: Verdana" cellspacing="1" cellpadding="4" bgcolor="#000000" border="1">
-						<tr bgcolor="gray" align="center">
-							<td>自动追查平台上对应任务ID：</td>
-							<td>${PROCESS_ID}</td>
-						</tr>
-						<tr bgcolor="white" align="center">
-							<td>自动追查平台地址：</td>
-							<td>
-								http://spider.baidu.com:8080/index.php/case/list
-								<tr bgcolor="white" align="center">
-									<td>下载文件地址：</td>
-									<td>
-										http://spider.baidu.com:8080/index.php/case/getreport?id=${PROCESS_ID}
-									</table>
-									<hr>
-									<p>有问题请联系 zhangzhenhu@baidu.com</body>
-									</html>
+			<tr>
+				<td colspan="6" bgcolor="white">注:红色表示case占比较上周增加，绿色表示case占比较上周减少；</tr>
+			</table>
+			<p>
+
+				<hr>
+				<p>有问题请联系 zhangzhenhu@baidu.com</body>
+				</html>

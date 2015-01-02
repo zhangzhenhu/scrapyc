@@ -21,6 +21,7 @@ class Framwork(object):
         self.input_data= {}
         self.base_data = {}
         self.output_data = {}
+        self._data = {}
 
 
     def _load_component(self):
@@ -95,7 +96,12 @@ class Framwork(object):
 
         #for case in self.input_data:
          #   print case.data
-
+    def set_data(self,name,data):
+        self._data[name] = data
+    def get_data(self,name):
+        if name in self._data:
+            return self._data[name]
+        return None
 
 def main(setting):
 

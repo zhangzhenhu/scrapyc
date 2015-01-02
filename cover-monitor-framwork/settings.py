@@ -14,13 +14,13 @@ COMPONENTS = {
     # "component.robots" :None,
     # "component.dc" :None,
 } 
-STRATEGIES = {
-    "strategy.ccdb.CCDB":None,
-    "strategy.linkbase.Linkbase":None,
-    "strategy.close.Close":None,
-    "strategy.output.Output":None,
-    "strategy.statistic.Statistic":None,
+STRATEGIES = [
+    "strategy.ccdb.CCDB",
+    "strategy.linkbase.Linkbase",
+    "strategy.close.Close",
+    "strategy.output.Output",
+    "strategy.statistic.Statistic",
     # "strategy.weight":None,
     # "strategy.valid":None,
     
-}
+]

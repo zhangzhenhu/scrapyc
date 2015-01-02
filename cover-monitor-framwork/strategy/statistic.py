@@ -19,7 +19,7 @@ class Statistic(Strategy):
 
         jobdir =self.settings["JOBDIR"]
         sf = os.path.join(jobdir,"stats.txt")
-        f = open(fs,"w")
+        f = open(sf,"w")
         total = len(data)
         for key,value in sorted(stats.iteritems(), key=operator.itemgetter(1), reverse=True)  :
             f.write("%s\t%d\t%.3f\n"%(key,value,value/float(total)))

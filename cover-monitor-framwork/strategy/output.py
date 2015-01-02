@@ -10,7 +10,7 @@ class Output(Strategy):
         print "[Strategy:Output] start"
         jobdir =self.settings["JOBDIR"]
         sf = os.path.join(jobdir,"result.xls")
-        f = open(fs,"w")
+        f = open(sf,"w")
 
         for case in data:
             f.write(case.origin.strip())

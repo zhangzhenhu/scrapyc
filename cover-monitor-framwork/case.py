@@ -52,7 +52,7 @@ class Case(object):
             return True
         return False
     @property   
-    def result(self,name,value):
+    def result(self):
         return self._result
 
     @property

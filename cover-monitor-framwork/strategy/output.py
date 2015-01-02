@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .strategy import Strategy
 import operator 
 import os 

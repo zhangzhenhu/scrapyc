@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .strategy import Strategy
 
 
@@ -20,22 +21,22 @@ class Linkbase(Strategy):
             if ld:
                 urlnew = ld.get("urlnew")
                 if urlnew == "CHK" :
-                    case.set_result("conclusion","lbdiff")
+                    case.set_result("conclusion","lcDiff")
                     case.close = True
                     continue
                 elif urlnew == "GET":
-                    case.set_result("conclusion","uncrawl")
+                    case.set_result("conclusion","unCrawl")
                     case.close = True
                     continue
 
             if l2patch and l2patch["del_reason"] != "-" :
-                case.set_result("conclusion","lbdel")
+                case.set_result("conclusion","linkbaseDel")
                 case.set_result("reason",l2patch["del_reason"])
                 case.close = True
                 continue
             
             if l2base and l2base["del_reason"] != "-" :
-                case.set_result("conclusion","lbdel")
+                case.set_result("conclusion","linkbaseDel")
                 case.set_result("reason",l2base["del_reason"])
                 case.close = True
                 continue

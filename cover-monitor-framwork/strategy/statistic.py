@@ -4,7 +4,7 @@ import os
 
 class Statistic(Strategy):
     """docstring for Statistic"""
-
+# -*- coding: utf-8 -*-
 
     def run(self,data):
         

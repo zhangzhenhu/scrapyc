@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import threading
 
 
@@ -14,6 +15,8 @@ class Case(object):
         self.data = {}
         #self._lock = threading.RLock()
         self._close = False
+        self.valid = True
+        self.ok = False
         self._result = {
 
         }

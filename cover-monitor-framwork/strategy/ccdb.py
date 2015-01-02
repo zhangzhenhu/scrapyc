@@ -17,9 +17,9 @@ class CCDB(Strategy):
         ccdb = case.get_data("wiseccdb")
         if  ccdb["Last-mod-time"]  == "-":
             return
-        weight = int(ccdb.get("weight"))
+        weight = int(ccdb.get("Weight"))
         wise = int(ccdb.get("Wise"))
-        flag = ccdb.get("flag")            
+        flag = ccdb.get("Flag")            
         if weight <=10 and weight != 9:
             case.set_result("conclusion","low-weight")
             case.set_result("reason","weight=%d"%weight)
@@ -42,9 +42,9 @@ class CCDB(Strategy):
         if  ccdb["Last-mod-time"]  == "-":
             return
 
-        weight = int(ccdb.get("weight"))
+        weight = int(ccdb.get("Weight"))
         wise = int(ccdb.get("Wise"))
-        flag = ccdb.get("flag")
+        flag = ccdb.get("Flag")
         #weight = ccdb.get("weight")
         if weight <=10 and weight != 9:
             case.set_result("conclusion","low-weight")

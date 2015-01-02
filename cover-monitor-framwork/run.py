@@ -84,15 +84,15 @@ class Framwork(object):
         resume = self.settings.get("RESUME")
         self._load_component()
         self._load_strategy()
-        resume = True
         if resume :
             self.load()
+            for case  in self.input_data:print case.data.keys()
         else:
             self._run_component()
             self.dump()
         self._run_strategy()
         for case in self.input_data:
-            print case
+            print case.data
 
 
 def main(setting):

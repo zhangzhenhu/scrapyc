@@ -2,8 +2,8 @@ from .strategy import Strategy
 import operator 
 import os 
 
-class Statistic(Strategy):
-    """docstring for Statistic"""
+class Output(Strategy):
+    """docstring for Output"""
 
 
     def run(self,data):

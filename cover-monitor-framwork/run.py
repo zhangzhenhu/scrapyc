@@ -91,8 +91,10 @@ class Framwork(object):
             self._run_component()
             self.dump()
         self._run_strategy()
-        for case in self.input_data:
-            print case.data
+
+
+        #for case in self.input_data:
+         #   print case.data
 
 
 def main(setting):

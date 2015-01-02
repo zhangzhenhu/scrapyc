@@ -51,6 +51,7 @@ class Case(object):
             self._result[name]=value
             return True
         return False
+    
     @property   
     def result(self):
         return self._result

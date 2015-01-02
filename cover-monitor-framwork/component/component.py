@@ -39,7 +39,7 @@ class Component(_threading.Thread):
             data = {}
             for item in line[1:]:
                 name,value = item.split(":",1)
-                data[name]=value
+                data[name]=value.strip()
             if obj in self.map:
                 self.map[obj].set_data(self.name,data)
         f.close()

@@ -10,6 +10,8 @@ class Close(Strategy):
         
 
         for case in data:
+            if case.close :
+                continue
             case.set_result("conclusion","Unkown")
             case.close = True
 

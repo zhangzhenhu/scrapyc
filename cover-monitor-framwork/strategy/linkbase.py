@@ -8,19 +8,19 @@ class Linkbase(Strategy):
     def run(self,data):
 
         for case in data:
-            if ld.close:
+            if case.close:
                 continue
             ld = case.get_data("linkbase")
-
-            urlnew = ld.get("urlnew")
-            if urlnew == "CHK" :
-                case.set_result("conclusion","lbdiff")
-                case.close = True
-                continue
-            elif urlnew == "GET":
-                case.set_result("conclusion","uncrawl")
-                case.close = True
-                continue
+            if ld:
+                urlnew = ld.get("urlnew")
+                if urlnew == "CHK" :
+                    case.set_result("conclusion","lbdiff")
+                    case.close = True
+                    continue
+                elif urlnew == "GET":
+                    case.set_result("conclusion","uncrawl")
+                    case.close = True
+                    continue
 
             l2patch = case.get_data("l2patch")
             if l2patch and l2patch["del_reason"] != "-" :

@@ -32,6 +32,7 @@ class Report(Strategy):
         err = os.path.join(jobdir,"email.err")
 
         cmd = "cat %s | %s  -s %s -u %s   -f %s %s  >%s  2>%s "%(rf,email_bin,email_svr,email_title,email_from,email_to,log,err)
+        print "[Strategy:%s] cmd:%s"%(self.name,cmd )
         os.system(cmd)
 
 

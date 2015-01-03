@@ -132,7 +132,7 @@ if __name__ == '__main__':
     if options.jobdir:
         setting.set("JOBDIR",options.jobdir)
     if options.email:
-        setting.set("EMAIL",options.email)
+        setting.set("REPORT_EMAIL_TO",options.email)
 
 
     main(setting)

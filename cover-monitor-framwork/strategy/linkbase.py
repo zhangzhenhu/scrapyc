@@ -4,7 +4,7 @@ from .strategy import Strategy
 
 class Linkbase(Strategy):
     """docstring for Linkbase"""
-
+    name = "linkbase"
 
     def run(self,data):
 

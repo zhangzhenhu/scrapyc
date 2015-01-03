@@ -27,72 +27,33 @@
 			</tr>
 		</thead>
 		<tbody>
-			<%
-					ALL_TYPE=[]
-					for item in sorted(TDATA["stat"].iteritems(), key=lambda d:d[1]["percent"], reverse = True ):
-						ALL_TYPE.append(item[0])
-					for type in PDATA["stat"].keys():
-						if  type not in  ALL_TYPE:
-							ALL_TYPE.append(type);
-				%>
-			%for  key in ALL_TYPE:
-			<%
-					if  key in INVALID_TYPE : continue
-					tcount=TDATA["stat"][key]["count"] if key in  TDATA["stat"] else 0
-					tpercent=TDATA["stat"][key]["percent"] if key in  TDATA["stat"] else 0.00   
-					pcount=PDATA["stat"][key]["count"] if key in  PDATA["stat"] else 0   
-					ppercent=PDATA["stat"][key]["percent"] if key in  PDATA["stat"] else 0
-					change=tpercent-ppercent
-					if key in INDEX_TYPE:
-						_class="nocase"
-					elif key in  SPIDER_TYPE:
-						_class="image"
-					else:
-						_class="spider"
-					if change >
-			0 : 
-						_class +=" bad"
-					elif change
-			< 0 :
-						_class +=" good"
-				%>
 
-				<tr  align="center" class="${_class}" style='color:${"red" if change >
-					0 else "green" }' >
-					<td>${key}</td>
-					<td>${tcount}</td>
-					<td>${"%.2f"%tpercent}%</td>
-					<td>${pcount}</td>
-					<td>${"%.2f"%ppercent}%</td>
-
-					<td>${"%.2f"%change}%</td>
+			%for  name,value in STATS.stats_ok.items():
+				<tr  align="center" class="nocase" >
+					<td>${name}</td>
+					<td>${value}</td>
+					<td>${"%.2f"%value/float(STATS.count_ok+STATS.count_valid)}%</td>
 				</tr>
-				%endfor
-
-
-							
-					% for  key in INVALID_TYPE:
-				<%
-						tcount=TDATA["stat"][key]["count"] if key in  TDATA["stat"] else 0
-						tpercent=TDATA["stat"][key]["percent"] if key in  TDATA["stat"] else 0.00   
-						pcount=PDATA["stat"][key]["count"] if key in  PDATA["stat"] else 0   
-						ppercent=PDATA["stat"][key]["percent"] if key in  PDATA["stat"] else 0.00
-
-					%>
-				<tr  align="center" class="invalid">
-					<td>${key}</td>
-					<td>${tcount}</td>
-					<td>NULL</td>
-					<td>${pcount}</td>
-					<td>NULL</td>
-
-					<td>NULL</td>
+			%endfor
+			
+			%for  name,value in STATS.stats_valid.items():
+				<tr  align="center" class="bad" >
+					<td>${name}</td>
+					<td>${value}</td>
+					<td>${"%.2f"%value/float(STATS.count_ok+STATS.count_valid)}%</td>
 				</tr>
-				%endfor
+			%endfor
+			%for  name,value in STATS.stats_invalid.items():
+				<tr  align="center" class="invalid" >
+					<td>${name}</td>
+					<td>${value}</td>
+					<td>null</td>
+				</tr>
+			%endfor
+
 			</tbody>
 
-			<tr>
-				<td colspan="6" bgcolor="white">注:红色表示case占比较上周增加，绿色表示case占比较上周减少；</tr>
+
 			</table>
 			<p>
 

@@ -18,6 +18,7 @@ class Framwork(object):
         self.work_queue = {}
         self.components={}
         self.strategies = []
+        self.strategies_dict = {}
         self.input_data= {}
         self.base_data = {}
         self.output_data = {}
@@ -43,7 +44,9 @@ class Framwork(object):
         coms = self.settings.get("STRATEGIES")
         for com in coms:
             comcls = load_object(com)
-            self.strategies.append(comcls(self.settings))
+            como = comcls(self.settings)
+            self.strategies.append(como)
+            self.strategies_dict[como.name] = como
 
     def _run_strategy(self):
         for strategy in self.strategies:
@@ -115,14 +118,22 @@ if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("-i", "--file", dest="file",
                       help="input FILE", metavar="FILE")
-    parser.add_option("-q", "--quiet",
-                      action="store_false", dest="verbose", default=True,
-                      help="don't print status messages to stdout")
-
+    parser.add_option("-d", "--dir",
+                      , dest="jobdir", 
+                      help="The jobdir")
+    parser.add_option("-e", "--email",
+                      , dest="email", 
+                      help="The emails that send report to")
     (options, args) = parser.parse_args()
     setting = Settings()
     setting.setmodule("settings")
-    setting.set("INPUT_FILE",options.file)
+    if options.file:
+        setting.set("INPUT_FILE",options.file)
+    if options.jobdir:
+        setting.set("JOBDIR",options.jobdir)
+    if options.email:
+        setting.set("EMAIL",options.email)
+
 
     main(setting)
 

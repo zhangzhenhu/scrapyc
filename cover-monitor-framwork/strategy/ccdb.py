@@ -63,4 +63,5 @@ class CCDB(Strategy):
             case.set_result("conclusion","noProblem")
             case.set_result("reason","wise=%d&&weight=%d&&flag=%s"%(wise,weight,flag))
             case.close = True
+            case.ok = True
             return

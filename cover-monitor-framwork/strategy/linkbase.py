@@ -26,7 +26,7 @@ class Linkbase(Strategy):
                     continue
                 elif urlnew == "GET":
                     url_level  = ld.get("url_level")
-                    if url_level = "1":
+                    if url_level == "1":
                         case.set_result("conclusion","lowLevel")
                         case.set_result("reason","url_level=%s"%url_level)
                     else:

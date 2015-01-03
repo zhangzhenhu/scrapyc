@@ -44,7 +44,7 @@ class Framwork(object):
         coms = self.settings.get("STRATEGIES")
         for com in coms:
             comcls = load_object(com)
-            como = comcls(self.settings)
+            como = comcls(self.settings,self)
             self.strategies.append(como)
             self.strategies_dict[como.name] = como
 

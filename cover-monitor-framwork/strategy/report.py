@@ -2,7 +2,7 @@ from mako import template
 from .strategy import Strategy
 import operator 
 import os 
-
+import socket
 class Report(Strategy):
     """docstring for Report"""
 # -*- coding: utf-8 -*-
@@ -10,17 +10,17 @@ class Report(Strategy):
     def run(self,data):
         
         stats = self.fr.strategies_dict["statistic"]
+        jobdir = self.settings["JOBDIR"]
         htf = self.settings["REPORT_HTML_TEMPLATE"]
         f=open(htf,"r")
         data=f.read().decode("gbk")
         f.close()
-        
+        casef = "wget ftp://%s%s"(socket.gethostname(),os.path.join(jobdir,"result.xls"))
         t = template.Template(data, output_encoding="gbk")
 
-        jobdir = self.settings["JOBDIR"]
         rf =os.path.join(jobdir,"report.html")
         f = open(rf,'w')
-        f.write(t.render(STATS = stats))
+        f.write(t.render(STATS = stats,FTP=casef))
         f.close()
         
         email_bin = self.settings['REPORT_EMAIL_BIN']

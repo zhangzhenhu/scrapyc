@@ -49,8 +49,9 @@ class Statistic(Strategy):
             f.write("%s\t%d\tnull\n"%(key,value))
 
 
-        f.write("OK\t%d\t%.3f\n"%(self.count_ok,self.count_ok/float(self.count_valid+self.count_ok)))
-        f.write("ValidCase\t%d\t%.3f\n"%(self.count_valid,self.count_valid/float(self.count_valid+self.count_ok)))
+        f.write("Ok\t%d\t%.3f\n"%(self.count_ok,self.count_ok/float(self.count_valid+self.count_ok)))
+        f.write("Case\t%d\t%.3f\n"%(self.count_valid,self.count_valid/float(self.count_valid+self.count_ok)))
+        f.write("Valid\t%d\tnull\n"%(self.count_valid+self.count_ok))
         f.write("Toal\t%d\tnull\n"%(self.count_total,))
         f.close()
 

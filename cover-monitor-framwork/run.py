@@ -119,11 +119,14 @@ if __name__ == '__main__':
     parser.add_option("-i", "--file", dest="file",
                       help="input FILE", metavar="FILE")
     parser.add_option("-d", "--dir",
-                      , dest="jobdir", 
+                      dest="jobdir", 
                       help="The jobdir")
     parser.add_option("-e", "--email",
-                      , dest="email", 
+                      dest="email", 
                       help="The emails that send report to")
+    parser.add_option("-u", "--emailu",
+                      dest="emailu", 
+                      help="The email title")    
     (options, args) = parser.parse_args()
     setting = Settings()
     setting.setmodule("settings")
@@ -133,7 +136,8 @@ if __name__ == '__main__':
         setting.set("JOBDIR",options.jobdir)
     if options.email:
         setting.set("REPORT_EMAIL_TO",options.email)
-
+    if options.emailu:
+        setting.set("REPORT_EMAIL_TITLE",options.emailu)
 
     main(setting)
 

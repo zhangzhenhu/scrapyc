@@ -1,4 +1,4 @@
-from .mako import template
+from mako import template
 from .strategy import Strategy
 import operator 
 import os 
@@ -10,15 +10,19 @@ class Report(Strategy):
     def run(self,data):
         
         stats = self.fr.strategies_dict["statistic"]
-        template = self.settings["REPORT_HTML_TEMPLATE"]
-        f=open(tmplate,"r")
+        htf = self.settings["REPORT_HTML_TEMPLATE"]
+        f=open(htf,"r")
         data=f.read().decode("gbk")
+        f.close()
+        
         t = template.Template(data, output_encoding="gbk")
+
         jobdir = self.settings["JOBDIR"]
         rf =os.path.join(jobdir,"report.html")
         f = open(rf,'w')
         f.write(t.render(STATS = stats))
         f.close()
+        
         email_bin = self.settings['REPORT_EMAIL_BIN']
         email_svr = self.settings['REPORT_EMAIL_SVR']
         email_title = self.settings['REPORT_EMAIL_TITLE']

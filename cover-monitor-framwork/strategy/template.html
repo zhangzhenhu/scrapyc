@@ -3,7 +3,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 	<style type="text/css">
 	
-	.image {background-color:#FFFFCC}
+	.total {background-color:#FFFFCC}
 	.spider {background-color:#CCFFFF}
 	.invalid {background-color:#EEEEEE}
 	.nocase {background-color:#66CC99}
@@ -50,7 +50,26 @@
 					<td>null</td>
 				</tr>
 			%endfor
-
+				<tr  align="center" class="nocase" >
+					<td>覆盖率</td>
+					<td>${STATS.count_ok}</td>
+					<td>${"%.2f"%(STATS.count_ok/float(STATS.count_valid+STATS.count_ok))}</td>
+				</tr>
+				<tr  align="center" class="bad" >
+					<td>case率</td>
+					<td>${STATS.count_valid}</td>
+					<td>${"%.2f"%(STATS.count_valid/float(STATS.count_valid+STATS.count_ok))}</td>
+				</tr>
+				<tr  align="center" class="total" >
+					<td>有效样本</td>
+					<td>${STATS.count_valid+STATS.count_ok}</td>
+					<td>null</td>
+				</tr>
+				<tr  align="center" class="total" >
+					<td>样本总数</td>
+					<td>${STATS.count_total}</td>
+					<td>null</td>
+				</tr>
 			</tbody>
 
 

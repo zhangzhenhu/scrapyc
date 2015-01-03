@@ -20,6 +20,7 @@ STRATEGIES = [
     "strategy.close.Close",
     "strategy.output.Output",
     "strategy.statistic.Statistic",
+    "strategy.report.Report",
     # "strategy.weight":None,
     # "strategy.valid":None,
     

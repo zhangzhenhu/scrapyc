@@ -1,4 +1,4 @@
-from ..mako.template import Template
+from .mako import template
 from .strategy import Strategy
 import operator 
 import os 
@@ -13,7 +13,7 @@ class Report(Strategy):
         template = self.settings["REPORT_HTML_TEMPLATE"]
         f=open(tmplate,"r")
         data=f.read().decode("gbk")
-        t = Template(data, output_encoding="gbk")
+        t = template.Template(data, output_encoding="gbk")
         jobdir = self.settings["JOBDIR"]
         rf =os.path.join(jobdir,"report.html")
         f = open(rf,'w')

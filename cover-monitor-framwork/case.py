@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import threading
-from .utils.url import get_url_site
+from utils.url import get_url_site
 
 class Case(object):
     """docstring for Case"""
@@ -80,7 +80,7 @@ class Case(object):
 
     def set_result(self,name,value):
         if name in self._result_schema:
-            self._result[name]=value
+            self.result[name]=value
             return True
         return False
     

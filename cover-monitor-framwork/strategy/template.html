@@ -4,10 +4,10 @@
 	<style type="text/css">
 	
 	.total {background-color:#FFFFCC}
-	.spider {background-color:#CCFFFF}
+	.case {background-color:#CCFFFF}
 	.invalid {background-color:#EEEEEE}
 	.nocase {background-color:#66CC99}
-	.bad {background-color:red;}
+	.bad {color:red;}
 	.good {color:green;}
 </style>
 </head>
@@ -55,7 +55,7 @@
 					<td>${STATS.count_ok}</td>
 					<td>${"%.2f"%(STATS.count_ok*100/float(STATS.count_valid+STATS.count_ok))}%</td>
 				</tr>
-				<tr  align="center" class="bad" >
+				<tr  align="center" class="case" >
 					<td>caseÂÊ</td>
 					<td>${STATS.count_valid}</td>
 					<td>${"%.2f"%(STATS.count_valid*100/float(STATS.count_valid+STATS.count_ok))}%</td>

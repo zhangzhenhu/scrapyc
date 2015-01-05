@@ -29,7 +29,7 @@ class MongoDBPipeline(object):
                 err_msg += 'Missing %s of poem from %s\n' % (field, item['url'])
         if err_msg:
             raise DropItem(err_msg)
-        print item.__class__  
+        print item.__class__.__name__  
         # collection = self.db[]
         # collection.insert(dict(item))
         # log.msg('Item written to MongoDB database %s/%s' % (self.db, self.col),

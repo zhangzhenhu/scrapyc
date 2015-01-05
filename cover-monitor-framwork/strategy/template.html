@@ -7,7 +7,7 @@
 	.spider {background-color:#CCFFFF}
 	.invalid {background-color:#EEEEEE}
 	.nocase {background-color:#66CC99}
-	.bad {color:red;}
+	.bad {background-color:red;}
 	.good {color:green;}
 </style>
 </head>
@@ -53,12 +53,12 @@
 				<tr  align="center" class="nocase" >
 					<td>覆盖率</td>
 					<td>${STATS.count_ok}</td>
-					<td>${"%.2f"%(STATS.count_ok*100/float(STATS.count_valid+STATS.count_ok))}</td>
+					<td>${"%.2f"%(STATS.count_ok*100/float(STATS.count_valid+STATS.count_ok))}%</td>
 				</tr>
 				<tr  align="center" class="bad" >
 					<td>case率</td>
 					<td>${STATS.count_valid}</td>
-					<td>${"%.2f"%(STATS.count_valid*100/float(STATS.count_valid+STATS.count_ok))}</td>
+					<td>${"%.2f"%(STATS.count_valid*100/float(STATS.count_valid+STATS.count_ok))}%</td>
 				</tr>
 				<tr  align="center" class="total" >
 					<td>有效样本</td>

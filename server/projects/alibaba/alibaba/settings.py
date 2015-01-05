@@ -40,5 +40,5 @@ CONCURRENT_REQUESTS_PER_IP=1
 #SQLALCHEMY_CHARSET = "utf8"
 #TWISTAR_DB_URL="MySQLdb://wangpan:wangpan@localhost/wangpan?charset=utf8"
 MONGODB_SERVER = "localhost"
-MONGODB_PORT = "27017"
+MONGODB_PORT = 27017
 MONGODB_DB = "alibaba"

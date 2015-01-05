@@ -21,6 +21,10 @@ class MongoDBPipeline(object):
         #self.col = settings['MONGODB_COLLECTION']
         connection = pymongo.Connection(self.server, self.port)
         self.db = connection[self.db]
+        self.tables = {"ShopItem":"shop",
+            'GoodsItem':'goods',
+            "IndexItem":'index',
+        }
  
     def process_item(self, item, spider):
         err_msg = ''
@@ -29,9 +33,9 @@ class MongoDBPipeline(object):
                 err_msg += 'Missing %s of poem from %s\n' % (field, item['url'])
         if err_msg:
             raise DropItem(err_msg)
-        print item.__class__.__name__  
-        # collection = self.db[]
-        # collection.insert(dict(item))
-        # log.msg('Item written to MongoDB database %s/%s' % (self.db, self.col),
+        
+        collection = self.db[self.tables[ item.__class__.__name__ ]]
+        collection.insert(dict(item))
+        log.msg('Item written to MongoDB database %s/%s' % (self.db, self.col),
         #         level=log.DEBUG, spider=spider)
         return item

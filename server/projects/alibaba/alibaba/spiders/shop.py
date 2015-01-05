@@ -58,6 +58,9 @@ class ShopSpider(scrapy.Spider):
                 yield ShopItem(url="%s://%s/"%(scheme,netloc),insert_time=str(datetime.datetime.now()))
             elif netloc == "detail.1688.com":
                 yield GoodsItem(url=href,insert_time=str(datetime.datetime.now()))
+            elif netloc == "go.1688.com":
+                yield IndexItem(url=href,insert_time=str(datetime.datetime.now()))
+
             else:
                 print href
 

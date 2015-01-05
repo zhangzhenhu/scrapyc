@@ -121,6 +121,9 @@ if __name__ == '__main__':
     parser.add_option("-d", "--dir",
                       dest="jobdir", 
                       help="The jobdir")
+    parser.add_option("-r", "--resume",action="store_true",default=False, 
+                      dest="resume", 
+                      help="Resume task")
     parser.add_option("-e", "--email",
                       dest="email", 
                       help="The emails that send report to")
@@ -134,6 +137,9 @@ if __name__ == '__main__':
         setting.set("INPUT_FILE",options.file)
     if options.jobdir:
         setting.set("JOBDIR",options.jobdir)
+    if options.resume:
+        setting.set("RESUME",options.resume) 
+           
     if options.email:
         setting.set("REPORT_EMAIL_TO",options.email)
     if options.emailu:

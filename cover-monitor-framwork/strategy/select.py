@@ -33,10 +33,14 @@ class Select(Strategy):
             if not level_select:
                 continue
             _select = self.stat_level(level_select)
-            if _all /_select >30:
+            if _select == 0 or _all /_select >30:
                 case.set_result("conclusion","lowFlow")
                 case.set_result("reason","can't crawl dealt with in 30 days")
-                case.set_result("basis","level_all(high level):%d / level_select(high level):%d = %d"%(_all,_level,_all/_level))
+                if _select >0:
+                    case.set_result("basis","level_all(high level):%d / level_select(high level):%d = %d"%(_all,_level,_all/_level))
+                else:
+                    case.set_result("basis","level_all(high level):%d && level_select(high level):0 %(_all))
+
                 case.close = True
                 continue
             

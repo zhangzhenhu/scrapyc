@@ -20,7 +20,7 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, lik
 ITEM_PIPELINES = {
     #'scrapyc.server.utils.spider.sqlalchemypipelines.AlchemyPipeline':30,
     #'scrapyc.server.utils.spider.twistarpiplines.TwistarPipeline':30,
-    #'baidu.pipelines.BaiduPipeline': 30,
+    'alibaba.pipelines.MongoDBPipeline': 30,
 }
 EXTENSIONS = {
 'scrapyc.server.utils.spider.logstats.LogStats':200,

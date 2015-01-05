@@ -10,7 +10,7 @@ import json
 from scrapy import log
 from alibaba.items import ShopItem,GoodsItem,IndexItem
 #from scrapy.conf import settings
-
+from scrapy.utils.url import parse_url
 
 class ShopSpider(scrapy.Spider):
     name = "shop"
@@ -49,7 +49,17 @@ class ShopSpider(scrapy.Spider):
         self.log('[parse_jinpai] %d %s'%(response.status,response.url),level=scrapy.log.INFO)
         div = response.xpath('//*[@id="box_doc"]/div[1]/div/div[1]')
         for href in div.xpath("//a/@href").extract():
-            print href
+            if not href.startswith("http://"):
+                continue
+            scheme, netloc, path, params, query, fragment = parse_url(href)
+
+            if netloc.startswith("shop") or path.endswith("creditdetail.htm"):
+
+                yield ShopItem(url="%s://%s/"%(scheme,netloc),insert_time=str(datetime.datetime.now()))
+            elif netloc == "detail.1688.com":
+                yield GoodsItem(url=href,insert_time=str(datetime.datetime.now()))
+            else:
+                print href
 
         pass
 

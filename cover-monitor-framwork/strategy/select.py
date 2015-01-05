@@ -39,7 +39,7 @@ class Select(Strategy):
                 if _select >0:
                     case.set_result("basis","level_all(high level):%d / level_select(high level):%d = %d"%(_all,_level,_all/_level))
                 else:
-                    case.set_result("basis","level_all(high level):%d && level_select(high level):0 %(_all))
+                    case.set_result("basis","level_all(high level):%d && level_select(high level):0" %(_all))
 
                 case.close = True
                 continue

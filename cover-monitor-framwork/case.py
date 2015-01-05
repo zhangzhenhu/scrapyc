@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import threading
-
+from .utils.url import get_url_site
 
 class Case(object):
     """docstring for Case"""
@@ -11,13 +11,21 @@ class Case(object):
         line=line.strip().split("\t")
         self.objurl = line[0]
         self.other=line[1:]
-        self._target = self.objurl
+        self.target = self.objurl
+
+
         self.data = {}
+        self.site_data = {}
+        self.domain_data = {}
         #self._lock = threading.RLock()
-        self._close = False
+        self.close = False
         self.valid = True
         self.ok = False
-        self._result = {
+        
+        self.site = get_url_site(self.objurl)
+
+        self.domain = ""
+        self.result = {
 
         }
         self._result_schema = [       
@@ -30,12 +38,8 @@ class Case(object):
         ]
 
 
-    @property
-    def target(self):
-        return self._target
-    @target.setter
-    def target(self, value):
-        self._target = value
+
+
     
     def get_data(self,name):
         if name in self.data:
@@ -49,22 +53,38 @@ class Case(object):
         self.data[name]=value
         #self._lock.release()
 
+    def get_site_data(self,name):
+        if name in self.site_data:
+            return self.site_data[name]
+        else:
+            return None
+
+    def set_site_data(self,name,value):
+        #if self._lock.acquire():
+        print "[case] add site data %s %s"%(name,self.objurl)
+        self.site_data[name]=value
+
+    def get_domain_data(self,name):
+        if name in self.domain_data:
+            return self.domain_data[name]
+        else:
+            return None
+
+    def set_domain_data(self,name,value):
+        #if self._lock.acquire():
+        print "[case] add domain data %s %s"%(name,self.objurl)
+        self.domain_data[name]=value
+
+
+
+
     def set_result(self,name,value):
         if name in self._result_schema:
             self._result[name]=value
             return True
         return False
     
-    @property   
-    def result(self):
-        return self._result
 
-    @property
-    def close(self):
-        return self._close
-    @close.setter
-    def close(self, value):
-        self._close = value
 
 
     def __str__(self):

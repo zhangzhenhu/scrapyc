@@ -26,7 +26,7 @@ class Component(_threading.Thread):
         self.out_file = os.path.join(workdir,"out")
         self.err_file = os.path.join(workdir,"err")
 
-    def _dump_case(self):
+    def dump_case(self):
         inf =  open(self.in_file,"w")
         for case in self.cases:
             inf.write(case.target+"\n")
@@ -57,8 +57,9 @@ class Component(_threading.Thread):
 
     def run(self):
         print "[Component:%s] start" %self.name
-        self._dump_case()
-        self._run_cmd()
+        if self.settings.getbool("RESUM") == False: 
+            self.dump_case()
+            self._run_cmd()
         self.parse(self.out_file)
         print "[Component:%s] finished" %self.name
 

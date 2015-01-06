@@ -31,7 +31,7 @@ CONCURRENT_REQUESTS=16
 CONCURRENT_REQUESTS_PER_DOMAIN=4
 CONCURRENT_REQUESTS_PER_IP = 3
 
-
+JOBDIR = "./data"
 
 
 #M_SQLDB_CONF={"host":"localhost","port":3306,"user":"wangpan","passwd":"wangpan","db":"wangpan","charset":'utf8'}

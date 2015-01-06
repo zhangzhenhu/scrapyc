@@ -12,6 +12,25 @@ from alibaba.items import ShopItem,GoodsItem,IndexItem
 #from scrapy.conf import settings
 from scrapy.utils.url import parse_url
 import urlparse
+
+
+def parse_query(query):
+    if not query:
+        return {}
+    ret = {}
+    for item in query.split("&")
+        item = item.strip()
+        if not item:
+            continue
+        item = item.split('=',1)
+        if len(item) == 2:
+            ret[item[0]] =item[1]
+        else:
+            ret[item[0]] = None
+    return ret
+
+
+
 class ShopSpider(scrapy.Spider):
     name = "shop"
     allowed_domains = [ ]
@@ -78,7 +97,7 @@ class ShopSpider(scrapy.Spider):
             scheme, netloc, path, params, query, fragment = parse_url(href)
             yield ShopItem(url="%s://%s/"%(scheme,netloc),insert_time=str(datetime.datetime.now()))
         scheme, netloc, path, params, query, fragment = parse_url(response.url)
-        qs = urlparse.parse_qs(query)
+        qs = parse_query(query)
         pageStart = int(qs.get('pageStart',1))
         pageCount = int(qs.get('pageCount',0))
         if not pageCount:

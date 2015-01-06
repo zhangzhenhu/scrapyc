@@ -18,7 +18,7 @@ def parse_query(query):
     if not query:
         return {}
     ret = {}
-    for item in query.split("&")
+    for item in query.split("&"):
         item = item.strip()
         if not item:
             continue

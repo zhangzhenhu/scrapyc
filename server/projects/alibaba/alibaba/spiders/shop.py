@@ -99,4 +99,4 @@ class ShopSpider(scrapy.Spider):
             if query:
                 query = query[1:]
 
-            yield scrapy.Request(urlparse.urlunparse( scheme, netloc, path, params,query),callback=self.parse_cateory)     
+            yield scrapy.Request(urlparse.urlunparse( (scheme, netloc, path, params,query),callback=self.parse_cateory)     

@@ -36,6 +36,6 @@ class MongoDBPipeline(object):
         
         collection = self.db[self.tables[ item.__class__.__name__ ]]
         collection.insert(dict(item))
-        log.msg('Item written to MongoDB database %s/%s' % (self.db, collection),
-                 level=log.INFO, spider=spider)
+        # log.msg('Item written to MongoDB database %s/%s' % (self.db, collection),
+        #          level=log.INFO, spider=spider)
         return item

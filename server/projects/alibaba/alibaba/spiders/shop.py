@@ -130,8 +130,6 @@ class ShopSpider(scrapy.Spider):
                     pageCount = int(pageCount[0])
                 except Exception, e:
                     pageCount = 1000
-        import pdb
-        pdb.set_trace()
         self.log('[parse_index] pageStart:%d pageCount:%d %s'%(pageStart,pageCount,response.url),level=scrapy.log.INFO)
         if pageStart < pageCount:
             qs['pageStart'] = str(pageStart+1)

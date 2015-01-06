@@ -13,6 +13,8 @@ from scrapy.conf import settings
 from scrapy.exceptions import DropItem
  
  
+ #db.shop.ensureIndex({"url":1},{"unique":true,"dropDups":true})
+
 class MongoDBPipeline(object):
     def __init__(self):
         self.server = settings['MONGODB_SERVER']

@@ -77,25 +77,43 @@ class ShopSpider(scrapy.Spider):
                 yield ShopItem(url="%s://%s/"%(scheme,netloc),insert_time=str(datetime.datetime.now()))
             elif netloc == "detail.1688.com":
                 yield GoodsItem(url=href,insert_time=str(datetime.datetime.now()))
-            elif netloc == "go.1688.com":
+            elif netloc == "go.1688.com" and 'supplier' in path:
                 yield IndexItem(url=href,insert_time=str(datetime.datetime.now()))
-                yield scrapy.Request(href,callback=self.parse_cateory)
-            else:
-                print href
+                yield scrapy.Request(href,callback=self.parse_index)
+
 
         pass
 
-    def parse_cateory(self,response):
-        self.log('[parse_cateory] %d %s'%(response.status,response.url),level=scrapy.log.INFO)
+    def parse_index(self,response):
+        self.log('[parse_index] %d %s'%(response.status,response.url),level=scrapy.log.INFO)
 
         if response.status != 200 :
             yield response.request 
             return   
+        #parse category
+        for href in response.xpath('//*[@id="hotwordpanel"]//li/@data-url').extract()+response.xpath('//*[@id="hotwordpanel"]//a/@href').extract():
+            if not href.startswith("http://"):
+                continue 
+            scheme, netloc, path, params, query, fragment = parse_url(href)
+            if netloc.startswith("shop") or path.endswith("creditdetail.htm"):
+                yield ShopItem(url="%s://%s/"%(scheme,netloc),insert_time=str(datetime.datetime.now()))
+            elif netloc == "detail.1688.com":
+                yield GoodsItem(url=href,insert_time=str(datetime.datetime.now()))
+            elif netloc == "go.1688.com" and 'supplier' in path:
+                yield IndexItem(url=href,insert_time=str(datetime.datetime.now()))
+                yield scrapy.Request(href,callback=self.parse_index)
+
+
+        #parse shop
         for href in response.xpath('//*[@id="listbody"]/div[@class="supplier-list"]/div[@class="supplier"]/div[@class="title p-margin"]//a/@href').extract():
             if not href.startswith("http://"):
                 continue 
             scheme, netloc, path, params, query, fragment = parse_url(href)
             yield ShopItem(url="%s://%s/"%(scheme,netloc),insert_time=str(datetime.datetime.now()))
+
+
+        
+        #next page    
         scheme, netloc, path, params, query, fragment = parse_url(response.url)
         qs = parse_query(query)
         pageStart = int(qs.get('pageStart',1))
@@ -118,4 +136,4 @@ class ShopSpider(scrapy.Spider):
             if query:
                 query = query[1:]
 
-            yield scrapy.Request(urlparse.urlunparse( (scheme, netloc, path, params,query,"")),callback=self.parse_cateory)
+            yield scrapy.Request(urlparse.urlunparse( (scheme, netloc, path, params,query,"")),callback=self.parse_index)

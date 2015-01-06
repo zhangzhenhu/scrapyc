@@ -55,6 +55,7 @@ class ShopSpider(scrapy.Spider):
 
         requests = []
         requests.append(scrapy.Request('http://jinpai.1688.com/',callback=self.parse_jinpai))
+        requests.append(scrapy.Request('http://go.1688.com/supplier/gold_supplier.htm',callback=self.parse_index))
         return requests
 
     def _sql_connect(self):
@@ -96,12 +97,14 @@ class ShopSpider(scrapy.Spider):
                 continue 
             scheme, netloc, path, params, query, fragment = parse_url(href)
             if netloc.startswith("shop") or path.endswith("creditdetail.htm"):
-                yield ShopItem(url="%s://%s/"%(scheme,netloc),insert_time=str(datetime.datetime.now()))
+                shop_url = "%s://%s/"%(scheme,netloc)
+                yield ShopItem(url=shop_url,insert_time=str(datetime.datetime.now()))
+                self.log('[parse_index] found shop %s'%(shop_url),level=scrapy.log.INFO)
             elif netloc == "detail.1688.com":
                 yield GoodsItem(url=href,insert_time=str(datetime.datetime.now()))
             elif netloc == "go.1688.com" and 'supplier' in path:
                 yield IndexItem(url=href,insert_time=str(datetime.datetime.now()))
-                yield scrapy.Request(href,callback=self.parse_index)
+                #yield scrapy.Request(href,callback=self.parse_index)
 
 
         #parse shop
@@ -109,7 +112,9 @@ class ShopSpider(scrapy.Spider):
             if not href.startswith("http://"):
                 continue 
             scheme, netloc, path, params, query, fragment = parse_url(href)
-            yield ShopItem(url="%s://%s/"%(scheme,netloc),insert_time=str(datetime.datetime.now()))
+            shop_url = "%s://%s/"%(scheme,netloc)
+            self.log('[parse_index] found shop %s from %s'%(shop_url,response.url),level=scrapy.log.INFO)
+            yield ShopItem(url=shop_url,insert_time=str(datetime.datetime.now()))
 
 
         

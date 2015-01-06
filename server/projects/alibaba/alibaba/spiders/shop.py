@@ -54,7 +54,7 @@ class ShopSpider(scrapy.Spider):
         # self._sql_connect()
 
         requests = []
-        requests.append(scrapy.Request('http://jinpai.1688.com/',callback=self.parse_jinpai))
+        #requests.append(scrapy.Request('http://jinpai.1688.com/',callback=self.parse_jinpai))
         requests.append(scrapy.Request('http://go.1688.com/supplier/gold_supplier.htm',callback=self.parse_index))
         return requests
 

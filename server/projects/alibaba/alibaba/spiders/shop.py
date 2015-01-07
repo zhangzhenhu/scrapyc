@@ -181,12 +181,12 @@ class ShopSpider(scrapy.Spider):
             return
         totalPage= response.xpath('//*[@id="content"]/div[1]/div[1]/div[1]/span/em/text()').extract()
         if len(totalPage ) == 1:
-            totalPage = int(totalPage[0])
+            totalPage = int(totalPage[0])/60 +1
         else:
             totalPage = 10
 
         
-        jsonrpc_url='http://s.1688.com/caigou/rpc_offer_search.jsonp?n=y&async=true&asyncCount=60&startIndex=0&qrwRedirectEnabled=false&offset=0&isWideScreen=false&controls=_template_%3Aofferresult%2CjicaiOfferResult.vm%7C_moduleConfig_%3AshopwindowResultConfig%7C_name_%3AofferResult&token=237250634'+'&callback=%(callback)s&beginPage=%(beginPage)d&%(totalPage)d&keywords=%(keywords)s&'%{"callback":self.jsonp_callback,"beginPage":1,"keywords":keywords,"totalPage":totalPage}
+        jsonrpc_url='http://s.1688.com/caigou/rpc_offer_search.jsonp?n=y&async=true&asyncCount=60&startIndex=0&qrwRedirectEnabled=false&offset=0&isWideScreen=false&controls=_template_%3Aofferresult%2CjicaiOfferResult.vm%7C_moduleConfig_%3AshopwindowResultConfig%7C_name_%3AofferResult&token=237250634'+'&callback=%(callback)s&beginPage=%(beginPage)d&totalPage=%(totalPage)d&keywords=%(keywords)s'%{"callback":self.jsonp_callback,"beginPage":1,"keywords":keywords,"totalPage":totalPage}
 
         
         yield scrapy.Request(jsonrpc_url)
@@ -196,6 +196,8 @@ class ShopSpider(scrapy.Spider):
     _regex = re.compile(r'\\(?![/u"])')
 
     def pase_jsonp(self,response):
+        import pdb
+        pdb.set_trace()
         fixedcontent = self._regex.sub(r"\\\\", response.body)
         rep = json.loads(fixedcontent[len(self.jsonp_callback):-1].decode("GBK"))
         if rep["hasError"] == True:

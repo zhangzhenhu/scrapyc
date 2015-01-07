@@ -212,8 +212,7 @@ class ShopSpider(scrapy.Spider):
             shop_url = href+"/"
             self.log('[pase_jsonp] found shop %s from %s'%(shop_url,response.url),level=scrapy.log.INFO)
             yield ShopItem(url=shop_url,insert_time=str(datetime.datetime.now()))
-        import pdb
-        pdb.set_trace()
+
         #nextpage
         scheme, netloc, path, params, query, fragment = parse_url(response.url)
         qs = parse_query(query)
@@ -224,7 +223,7 @@ class ShopSpider(scrapy.Spider):
             self.log("[pase_jsonp] %s"%e,level=scrapy.log.ERROR)
             return
        
-        if not beginPage >= totalPage:
+        if  beginPage >= totalPage:
             return
         qs['beginPage'] = beginPage + 1
         query = unparse_query(qs)

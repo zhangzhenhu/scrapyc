@@ -154,7 +154,7 @@ class ShopSpider(scrapy.Spider):
     def parse_caigou(self,response):
         ''' parse like this :http://s.1688.com/caigou/offer_search.htm?.....'''
         #parse category
-        for href in response.xpath('//a/@href').extract()
+        for href in response.xpath('//a/@href').extract():
             if not href.startswith("http://s.1688.com/caigou/offer_search.htm?"):
                 continue 
             yield IndexItem(url=href,insert_time=str(datetime.datetime.now()))

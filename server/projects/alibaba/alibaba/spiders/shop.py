@@ -177,7 +177,8 @@ class ShopSpider(scrapy.Spider):
         scheme, netloc, path, params, query, fragment = parse_url(response.url)
         qs = parse_query(query)
         keywords = qs.get('keywords')
-        totalPage= int(response.xpath('//*[@id="content"]/div[1]/div[1]/div[1]/span/em/text()'))
+        
+        totalPage= int(response.xpath('//*[@id="content"]/div[1]/div[1]/div[1]/span/em/text()')[0])
         if not keywords:
             return
         

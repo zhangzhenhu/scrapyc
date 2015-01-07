@@ -186,7 +186,7 @@ class ShopSpider(scrapy.Spider):
             totalPage = 10
 
         
-        jsonrpc_url='http://s.1688.com/caigou/rpc_offer_search.jsonp?keywords=%(keywords)s&n=y&async=true&asyncCount=60&startIndex=0&qrwRedirectEnabled=false&offset=0&isWideScreen=false&controls=_template_%3Aofferresult%2CjicaiOfferResult.vm%7C_moduleConfig_%3AshopwindowResultConfig%7C_name_%3AofferResult&token=237250634&beginPage=3&callback=%(callback)s&beginPage=%(beginPage)d&%(totalPage)d'%{"callback":self.jsonp_callback,"beginPage":page,"keywords":keywords,"totalPage":totalPage}
+        jsonrpc_url='http://s.1688.com/caigou/rpc_offer_search.jsonp?keywords=%(keywords)s&n=y&async=true&asyncCount=60&startIndex=0&qrwRedirectEnabled=false&offset=0&isWideScreen=false&controls=_template_%3Aofferresult%2CjicaiOfferResult.vm%7C_moduleConfig_%3AshopwindowResultConfig%7C_name_%3AofferResult&token=237250634&beginPage=3&callback=%(callback)s&beginPage=%(beginPage)d&%(totalPage)d'%{"callback":self.jsonp_callback,"beginPage":1,"keywords":keywords,"totalPage":totalPage}
 
         
         yield scrapy.Request(jsonrpc_url)

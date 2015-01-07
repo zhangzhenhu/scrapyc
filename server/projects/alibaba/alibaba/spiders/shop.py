@@ -67,7 +67,7 @@ class ShopSpider(scrapy.Spider):
     def start_requests(self):
 
         requests = []
-        #requests.append(scrapy.Request('http://www.1688.com/?src=desktop',callback=self.parse_home))
+        requests.append(scrapy.Request('http://www.1688.com/?src=desktop',callback=self.parse_home))
         #requests.append(scrapy.Request('http://jinpai.1688.com/',callback=self.parse_jinpai))
         #requests.append(scrapy.Request('http://go.1688.com/supplier/gold_supplier.htm',callback=self.parse_index))
         #requests.append(scrapy.Request('http://s.1688.com/caigou/offer_search.htm?keywords=%C0%AD%C1%B4&n=y&from=industrySearch&industryFlag=jicai'))

@@ -177,10 +177,14 @@ class ShopSpider(scrapy.Spider):
         scheme, netloc, path, params, query, fragment = parse_url(response.url)
         qs = parse_query(query)
         keywords = qs.get('keywords')
-        
-        totalPage= int(response.xpath('//*[@id="content"]/div[1]/div[1]/div[1]/span/em/text()')[0])
         if not keywords:
             return
+        totalPage= response.xpath('//*[@id="content"]/div[1]/div[1]/div[1]/span/em/text()').extract()
+        if len(totalPage ) == 1:
+            totalPage = int(totalPage[0])
+        else:
+            totalPage = 10
+
         
         jsonrpc_url='http://s.1688.com/caigou/rpc_offer_search.jsonp?keywords=%(keywords)s&n=y&async=true&asyncCount=60&startIndex=0&qrwRedirectEnabled=false&offset=0&isWideScreen=false&controls=_template_%3Aofferresult%2CjicaiOfferResult.vm%7C_moduleConfig_%3AshopwindowResultConfig%7C_name_%3AofferResult&token=237250634&beginPage=3&callback=%(callback)s&beginPage=%(beginPage)d&%(totalPage)d'%{"callback":self.jsonp_callback,"beginPage":page,"keywords":keywords,"totalPage":totalPage}
 

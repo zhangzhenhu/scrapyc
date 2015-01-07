@@ -169,9 +169,9 @@ class ShopSpider(scrapy.Spider):
             yield scrapy.Request(urlparse.urlunparse( (scheme, netloc, path, params,query,"")))
 
 
-    def _get_shop_byxpath(self,xobj,xpath):
+    def _get_shop_byxpath(self,response,xpath):
          #parse shop
-        for href in xobj.xpath(xpath).extract():
+        for href in response.xpath(xpath).extract():
             if not href.startswith("http://"):
                 continue 
             shop_url = href+"/"

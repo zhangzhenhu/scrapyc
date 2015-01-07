@@ -53,12 +53,12 @@ class ShopSpider(scrapy.Spider):
         self.m_rules=[
             (re.compile('^http://jinpai\.1688\.com/'),self.parse_jinpai),
             (re.compile('^http://go\.1688\.com/supplier/'),self.parse_index),
-            (re.compile('^http://s.1688.com/caigou/offer_search.htm'),self.parse_caigou),
-            (re.compile('^http://s.1688.com/caigou/rpc_offer_search.jsonp'),self.parse_caigou_jsonp),
-            (re.compile('^http://s.1688.com/selloffer/offer_search.htm'),self.parse_selloffer),
-            (re.compile('^http://s.1688.com/selloffer/rpc_offer_search.jsonp'),self.parse_selloffer_jsonp),
+            (re.compile('^http://s\.1688\.com/caigou/offer_search\.htm'),self.parse_caigou),
+            (re.compile('^http://s\.1688\.com/caigou/rpc_offer_search\.jsonp'),self.parse_caigou_jsonp),
+            (re.compile('^http://s\.1688\.com/selloffer/offer_search\.htm'),self.parse_selloffer),
+            (re.compile('^http://s\.1688\.com/selloffer/rpc_offer_search\.jsonp'),self.parse_selloffer_jsonp),
             #(re.compile('^http://s.1688.com/selloffer/-'),self._parse_ziyuan_list),
-            (re.compile('^http://s.1688.com/company/-'),self.parse_company),
+            (re.compile('^http://s\.1688\.com/company/-'),self.parse_company),
              
             ]
 
@@ -76,6 +76,8 @@ class ShopSpider(scrapy.Spider):
         return requests
 
     def filter(self,url):
+        if "login.1688.com" in url:
+            return False
         for r in self.m_rules:
             if r[0].match(url):
                 return True

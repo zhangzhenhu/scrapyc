@@ -255,7 +255,7 @@ class ShopSpider(scrapy.Spider):
             if not href.startswith("http://s.1688.com/selloffer/offer_search.htm?"):
                 continue 
             yield IndexItem(url=href,insert_time=str(datetime.datetime.now()))
-            #yield scrapy.Request(href)
+            yield scrapy.Request(href)
 
         #parse shop
         for item in self._get_shop_byxpath(response,'//li[@class="sm-offerShopwindow"]//a[@class="sm-previewCompany sw-mod-previewCompanyInfo"]/@href'):

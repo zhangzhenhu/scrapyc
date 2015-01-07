@@ -77,7 +77,8 @@ class ShopSpider(scrapy.Spider):
             return        
         for rule in self.m_rules:
             if rule[0].match(response.url):
-                return rule[1](response)
+                for item in  rule[1](response):
+                    yield item
                 #print rule
     
     def parse_jinpai(self, response):

@@ -60,6 +60,16 @@ class ShopSpider(scrapy.Spider):
             ]
 
 
+
+    def start_requests(self):
+
+        requests = []
+        #requests.append(scrapy.Request('http://jinpai.1688.com/',callback=self.parse_jinpai))
+        #requests.append(scrapy.Request('http://go.1688.com/supplier/gold_supplier.htm',callback=self.parse_index))
+        requests.append(scrapy.Request('http://s.1688.com/caigou/offer_search.htm?keywords=%C0%AD%C1%B4&n=y&from=industrySearch&industryFlag=jicai'))
+        return requests
+
+
     def parse(self,response):
         self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         if response.status != 200 :
@@ -70,23 +80,6 @@ class ShopSpider(scrapy.Spider):
                 return rule[1](response)
                 #print rule
     
-    def start_requests(self):
-
-        
-        # M_SQLDB_CONF = self.settings.get("M_SQLDB_CONF")
-        # assert M_SQLDB_CONF, "Please set SQL DATABASE conf in alibaba/settings.py ! eg:M_SQLDB_CONF={'host':'localhost','port':3306,'user':'wangpan','passwd':'wangpan','db':'wangpan'}"
-        
-        # self._msql_config=M_SQLDB_CONF
-        # self._sql_connect()
-
-        requests = []
-        #requests.append(scrapy.Request('http://jinpai.1688.com/',callback=self.parse_jinpai))
-        requests.append(scrapy.Request('http://go.1688.com/supplier/gold_supplier.htm',callback=self.parse_index))
-        return requests
-
-    def _sql_connect(self):
-        self.sql_conn=MySQLdb.connect(**self._msql_config)
-
     def parse_jinpai(self, response):
 
         div = response.xpath('//*[@id="box_doc"]/div[1]/div/div[1]')

@@ -54,8 +54,10 @@ class ShopSpider(scrapy.Spider):
             (re.compile('^http://jinpai\.1688\.com/'),self.parse_jinpai),
             (re.compile('^http://go\.1688\.com/supplier/'),self.parse_index),
             (re.compile('^http://s.1688.com/caigou/offer_search.htm'),self.parse_caigou),
-            #(re.compile('^http://s.1688.com/selloffer/offer_search.htm'),self._parse_ziyuan_list),
-            (re.compile('^http://s.1688.com/caigou/rpc_offer_search.jsonp'),self.pase_jsonp),
+            (re.compile('^http://s.1688.com/caigou/rpc_offer_search.jsonp'),self.parse_caigou_jsonp),
+            (re.compile('^http://s.1688.com/selloffer/offer_search.htm'),self.parse_selloffer),
+            (re.compile('^http://s.1688.com/selloffer/rpc_offer_search.jsonp'),self.parse_selloffer_jsonp),
+            #(re.compile('^http://s.1688.com/selloffer/-'),self._parse_ziyuan_list),
              
             ]
 
@@ -64,11 +66,18 @@ class ShopSpider(scrapy.Spider):
     def start_requests(self):
 
         requests = []
+        #requests.append(scrapy.Request('http://www.1688.com/?src=desktop',callback=self.parse_home))
         #requests.append(scrapy.Request('http://jinpai.1688.com/',callback=self.parse_jinpai))
         #requests.append(scrapy.Request('http://go.1688.com/supplier/gold_supplier.htm',callback=self.parse_index))
-        requests.append(scrapy.Request('http://s.1688.com/caigou/offer_search.htm?keywords=%C0%AD%C1%B4&n=y&from=industrySearch&industryFlag=jicai'))
+        #requests.append(scrapy.Request('http://s.1688.com/caigou/offer_search.htm?keywords=%C0%AD%C1%B4&n=y&from=industrySearch&industryFlag=jicai'))
+        requests.append(scrapy.Request('http://s.1688.com/selloffer/offer_search.htm?descendOrder=true&onlineStatus=yes&isOnlyAlipay=true&sortType=booked&uniqfield=userid&keywords=%BD%BA%D5%B3%BC%C1&categoryId=1031620&n=y&filt=y#filter_top'))
         return requests
 
+    def filter(self,url):
+        for r in self.m_rules:
+            if r[0].match(url):
+                return True
+        return False
 
     def parse(self,response):
         self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
@@ -78,9 +87,19 @@ class ShopSpider(scrapy.Spider):
         for rule in self.m_rules:
             if rule[0].match(response.url):
                 for item in  rule[1](response):
-                    yield item
+                    if isinstance(item,scrapy.Request):
+                        if self.filter(item.url):
+                            yield item
+                    else:    
+                        yield item
                 #print rule
-    
+    def parse_home(self,response):
+        
+        for href in response.xpath("//a/@href").extract():
+            if not href.startswith("http://"):
+                continue
+            yield scrapy.Request(href)
+
     def parse_jinpai(self, response):
 
         div = response.xpath('//*[@id="box_doc"]/div[1]/div/div[1]')
@@ -150,7 +169,15 @@ class ShopSpider(scrapy.Spider):
             yield scrapy.Request(urlparse.urlunparse( (scheme, netloc, path, params,query,"")))
 
 
-
+    def _get_shop_byxpath(self,xobj,xpath):
+         #parse shop
+        for href in xobj.xpath(xpath).extract():
+            if not href.startswith("http://"):
+                continue 
+            shop_url = href+"/"
+            self.log('[parse_index] found shop %s from %s'%(shop_url,response.url),level=scrapy.log.INFO)
+            yield ShopItem(url=shop_url,insert_time=str(datetime.datetime.now()))
+       
     
     def parse_caigou(self,response):
         ''' parse like this :http://s.1688.com/caigou/offer_search.htm?.....'''
@@ -161,18 +188,9 @@ class ShopSpider(scrapy.Spider):
             yield IndexItem(url=href,insert_time=str(datetime.datetime.now()))
             #yield scrapy.Request(href)
 
+        for item in self._get_shop_byxpath(response,'//li[@class="sm-offerItem"]/div[@class="sm-offerItem-alitalk"]//a[2]/@href'):
+            yield item
 
-        #parse shop
-        for href in response.xpath('//li[@class="sm-offerItem"]/div[@class="sm-offerItem-alitalk"]//a[2]/@href').extract():
-            if not href.startswith("http://"):
-                continue 
-            
-            shop_url = href+"/"
-            self.log('[parse_index] found shop %s from %s'%(shop_url,response.url),level=scrapy.log.INFO)
-            yield ShopItem(url=shop_url,insert_time=str(datetime.datetime.now()))
-
-
-        
         #next page    
         scheme, netloc, path, params, query, fragment = parse_url(response.url)
         qs = parse_query(query)
@@ -195,7 +213,7 @@ class ShopSpider(scrapy.Spider):
     jsonp_callback = 'jQuery17207419333776924759_1420532315652'
     _regex = re.compile(r'\\(?![/u"])')
 
-    def pase_jsonp(self,response):
+    def parse_caigou_jsonp(self,response):
 
         fixedcontent = self._regex.sub(r"\\\\", response.body)
         rep = json.loads(fixedcontent[len(self.jsonp_callback)+1:-1].decode("GBK"))
@@ -229,4 +247,70 @@ class ShopSpider(scrapy.Spider):
         query = unparse_query(qs)
         yield scrapy.Request(urlparse.urlunparse( (scheme, netloc, path, params,query,fragment)))
         
+
+    def parse_selloffer(self,response):
+        ''' parse like this :http://s.1688.com/selloffer/offer_search.htm?.....'''
+        #parse category
+        for href in response.xpath('//a/@href').extract():
+            if not href.startswith("http://s.1688.com/selloffer/offer_search.htm?"):
+                continue 
+            yield IndexItem(url=href,insert_time=str(datetime.datetime.now()))
+            #yield scrapy.Request(href)
+
+        #parse shop
+        for item in self._get_shop_byxpath(response,'//li[@class="sm-offerShopwindow"]//a[@class="sm-previewCompany sw-mod-previewCompanyInfo"]/@href'):
+            yield item
         
+        #next page    
+        scheme, netloc, path, params, query, fragment = parse_url(response.url)
+        qs = parse_query(query)
+        keywords = qs.get('keywords')
+        if not keywords:
+            return
+        totalPage= response.xpath('//li[@id="breadCrumbText"]/em/text()').extract()
+        if len(totalPage ) == 1:
+            totalPage = int(totalPage[0])/60 +1
+        else:
+            totalPage = 50
+
+        
+        jsonrpc_url='http://s.1688.com/selloffer/rpc_offer_search.jsonp?descendOrder=true&onlineStatus=yes&isOnlyAlipay=true&sortType=booked&uniqfield=userid&n=y&filt=y&from=marketSearch&async=true&asyncCount=60&startIndex=0&qrwRedirectEnabled=false&offset=0&isWideScreen=false&controls=_template_%3Aofferresult%2Cshopwindow%2CshopwindowOfferResult.vm%7C_moduleConfig_%3AshopwindowResultConfig%7CpageSize%3A60%7C_name_%3AofferResult%7Coffset%3A0&token=959352873'+'&callback=%(callback)s&beginPage=%(beginPage)d&totalPage=%(totalPage)d&keywords=%(keywords)s'%{"callback":self.jsonp_callback,"beginPage":1,"keywords":keywords,"totalPage":totalPage}
+
+        
+        yield scrapy.Request(jsonrpc_url)
+
+
+
+    def parse_selloffer_jsonp(self,response):
+
+        fixedcontent = self._regex.sub(r"\\\\", response.body)
+        rep = json.loads(fixedcontent[len(self.jsonp_callback)+1:-1].decode("GBK"))
+        if rep["hasError"] == True:
+            self.log("[pase_jsonp] Error:%s %s"%(rep["message"],response.url),level=scrapy.log.ERROR)
+            return
+        content = rep["content"]["offerResult"]["html"]
+        tree=lxml.html.fromstring(content)
+        #pdb.set_trace()
+        #parse shop
+        for href in tree.xpath('//li[@class="sm-offerShopwindow"]//a[@class="sm-previewCompany sw-mod-previewCompanyInfo"]/@href'):
+            if not href.startswith("http://"):
+                continue 
+            shop_url = href+"/"
+            self.log('[pase_jsonp] found shop %s from %s'%(shop_url,response.url),level=scrapy.log.INFO)
+            yield ShopItem(url=shop_url,insert_time=str(datetime.datetime.now()))
+
+        #nextpage
+        scheme, netloc, path, params, query, fragment = parse_url(response.url)
+        qs = parse_query(query)
+        try:
+            totalPage = int(qs.get('totalPage'))
+            beginPage = int(qs.get('beginPage'))
+        except Exception, e:
+            self.log("[pase_jsonp] %s"%e,level=scrapy.log.ERROR)
+            return
+       
+        if  beginPage >= totalPage:
+            return
+        qs['beginPage'] = beginPage + 1
+        query = unparse_query(qs)
+        yield scrapy.Request(urlparse.urlunparse( (scheme, netloc, path, params,query,fragment)))

@@ -196,8 +196,7 @@ class ShopSpider(scrapy.Spider):
     _regex = re.compile(r'\\(?![/u"])')
 
     def pase_jsonp(self,response):
-        import pdb
-        pdb.set_trace()
+
         fixedcontent = self._regex.sub(r"\\\\", response.body)
         rep = json.loads(fixedcontent[len(self.jsonp_callback)+1:-1].decode("GBK"))
         if rep["hasError"] == True:
@@ -213,7 +212,8 @@ class ShopSpider(scrapy.Spider):
             shop_url = href+"/"
             self.log('[pase_jsonp] found shop %s from %s'%(shop_url,response.url),level=scrapy.log.INFO)
             yield ShopItem(url=shop_url,insert_time=str(datetime.datetime.now()))
-
+        import pdb
+        pdb.set_trace()
         #nextpage
         scheme, netloc, path, params, query, fragment = parse_url(response.url)
         qs = parse_query(query)

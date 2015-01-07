@@ -207,7 +207,7 @@ class ShopSpider(scrapy.Spider):
         tree=lxml.html.fromstring(content)
         #pdb.set_trace()
         #parse shop
-        for href in tree.xpath('//li[@class="sm-offerItem"]/div[@class="sm-offerItem-alitalk"]//a[2]/@href').extract():
+        for href in tree.xpath('//li[@class="sm-offerItem"]/div[@class="sm-offerItem-alitalk"]//a[2]/@href'):
             if not href.startswith("http://"):
                 continue 
             shop_url = href+"/"

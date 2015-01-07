@@ -199,7 +199,7 @@ class ShopSpider(scrapy.Spider):
         import pdb
         pdb.set_trace()
         fixedcontent = self._regex.sub(r"\\\\", response.body)
-        rep = json.loads(fixedcontent[len(self.jsonp_callback):-1].decode("GBK"))
+        rep = json.loads(fixedcontent[len(self.jsonp_callback)+1:-1].decode("GBK"))
         if rep["hasError"] == True:
             self.log("[pase_jsonp] Error:%s %s"%(rep["message"],response.url),level=scrapy.log.ERROR)
             return

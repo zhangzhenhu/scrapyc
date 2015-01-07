@@ -58,6 +58,7 @@ class ShopSpider(scrapy.Spider):
             (re.compile('^http://s.1688.com/selloffer/offer_search.htm'),self.parse_selloffer),
             (re.compile('^http://s.1688.com/selloffer/rpc_offer_search.jsonp'),self.parse_selloffer_jsonp),
             #(re.compile('^http://s.1688.com/selloffer/-'),self._parse_ziyuan_list),
+            (re.compile('^http://s.1688.com/company/-'),self.parse_company),
              
             ]
 
@@ -70,7 +71,8 @@ class ShopSpider(scrapy.Spider):
         #requests.append(scrapy.Request('http://jinpai.1688.com/',callback=self.parse_jinpai))
         #requests.append(scrapy.Request('http://go.1688.com/supplier/gold_supplier.htm',callback=self.parse_index))
         #requests.append(scrapy.Request('http://s.1688.com/caigou/offer_search.htm?keywords=%C0%AD%C1%B4&n=y&from=industrySearch&industryFlag=jicai'))
-        requests.append(scrapy.Request('http://s.1688.com/selloffer/offer_search.htm?descendOrder=true&onlineStatus=yes&isOnlyAlipay=true&sortType=booked&uniqfield=userid&keywords=%BD%BA%D5%B3%BC%C1&categoryId=1031620&n=y&filt=y#filter_top'))
+        #requests.append(scrapy.Request('http://s.1688.com/selloffer/offer_search.htm?descendOrder=true&onlineStatus=yes&isOnlyAlipay=true&sortType=booked&uniqfield=userid&keywords=%BD%BA%D5%B3%BC%C1&categoryId=1031620&n=y&filt=y#filter_top'))
+        requests.append(scrapy.Request('http://s.1688.com/company/-B5E7BDE2B5E7C8DD.html'))
         return requests
 
     def filter(self,url):
@@ -174,7 +176,7 @@ class ShopSpider(scrapy.Spider):
         for href in response.xpath(xpath).extract():
             if not href.startswith("http://"):
                 continue 
-            shop_url = href+"/"
+            shop_url = href.split('?',1)[0]+"/"
             self.log('[parse_index] found shop %s from %s'%(shop_url,response.url),level=scrapy.log.INFO)
             yield ShopItem(url=shop_url,insert_time=str(datetime.datetime.now()))
        
@@ -185,7 +187,7 @@ class ShopSpider(scrapy.Spider):
         for href in response.xpath('//a/@href').extract():
             if not href.startswith("http://s.1688.com/caigou/offer_search.htm?"):
                 continue 
-            yield IndexItem(url=href,insert_time=str(datetime.datetime.now()))
+            #yield IndexItem(url=href,insert_time=str(datetime.datetime.now()))
             #yield scrapy.Request(href)
 
         for item in self._get_shop_byxpath(response,'//li[@class="sm-offerItem"]/div[@class="sm-offerItem-alitalk"]//a[2]/@href'):
@@ -254,7 +256,6 @@ class ShopSpider(scrapy.Spider):
         for href in response.xpath('//a/@href').extract():
             if not href.startswith("http://s.1688.com/selloffer/offer_search.htm?"):
                 continue 
-            yield IndexItem(url=href,insert_time=str(datetime.datetime.now()))
             yield scrapy.Request(href)
 
         #parse shop
@@ -314,3 +315,21 @@ class ShopSpider(scrapy.Spider):
         qs['beginPage'] = beginPage + 1
         query = unparse_query(qs)
         yield scrapy.Request(urlparse.urlunparse( (scheme, netloc, path, params,query,fragment)))
+
+
+
+    def parse_company(self,response):
+        ''' parse like this :http://s.1688.com/company/-B5E7BDE2B5E7C8DD.html.....'''
+        #parse category
+        for href in response.xpath('//a/@href').extract():
+            if not href.startswith("http://s.1688.com/company/-"):
+                continue 
+            yield scrapy.Request(href)
+            yield IndexItem(url=href,insert_time=str(datetime.datetime.now()))
+
+        #parse shop
+        for item in self._get_shop_byxpath(response,'//li[@class="company-list-item"]//a[@class="list-item-title-text"]/@href'):
+            yield item
+        
+
+

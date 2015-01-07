@@ -102,7 +102,8 @@ class ShopSpider(scrapy.Spider):
         for href in response.xpath("//a/@href").extract():
             if not href.startswith("http://"):
                 continue
-            yield scrapy.Request(href)
+            if self.filter(href):
+                yield scrapy.Request(href)
 
     def parse_jinpai(self, response):
 

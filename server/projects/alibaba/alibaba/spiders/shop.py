@@ -196,8 +196,8 @@ class ShopSpider(scrapy.Spider):
     _regex = re.compile(r'\\(?![/u"])')
 
     def pase_jsonp(self,response):
-        fixedcontent = regex.sub(r"\\\\", response.body)
-        rep = json.loads(fixedcontent[len(jsonp_callback):-1].decode("GBK"))
+        fixedcontent = self._regex.sub(r"\\\\", response.body)
+        rep = json.loads(fixedcontent[len(self.jsonp_callback):-1].decode("GBK"))
         if rep["hasError"] == True:
             self.log("[pase_jsonp] Error:%s %s"%(rep["message"],response.url),level=scrapy.log.ERROR)
             return

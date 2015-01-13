@@ -9,7 +9,7 @@ class Report(Strategy):
 
     def run(self,data):
         
-        stats = self.fr.strategies_dict["statistic"]
+        stats = self.fr.after_strategies_dict["statistic"]
         jobdir = self.settings["JOBDIR"]
         htf = self.settings["REPORT_HTML_TEMPLATE"]
         f=open(htf,"r")

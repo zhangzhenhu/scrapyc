@@ -12,7 +12,7 @@ class Case(object):
         self.objurl = line[0]
         self.other=line[1:]
         self.target = self.objurl
-
+        self.common = {}
 
         self.data = {}
         self.site_data = {}
@@ -37,10 +37,16 @@ class Case(object):
         "owner",
         ]
 
-
-
-
-    
+    def  add_common(self,url):
+        if url not in self.common:
+            self.common[url] = Case(self.settings,url)
+    def commons(self):
+        return self.common.value()
+    def get_common(self,url):
+        if url in self.common:
+            return self.common[url]
+        return None
+        
     def get_data(self,name):
         if name in self.data:
             return self.data[name]

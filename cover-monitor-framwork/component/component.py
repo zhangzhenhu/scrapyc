@@ -31,7 +31,19 @@ class Component(_threading.Thread):
         for case in self.cases:
             inf.write(case.target+"\n")
             self.map[case.target] = case
+            for cc in case.commons():
+                inf.write(cc.target+"\n")
         inf.close()
+
+    def _set_data(self,url,name,data):
+        for case in self.cases:
+            if case.target == url:
+                case.set_data(name,data)
+            for cc in case.commons():
+                if cc.target == url:
+                    cc.set_data(name,data)
+
+
     def parse(self,fname):
         f = open(fname,"r")
         for line in f.readlines():
@@ -41,8 +53,7 @@ class Component(_threading.Thread):
             for item in line[1:]:
                 name,value = item.split(":",1)
                 data[name]=value.strip()
-            if obj in self.map:
-                self.map[obj].set_data(self.name,data)
+            self._set_data(obj,self.name,data)
         f.close()
 
 

@@ -4,6 +4,9 @@ import os
 WORDIR=os.getcwd()
 JOBDIR = os.path.join(WORDIR,"history")
 
+BEFORE_STRATEGIES = [
+"strategy.convert.Convert",
+]
 
 COMPONENTS = {
     "component.pcccdb.PCCcdb" :None,
@@ -15,8 +18,9 @@ COMPONENTS = {
     "component.levelall.LevelAll" :None,
     # "component.dc" :None,
 } 
-STRATEGIES = [
+AFTER_STRATEGIES = [
     "strategy.ccdb.CCDB",
+    "strategy.common.Common",
     "strategy.linkbase.Linkbase",
     "strategy.select.Select",
     "strategy.close.Close",

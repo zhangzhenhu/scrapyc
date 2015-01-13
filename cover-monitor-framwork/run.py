@@ -17,8 +17,10 @@ class Framwork(object):
         self.settings = arg
         self.work_queue = {}
         self.components={}
-        self.strategies = []
-        self.strategies_dict = {}
+        self.before_strategies = []
+        self.before_strategies_dict = {}
+        self.after_strategies = []
+        self.after_strategies_dict = {}        
         self.input_data= {}
         self.base_data = {}
         self.output_data = {}
@@ -40,18 +42,28 @@ class Framwork(object):
 
 
 
-    def _load_strategy(self):
-        coms = self.settings.get("STRATEGIES")
+    def _load_before_strategy(self):
+        coms = self.settings.get("BEFORE_STRATEGIES")
         for com in coms:
             comcls = load_object(com)
             como = comcls(self.settings,self)
-            self.strategies.append(como)
-            self.strategies_dict[como.name] = como
+            self.before_strategies.append(como)
+            self.before_strategies_dict[como.name] = como
+    def _load_after_strategy(self):
+        coms = self.settings.get("AFTER_STRATEGIES")
+        for com in coms:
+            comcls = load_object(com)
+            como = comcls(self.settings,self)
+            self.after_strategies.append(como)
+            self.after_strategies_dict[como.name] = como
 
-    def _run_strategy(self):
-        for strategy in self.strategies:
+    def _run_before_strategy(self):
+        for strategy in self.before_strategies:
             strategy.run(self.input_data)
 
+    def _run_after_strategy(self):
+        for strategy in self.after_strategies:
+            strategy.run(self.input_data)
 
     def _init_data(self):
         input_file = self.settings.get("INPUT_FILE")
@@ -87,14 +99,17 @@ class Framwork(object):
             return False
         resume = self.settings.get("RESUME")
         self._load_component()
-        self._load_strategy()
+        self._load_before_strategy()
+        self._load_after_strategy()
+
+        self._run_before_strategy()
         if resume :
             self.load()
             for case  in self.input_data:print case.data.keys()
         else:
             self._run_component()
             self.dump()
-        self._run_strategy()
+        self._run_after_strategy()
 
 
         #for case in self.input_data:

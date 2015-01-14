@@ -26,10 +26,11 @@ class Convert(Strategy):
         for case in data:
             origin = case.target
             site = get_url_site(origin)
-            if site == "m.facebook.com":
+            if site in ["m.facebook.com","id-id.facebook.com"]:
                 origin = remove_query(origin,"refsrc")
                 case.target = origin
                 case.add_common(replace_site(origin,"www.facebook.com"))
+
             elif site == "mobile.twitter.com":
                 case.add_common(replace_site(origin,"twitter.com"))
             elif site == "m.youtube.com":

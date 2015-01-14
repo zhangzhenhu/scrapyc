@@ -41,7 +41,7 @@ class Case(object):
         if url not in self.common:
             self.common[url] = Case(self.settings,url)
     def commons(self):
-        return self.common.value()
+        return self.common.values()
     def get_common(self,url):
         if url in self.common:
             return self.common[url]

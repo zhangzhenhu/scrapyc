@@ -31,4 +31,7 @@ def remove_query(url,qname):
         nq += item + "&"
     if nq:
         return nurl[0] + "?" + nq[:-1]
-    return nurl[0]        
+    return nurl[0]
+
+if __name__ == '__main__':
+    print remove_query("http://m.facebook.com/jituharian?refsrc=id-id.facebook.com/jituharian","refsrc")

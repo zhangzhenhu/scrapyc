@@ -37,7 +37,7 @@ class Linkbase(Strategy):
 
             if l2patch and l2patch["del_reason"] != "-" :
                 case.set_result("conclusion","linkbaseDel")
-                case.set_result("reason",l2patch["del_reason"])
+                case.set_result("reason","del_reason="+l2patch["del_reason"])
                 case.close = True
                 continue
             

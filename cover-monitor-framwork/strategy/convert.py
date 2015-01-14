@@ -27,11 +27,11 @@ class Convert(Strategy):
             origin = case.target
             site = get_url_site(origin)
             if site == "m.facebook.com":
-                case.add_common(replace_site("www.facebook.com"))
+                case.add_common(replace_site(origin,"www.facebook.com"))
             elif site == "mobile.twitter.com":
-                case.add_common(replace_site("twitter.com"))
+                case.add_common(replace_site(origin,"twitter.com"))
             elif site == "m.youtube.com":
-                case.add_common(replace_site("www.youtube.com"))
+                case.add_common(replace_site(origin,"www.youtube.com"))
             elif site.endswith("blogspot.com")  and is_m1(origin):
                 case.add_common(remove_m1(origin) )    
 

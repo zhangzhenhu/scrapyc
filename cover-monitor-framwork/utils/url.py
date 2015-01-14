@@ -9,7 +9,7 @@ def get_url_site(url):
         purl = url
     return purl.split("/",1)[0]
 
-def replace_site(site):
+def replace_site(url,site):
     schema = ""
     if "://" in url[:10]:
         schema,url = url.split('://',1)

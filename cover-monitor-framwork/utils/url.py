@@ -19,3 +19,16 @@ def replace_site(url,site):
         return "%s://%s/%s"%(schema,site,url)
     else:
         return "%s/%s"%(site,url)
+def remove_query(url,qname):
+    nurl = url.split("?",1)
+    if len(nurl) == 1 or not nurl[1]:
+        return url
+    nq = ""
+    qname = qname + "="
+    for item in nurl[1].split('&'):
+        if item.startswith(qname):
+            continue
+        nq += item + "&"
+    if nq:
+        return nurl[0] + "?" + nq[:-1]
+    return nurl[0]        

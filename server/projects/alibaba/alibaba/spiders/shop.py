@@ -68,10 +68,10 @@ class ShopSpider(scrapy.Spider):
 
         requests = []
         requests.append(scrapy.Request('http://www.1688.com/?src=desktop',callback=self.parse_home))
-        #requests.append(scrapy.Request('http://jinpai.1688.com/',callback=self.parse_jinpai))
-        #requests.append(scrapy.Request('http://go.1688.com/supplier/gold_supplier.htm',callback=self.parse_index))
-        #requests.append(scrapy.Request('http://s.1688.com/caigou/offer_search.htm?keywords=%C0%AD%C1%B4&n=y&from=industrySearch&industryFlag=jicai'))
-        #requests.append(scrapy.Request('http://s.1688.com/selloffer/offer_search.htm?descendOrder=true&onlineStatus=yes&isOnlyAlipay=true&sortType=booked&uniqfield=userid&keywords=%BD%BA%D5%B3%BC%C1&categoryId=1031620&n=y&filt=y#filter_top'))
+        requests.append(scrapy.Request('http://jinpai.1688.com/',callback=self.parse_jinpai))
+        requests.append(scrapy.Request('http://go.1688.com/supplier/gold_supplier.htm',callback=self.parse_index))
+        requests.append(scrapy.Request('http://s.1688.com/caigou/offer_search.htm?keywords=%C0%AD%C1%B4&n=y&from=industrySearch&industryFlag=jicai'))
+        requests.append(scrapy.Request('http://s.1688.com/selloffer/offer_search.htm?descendOrder=true&onlineStatus=yes&isOnlyAlipay=true&sortType=booked&uniqfield=userid&keywords=%BD%BA%D5%B3%BC%C1&categoryId=1031620&n=y&filt=y#filter_top'))
         requests.append(scrapy.Request('http://s.1688.com/company/-B5E7BDE2B5E7C8DD.html'))
         return requests
 

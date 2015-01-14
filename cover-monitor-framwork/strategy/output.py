@@ -15,6 +15,8 @@ class Output(Strategy):
 
         for case in data:
             f.write(case.origin.strip())
+            f.write("\t")
+            f.write(case.target.strip())
             for key in case._result_schema:
                 if key in case.result:
                     value = case.result[key]

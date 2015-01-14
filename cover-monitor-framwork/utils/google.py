@@ -1,40 +1,3 @@
-
-
-
-
-def get_url_site(url):
-    if "://" in url:
-        purl = url.split('://',1)[1]
-    else:
-        purl = url
-    return purl.split("/",1)[0]
-
-def replace_site(url,site):
-    schema = ""
-    if "://" in url[:10]:
-        schema,url = url.split('://',1)
-    url = url.split("/",1)[1]  
-
-    if schema:
-        return "%s://%s/%s"%(schema,site,url)
-    else:
-        return "%s/%s"%(site,url)
-def remove_query(url,qname):
-    nurl = url.split("?",1)
-    if len(nurl) == 1 or not nurl[1]:
-        return url
-    nq = ""
-    qname = qname + "="
-    for item in nurl[1].split('&'):
-        if item.startswith(qname):
-            continue
-        nq += item + "&"
-    if nq:
-        return nurl[0] + "?" + nq[:-1]
-    return nurl[0]
-
-
-
 import time
 import datetime
 import os
@@ -43,6 +6,7 @@ import re
 import cookielib
 import StringIO
 import gzip    
+import urlparse
 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookielib.CookieJar()))
 urllib2.install_opener(opener)
 #httpHandler = urllib2.HTTPHandler(debuglevel=1)
@@ -50,11 +14,12 @@ urllib2.install_opener(opener)
 #urllib2.install_opener(opener) 
 def pget(url):
     req=urllib2.Request(url)
+    #scheme, netloc, path, params, query, fragment = urlparse.urlparse(url)
     req.add_header("User-Agent","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.124 Safari/537.36")
     #re.add_header("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
     req.add_header("Accept-Encoding","gzip,deflate,sdch")
     #re.add_header("Accept-Language","zh-CN,zh;q=0.8,en;q=0.6")
-    req.add_header("Host","www.okooo.com")
+    #req.add_header("Host")
     req.add_header("Cache-Control","no-cache")
     req.add_header("Pragma","no-cache")
     req.add_header("Connection","keep-alive")
@@ -90,5 +55,46 @@ def pget(url):
         retry += 1
     return None
 
+def get_url_query(url):
+    scheme, netloc, path, params, query, fragment = urlparse.urlparse(url)
+    if not query:
+        return {}
+    ret = {}
+    for item in query.split("&"):
+        item = item.strip()
+        if not item:
+            continue
+        item = item.split('=',1)
+        if len(item) == 2:
+            ret[item[0]] =item[1]
+        else:
+            ret[item[0]] = None
+    return ret
+
+def parse(html):
+    tree=lxml.html.fromstring(html.decode("utf8"))
+
+    for href in tree.xpath('//li[@clss="g card-section"]//h3[@class="r"]/a/@href'):
+        qs = get_url_query(href)
+        if 'url' not in qs:
+            continue
+        yield urllib.unquote(qs['url'])
+
+
+def main():
+    for query in sys.stdin:
+        query = query.strip()
+        furl = URL_TEMPLATE%{query:urllib.quote(query)}
+        html = pget(furl)
+        if  not html:
+            continue
+        index = 0
+        for url in parse(html):
+            print "%s\t%s\t%d\t%s"%(furl,url,index,query)
+            index += 1
+
+
 if __name__ == '__main__':
-    print remove_query("http://m.facebook.com/jituharian?refsrc=id-id.facebook.com/jituharian","refsrc")
+    URL_TEMPLATE = 'http://www.google.co.id/search?hl=ar-eg&start=0&q=%(query)&num=100&nord=1'
+
+    main()

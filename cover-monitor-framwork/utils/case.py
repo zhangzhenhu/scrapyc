@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import threading
-from utils.url import get_url_site
+from .url import get_url_site
 
 class Case(object):
     """docstring for Case"""

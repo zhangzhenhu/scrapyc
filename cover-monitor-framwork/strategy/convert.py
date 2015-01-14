@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from .strategy import Strategy
 from ..utils.url import get_url_site,replace_site
-from ..case import Case
+from ..utils.case import Case
 
 def is_m1(url):
     up = url.split('?',1)
@@ -11,11 +11,11 @@ def is_m1(url):
         return True
     return False
 
- def remove_m1(url):
-        url = url.replace("m=1","")
-        if url[-1] == "?":
-            url = url[:-1]
-        return url
+def remove_m1(url):
+    url = url.replace("m=1","")
+    if url[-1] == "?":
+        url = url[:-1]
+    return url
 
 class Convert(Strategy):
     """docstring for Convert"""

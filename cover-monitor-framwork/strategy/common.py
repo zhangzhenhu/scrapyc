@@ -38,6 +38,7 @@ class Common(Strategy):
             case.set_result("reason","commonResource=%s&&wise=%d&&weight=%d&&flag=%s&&ccdb=wise"%(cc.target,wise,weight,flag))
             case.close = True
             case.ok = True
+            case.target = cc.target
             return
 
     def pcccb(self,case,cc):
@@ -65,4 +66,5 @@ class Common(Strategy):
             case.set_result("reason","commonResource=%s&&wise=%d&&weight=%d&&flag=%s&&ccdb=pc"%(cc.target,wise,weight,flag))
             case.close = True
             case.ok = True
+            case.target = cc.target
             return

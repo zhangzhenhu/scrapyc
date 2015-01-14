@@ -5,7 +5,7 @@ except ImportError:
     import dummy_threading as _threading
 from utils.misc import load_object
 from utils.setting import Settings
-from case import Case
+from utils.case import Case
 import cPickle as pickle
 from optparse import OptionParser
 import os

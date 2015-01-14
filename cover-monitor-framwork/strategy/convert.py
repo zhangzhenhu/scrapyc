@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .strategy import Strategy
-from utils.url import get_url_site,replace_site
+from utils.url import get_url_site,replace_site,remove_query
 from utils.case import Case
 
 def is_m1(url):

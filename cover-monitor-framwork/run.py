@@ -159,7 +159,5 @@ if __name__ == '__main__':
         setting.set("REPORT_EMAIL_TO",options.email)
     if options.emailu:
         setting.set("REPORT_EMAIL_TITLE",options.emailu)
-    print options.emailu
-    print setting['REPORT_EMAIL_TITLE']
     main(setting)
 

@@ -26,20 +26,25 @@ class Convert(Strategy):
         for case in data:
             origin = case.target
             if origin.startswith("https://"):
-                origin = "http://" + origin[:8]
+                origin = "http://" + origin[8:]
                 case.target = origin
             site = get_url_site(origin)
             if site in ["m.facebook.com","id-id.facebook.com"]:
                 origin = remove_query(origin,"refsrc")
-                case.target = origin
-                case.add_common(replace_site(origin,"www.facebook.com"))
+                case.add_common(origin))
+                case.target = replace_site(origin,"www.facebook.com")
+                 
 
             elif site == "mobile.twitter.com":
-                case.add_common(replace_site(origin,"twitter.com"))
+                case.add_common(origin)
+                case.target = replace_site(origin,"twitter.com")
             elif site == "m.youtube.com":
-                case.add_common(replace_site(origin,"www.youtube.com"))
+                case.add_common(origin)
+                case.target = replace_site(origin,"www.youtube.com")
             elif site.endswith("blogspot.com")  and is_m1(origin):
-                case.add_common(remove_m1(origin) )    
+
+                case.add_common(origin)
+                case.target = remove_m1(origin)     
 
 
 

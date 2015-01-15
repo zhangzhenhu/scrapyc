@@ -90,17 +90,16 @@ def parse(html):
 
 
 def main():
-    for query in sys.stdin:
-        query = query.strip()
-        en_query = urllib.quote(query)
-
-        furl = URL_TEMPLATE%{"query":en_query}
-        html = pget(furl)
+    for fname in sys.stdin:
+        fname = fname.strip()
+        f = open(fname,'r')
+        html = f.read()
+        f.close()
         if  not html:
             continue
         index = 0
         for url in parse(html):
-            print "%s\t%d\t%s\t%s"%(url,index,query,furl)
+            print "%s\t%d"%(url,index)
             index += 1
 
 

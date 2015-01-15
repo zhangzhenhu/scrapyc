@@ -3,7 +3,7 @@ import hashlib
 from importlib import import_module
 from pkgutil import iter_modules
 
-from w3lib.html import replace_entities
+#from w3lib.html import replace_entities
 
 def load_object(path):
     """Load an object given its absolute object path, and return it.

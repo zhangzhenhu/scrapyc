@@ -1,4 +1,4 @@
-import six
+from lib import six
 import json
 import warnings
 from collections import MutableMapping

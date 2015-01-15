@@ -44,7 +44,7 @@ class Convert(Strategy):
             elif site.endswith("blogspot.com")  and is_m1(origin):
 
                 case.add_common(origin)
-                case.target = remove_m1(origin)
+                case.target = remove_m1(origin) 
 
 
 

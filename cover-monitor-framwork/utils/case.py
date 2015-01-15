@@ -55,7 +55,7 @@ class Case(object):
 
     def set_data(self,name,value):
         #if self._lock.acquire():
-        print "[case] add data %s %s"%(name,self.objurl)
+        print "[case] add data %s %s"%(name,self.target)
         self.data[name]=value
         #self._lock.release()
 

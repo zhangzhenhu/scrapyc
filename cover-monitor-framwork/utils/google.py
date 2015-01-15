@@ -36,11 +36,11 @@ def pget(url):
         try:
             ret=urllib2.urlopen(req,timeout=10)
             if ret.getcode() /100 !=2 :
-                print "[wget] failed url:%s retcode:%d" % (url,ret.getcode())
+                print >>sys.stderr ,"[wget] failed url:%s retcode:%d" % (url,ret.getcode())
                 retry += 1
                 time.sleep(Sleep_Time*5)
                 continue
-            print "[wget] succed url:%s retcode:%d" % (url,ret.getcode())
+            print  >>sys.stderr ,"[wget] succed url:%s retcode:%d" % (url,ret.getcode())
             reply=ret.info()
             if reply.getheader("Content-Encoding")=="gzip":
                 compresseddata = ret.read()
@@ -55,7 +55,7 @@ def pget(url):
             ret.close()
             return data
         except  Exception,e:
-            print "[wget] error url:%s errcode:%s" % (url,e)
+            print >>sys.stderr,"[wget] error url:%s errcode:%s" % (url,e)
         time.sleep(2)
         retry += 1
     return None
@@ -92,7 +92,7 @@ def main():
     for query in sys.stdin:
         query = query.strip()
         en_query = urllib.quote(query)
-        print en_query
+
         furl = URL_TEMPLATE%{"query":en_query}
         html = pget(furl)
         if  not html:

@@ -25,6 +25,9 @@ class Convert(Strategy):
 
         for case in data:
             origin = case.target
+            if origin.startswith("https://"):
+                origin = "http://" + origin[:8]
+                case.target = origin
             site = get_url_site(origin)
             if site in ["m.facebook.com","id-id.facebook.com"]:
                 origin = remove_query(origin,"refsrc")
@@ -42,4 +45,8 @@ class Convert(Strategy):
 
 
 
-        pass
+if __name__ == '__main__':
+    data = [
+    Case({},"https://id-id.facebook.com/notes/misteri-dunia/asteroid-aneh-buntuti-bumi-sejak-250-ribu-tahun-yang-lalu/10150099527477325"),
+    ]
+    Convert.run(data)

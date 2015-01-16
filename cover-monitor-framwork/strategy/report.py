@@ -15,7 +15,7 @@ class Report(Strategy):
         f=open(htf,"r")
         data=f.read().decode("gbk")
         f.close()
-        casef = "wget ftp://%s%s"%(socket.gethostname(),os.path.join(jobdir,"result.xls"))
+        casef = "wget ftp://%s%s"%(socket.gethostname(),os.path.abspath(os.path.join(jobdir,"result.xls")))
         t = template.Template(data, output_encoding="gbk")
 
         rf =os.path.join(jobdir,"report.html")

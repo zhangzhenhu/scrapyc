@@ -8,7 +8,9 @@
 import scrapy
 
 
-class RobotItem(scrapy.Item):
+class UrlItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
+    url = scrapy.Field()
+    fromurl = scrapy.Field()
+    
     pass

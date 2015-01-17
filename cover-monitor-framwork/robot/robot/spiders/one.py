@@ -9,7 +9,20 @@ class OneSpider(scrapy.Spider):
     start_urls = (
         #'http://www.scrapy.cfg/',
     )
+    # def __init__(self,*args, **kwargs):
+    #     super(OneSpider, self).__init__(*args, **kwargs)
+    #     self._kwargs = kwargs
 
+    def start_requests(self):
+
+        with open(self.settings['input']) as f:
+            for line in f.readlines():
+                line = line.strip()
+                if not line:
+                    continue
+                url = line.split("\t")[0]
+                yield scrapy.Request(url)
+        
     def parse(self, response):
         self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         if response.status != 200 :
@@ -20,4 +33,5 @@ class OneSpider(scrapy.Spider):
             if href.startswith("javascript:"):
                 continue
             abs_url =urljoin_rfc(response.url,href)
+            yield UrlItem(url=abs_url,fromurl=response.url)
 

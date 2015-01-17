@@ -28,7 +28,7 @@ class OneSpider(scrapy.Spider):
         if response.status != 200 :
             yield response.request 
             return 
-         for href in div.xpath("//a/@href").extract():
+        for href in response.xpath("//a/@href").extract():
             href = href.strip()
             if href.startswith("javascript:"):
                 continue

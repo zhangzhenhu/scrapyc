@@ -18,3 +18,4 @@ USER_AGENT = 'User-Agent:Mozilla/5.0 (Linux;u;Android 2.3.7;zh-cn;) AppleWebKit/
 FEED_URI = 'file://'+os.path.join(os.getcwd(),"feeds/%(name)s/%(time)s.json")
 FEED_FORMAT = 'jsonlines'
 FEED_STORE_EMPTY=True
+LOG_LEVEL = 'INFO'

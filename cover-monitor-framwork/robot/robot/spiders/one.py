@@ -21,7 +21,7 @@ class OneSpider(scrapy.Spider):
                 if not line:
                     continue
                 url = line.split("\t")[0]
-                if "://" not in url[:20]:
+                if "://" not in url[:10]:
                     url = "http://" + url
                 elif  url.split("://",1)[0]  not in ["http","https"]:
                     continue

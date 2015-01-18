@@ -30,7 +30,7 @@ class Linkbase(Strategy):
                         case.set_result("conclusion","lowLevel")
                         case.set_result("reason","url_level=%s"%url_level)
                     else:
-                        case.set_result("reason","urlnew=GET")
+                        case.set_result("reason","urlnew=GET&&url_level=%s"%url_level)
                         case.set_result("conclusion","unCrawl")
                     case.close = True
                     continue

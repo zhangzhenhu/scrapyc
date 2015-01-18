@@ -21,6 +21,10 @@ class OneSpider(scrapy.Spider):
                 if not line:
                     continue
                 url = line.split("\t")[0]
+                if "://" not in url[:20]:
+                    url = "http://" + url
+                elif  url.split("://",1)[0]  not in ["http","https"]:
+                    continue
                 yield scrapy.Request(url)
         
     def parse(self, response):

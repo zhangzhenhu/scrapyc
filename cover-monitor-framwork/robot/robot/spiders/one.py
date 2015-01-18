@@ -27,11 +27,15 @@ class OneSpider(scrapy.Spider):
         self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         if response.status != 200 :
             yield response.request 
-            return 
+            return
+        depth = response.meta.get("depth",1) 
         for href in response.xpath("//a/@href").extract():
             href = href.strip()
             if href.startswith("javascript:"):
                 continue
             abs_url =urljoin_rfc(response.url,href)
             yield UrlItem(url=abs_url,fromurl=response.url)
+            if depth < 2:
+                depth += 1
+                yield scrapy.Request(abs_url,meta={"depth":depth})
 

@@ -2,7 +2,7 @@
 import scrapy
 from robot.items import UrlItem
 from w3lib.url import urljoin_rfc
-
+from scrapy.utils.url import parse_url
 class OneSpider(scrapy.Spider):
     name = "one"
     allowed_domains = []
@@ -32,11 +32,19 @@ class OneSpider(scrapy.Spider):
         if response.status != 200 :
             yield response.request 
             return
+        if not isinstance(response,scrapy.http.HtmlResponse):
+            return
         depth = response.meta.get("depth",1) 
         for href in response.xpath("//a/@href").extract():
             href = href.strip()
-            if href.startswith("javascript:"):
+
+            if href.startswith("javascript:") :
                 continue
+            scheme, netloc, path, params, query, fragment = parse_url(href)
+            if path:
+                suffix = path.split('.')[-1]
+                if suffix in ["png","jpg","gif","rar","zip","mp3"]:
+                    continue
             abs_url =urljoin_rfc(response.url,href)
             yield UrlItem(url=abs_url,fromurl=response.url)
             if depth < 2:

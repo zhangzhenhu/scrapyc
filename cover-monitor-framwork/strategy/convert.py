@@ -27,7 +27,10 @@ class Convert(Strategy):
             origin = case.target
             if origin.startswith("https://"):
                 origin = "http://" + origin[8:]
-                case.target = origin
+            if "#" in origin:
+                origin = origin.split("#",1)[0]
+            case.target = origin
+
             site = get_url_site(origin)
             if site in ["m.facebook.com","id-id.facebook.com"]:
                 origin = remove_query(origin,"refsrc")
@@ -45,6 +48,11 @@ class Convert(Strategy):
 
                 case.add_common(origin)
                 case.target = remove_m1(origin) 
+            elif site == "play.google.com":
+                origin = remove_query(origin,"referrer")
+                origin = remove_query(origin,"pcampaignid")
+                #case.add_common(origin)
+                case.target = origin            
 
 
 

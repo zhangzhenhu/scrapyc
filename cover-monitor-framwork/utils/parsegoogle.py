@@ -79,7 +79,11 @@ def get_url_query(url):
 
 def parse(html):
     tree=lxml.html.fromstring(html.decode("utf8"))
-    query = tree.xpath('//input[@id="lst-ib"]/@value')[0]
+    query = tree.xpath('//input[@id="lst-ib"]/@value')
+    if len(query) > 1:
+        query = query[0]
+    else:
+        query = ""
     for href in tree.xpath('//li[@class="g card-section"]//h3/a/@href'):
         yield href,query
         # continue

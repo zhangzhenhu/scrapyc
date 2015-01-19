@@ -79,9 +79,9 @@ def get_url_query(url):
 
 def parse(html):
     tree=lxml.html.fromstring(html.decode("utf8"))
-
+    query = tree.xpath('//input[@id="lst-ib"]/@value')
     for href in tree.xpath('//li[@class="g card-section"]//h3/a/@href'):
-        yield href
+        yield href,query
         # continue
         # qs = get_url_query(href)
         # if 'url' not in qs:
@@ -98,8 +98,8 @@ def main():
         if  not html:
             continue
         index = 0
-        for url in parse(html):
-            print "%s\t%d"%(url,index)
+        for url,query in parse(html):
+            print "%s\t%d\t%s"%(url,index,query.encode("utf8"))
             index += 1
 
 

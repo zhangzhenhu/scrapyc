@@ -38,16 +38,16 @@ class OneSpider(scrapy.Spider):
         for href in response.xpath("//a/@href").extract():
             href = href.strip()
 
-            if href.startswith("javascript:") :
+            if href.startswith("javascript:")  or href.startswith("rtsp:") or  href.startswith("ftp:"):
                 continue
             scheme, netloc, path, params, query, fragment = parse_url(href)
             if path:
                 suffix = path.split('.')[-1]
-                if suffix in ["png","jpg","gif","rar","zip","mp3"]:
+                if suffix in ["png","jpg","gif","rar","zip","mp3",".pdf","doc",".txt","docx","swf","mp4"]:
                     continue
             abs_url =urljoin_rfc(response.url,href)
             yield UrlItem(url=abs_url,fromurl=response.url)
-            if depth < 2:
+            if depth < 1:
                 depth += 1
                 yield scrapy.Request(abs_url,meta={"depth":depth})
 

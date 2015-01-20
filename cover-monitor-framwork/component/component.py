@@ -43,7 +43,7 @@ class Component(_threading.Thread):
                 if cc.target == url:
                     cc.set_data(name,data)
 
-    def _pre_data(obj,data):
+    def _pre_data(self,obj,data):
         pass
         
     def parse(self,fname):

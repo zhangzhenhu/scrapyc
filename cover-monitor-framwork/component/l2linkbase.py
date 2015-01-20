@@ -9,7 +9,7 @@ class L2base(Component):
 
     name = "l2base"
     cmd = "sh -x ./tools/linkbase/seekglobal_l2.sh "
-    def _pre_data(obj,data):
+    def _pre_data(self,obj,data):
         data["crawl_fail"] = False
         data["craw_count"] = 0
         data["fail_count"] = 0        

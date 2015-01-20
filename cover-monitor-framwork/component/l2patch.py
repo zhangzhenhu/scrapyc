@@ -9,7 +9,7 @@ class L2Patch(Component):
 
     name = "l2patch"
     cmd = "sh -x ./tools/linkbase/seekglobal_l2patch.sh "
-    def _pre_data(obj,data):
+    def _pre_data(self,obj,data):
         data["crawl_fail"] = False
         data["craw_count"] = 0
         data["fail_count"] = 0         

@@ -20,8 +20,8 @@ class Linkbase(Component):
                 return
             ret = []
              
-             craw_count = 0 
-             fail_count = 0
+            craw_count = 0 
+            fail_count = 0
             for item in hd[1:-1].split("', '"):
                 item = item.split(" : ",1)
                 ret.append(item)

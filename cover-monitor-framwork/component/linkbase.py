@@ -27,7 +27,7 @@ class Linkbase(Component):
         for item in hd[1:-1].split("', '"):
             item = item.split(" : ",1)
             ret.append(item)
-            if "NOT_USE" == item[0]:
+            if "NOT_USE" in item[0]:
                 continue
             craw_count += 1
             if "FAIL" in item[0]:

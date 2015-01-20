@@ -80,11 +80,12 @@ mkdir ./robot/data/`date +%Y%m%d`/
 robot_input=robot/data/`date +%Y%m%d`/url.list
 awk -F '\t'  '{print $1 }' ${DATA_PATH}/url.random.all  ${DATA_PATH}/url.hot.all | sort|uniq > ${robot_input}
 cd ./robot/
-scrapy crawl one -sJOBDIR=./data/`date +%Y%m%d`/job  -sinput=./data/`date +%Y%m%d`/url.list >log.txt 2>&1 &
+scrapy crawl one -sJOBDIR=./data/`date +%Y%m%d`/job  -sinput=./data/`date +%Y%m%d`/url.list >./data/`date +%Y%m%d`/log.txt 2>&1 &
+cd  -
 
 mkdir -p ./intbogus/
 cp ${robot_input} ./intbogus/`date +%Y%m%d`.google
-cat robot/feeds/one/*.json  | python utils/parsejson.py >> ./intbogus/`date +%Y%m%d`.google
+cat robot/feeds/one/*.json  | python utils/parsejson.py | uniq >> ./intbogus/`date +%Y%m%d`.google
 
 wait
 

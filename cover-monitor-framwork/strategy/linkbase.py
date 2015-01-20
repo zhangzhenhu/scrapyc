@@ -27,8 +27,11 @@ class Linkbase(Strategy):
                 elif urlnew == "GET":
                     url_level  = ld.get("url_level")
                     forceGET  = ld.get("forceGET")
-                    
-                    if url_level in ["1","0"]:
+                    crawl_fail = ld.get("crawl_fail")
+                    if crawl_fail == True:
+                        case.set_result("conclusion","crawlFail")
+                        case.set_result("reason","crawl_total:%d&&crawl_fail:%d"%(ld.get("craw_count"),ld.get("fail_count")))                       
+                    elif url_level in ["1","0"]:
                         case.set_result("conclusion","lowLevel")
                         case.set_result("reason","url_level=%s"%url_level)
                     else:

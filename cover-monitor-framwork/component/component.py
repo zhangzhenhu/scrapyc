@@ -43,7 +43,9 @@ class Component(_threading.Thread):
                 if cc.target == url:
                     cc.set_data(name,data)
 
-
+    def _pre_data(obj,data):
+        pass
+        
     def parse(self,fname):
         f = open(fname,"r")
         for line in f.readlines():
@@ -53,6 +55,7 @@ class Component(_threading.Thread):
             for item in line[1:]:
                 name,value = item.split(":",1)
                 data[name]=value.strip()
+                self._pre_data(obj,data)
             self._set_data(obj,self.name,data)
         f.close()
 

@@ -31,7 +31,7 @@ class L2Patch(Component):
             craw_count += 1
             if "FAIL" in item[0]:
                 fail_count += 1
-        if craw_count  and craw_count == fail_count:
+        if craw_count  >0 and craw_count == fail_count:
             data["crawl_fail"] = True
 
         data["craw_count"] = craw_count

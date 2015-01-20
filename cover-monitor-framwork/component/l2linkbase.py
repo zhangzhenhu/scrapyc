@@ -37,5 +37,3 @@ class L2base(Component):
         data["craw_count"] = craw_count
         data["fail_count"] = fail_count
         data["history"] = ret
-
-        data["crawl_fail"] = True

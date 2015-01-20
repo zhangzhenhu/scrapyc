@@ -38,4 +38,4 @@ class L2Patch(Component):
         data["fail_count"] = fail_count
         data["history"] = ret
 
-        data["crawl_fail"] = True
+     

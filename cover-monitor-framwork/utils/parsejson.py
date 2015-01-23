@@ -13,6 +13,7 @@ for line in sys.stdin:
         url = item["url"].encode("utf8")
         if get_url_schema(url) not in ["http","https"]:
             continue
+        print url
     #print item["fromurl"]
     except:
         pass

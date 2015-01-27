@@ -52,7 +52,10 @@ class Convert(Strategy):
                 origin = remove_query(origin,"referrer")
                 origin = remove_query(origin,"pcampaignid")
                 #case.add_common(origin)
-                case.target = origin            
+                case.target = origin 
+            elif site == "m.stafaband.info" :
+                case.add_common(origin)
+                case.target = replace_site(origin,"www.stafaband.info")                
 
 
 

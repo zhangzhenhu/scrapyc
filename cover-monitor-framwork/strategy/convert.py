@@ -2,6 +2,7 @@
 from .strategy import Strategy
 from utils.url import get_url_site,replace_site,remove_query
 from utils.case import Case
+from urllib
 
 def is_m1(url):
     up = url.split('?',1)
@@ -17,6 +18,9 @@ def remove_m1(url):
         url = url[:-1]
     return url
 
+
+
+
 class Convert(Strategy):
     """docstring for Convert"""
     name = "convert"
@@ -29,7 +33,7 @@ class Convert(Strategy):
                 origin = "http://" + origin[8:]
             if "#" in origin:
                 origin = origin.split("#",1)[0]
-            case.target = origin
+            case.target = urllib.unquote(origin)
 
             site = get_url_site(origin)
             if site in ["m.facebook.com","id-id.facebook.com"]:
@@ -55,8 +59,17 @@ class Convert(Strategy):
                 case.target = origin 
             elif site == "m.stafaband.info" :
                 case.add_common(origin)
-                case.target = replace_site(origin,"www.stafaband.info")                
+                case.target = replace_site(origin,"www.stafaband.info")             
+            elif site == "m.olx.co.id":
+                origin = remove_query(origin,"redirect")
+                case.target = origin
+            elif site == "anjingkita.com":
+                case.add_common(origin)
+                case.target = replace_site(origin,"www.anjingkita.com")
 
+            REPLACE = self.settings["CONVERT_REPLACE"]
+            if case.target in REPLACE:
+                case.target = REPLACE[case.target]
 
 
 

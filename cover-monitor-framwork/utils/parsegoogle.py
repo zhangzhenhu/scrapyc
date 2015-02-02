@@ -80,7 +80,7 @@ def get_url_query(url):
 def parse(html):
     tree=lxml.html.fromstring(html.decode("utf8"))
     query = tree.xpath('//input[@id="lst-ib"]/@value')
-    if len(query) > 1:
+    if len(query) > 0:
         query = query[0]
     else:
         query = ""

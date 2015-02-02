@@ -47,7 +47,7 @@ class OneSpider(scrapy.Spider):
                     continue
             abs_url =urljoin_rfc(response.url,href)
             yield UrlItem(url=abs_url,fromurl=response.url)
-            if depth < 1:
+            if depth < 10:
                 depth += 1
                 yield scrapy.Request(abs_url,meta={"depth":depth})
 

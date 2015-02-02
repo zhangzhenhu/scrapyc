@@ -8,18 +8,6 @@ HADOOP_BIN=${HOME}/hadoop-client-yq/hadoop/bin/hadoop
 SAMPLE_COUNT_QUERY=3000
 SAMPLE_COUNT_URL=1500
 
-function get_query
-{
-rm ${DATA_PATH}/query.raw
-${HADOOP_BIN}  fs -get hdfs://szjjh-dbuild-hdfs.dmop.baidu.com:54310/user/score-int/zhangyi12/wise/round1/`date -d "2 days ago" +%Y%m%d-%Y%m%d`/ID/part-00000 ${DATA_PATH}/query.raw
-
-if [ $? -ne 0 ];then
-exit 1
-fi
-awk '{if(NR>1){print }}' ${DATA_PATH}/query.raw > ${DATA_PATH}/query.t
-mv ${DATA_PATH}/query.t ${DATA_PATH}/query.raw
-
-}
 function crawl
 {
 local urlf=$1
@@ -37,7 +25,7 @@ cd -
 function hot
 {
 
-head -n 300000 ${DATA_PATH}/query.raw |  ~/share/common-tools/sample.sh ${SAMPLE_COUNT_QUERY} | awk -F '\t' '{print $1}' > ${DATA_PATH}/query.hot 
+#head -n 300000 ${DATA_PATH}/query.raw |  ~/share/common-tools/sample.sh ${SAMPLE_COUNT_QUERY} | awk -F '\t' '{print $1}' > ${DATA_PATH}/query.hot 
 
 cat ${DATA_PATH}/query.hot | python ./utils/mkgooglurl.py > ./client/url.hot
 
@@ -53,7 +41,7 @@ awk -F '\t'  '{if($2<5) print $1 }' ${DATA_PATH}/url.hot.all |  ~/share/common-t
 
 function random
 {
-cat ${DATA_PATH}/query.raw | ~/share/common-tools/sample.sh ${SAMPLE_COUNT_QUERY} | awk -F '\t' '{print $1}' > ${DATA_PATH}/query.random
+#cat ${DATA_PATH}/query.raw | ~/share/common-tools/sample.sh ${SAMPLE_COUNT_QUERY} | awk -F '\t' '{print $1}' > ${DATA_PATH}/query.random
 
 #cat ${DATA_PATH}/query.random | python ./utils/google.py  >${DATA_PATH}/url.random.all 2>${DATA_PATH}/random.log
 
@@ -66,16 +54,24 @@ awk -F '\t'  '{if($2<5) print $1 }' ${DATA_PATH}/url.random.all |  ~/share/commo
 }
 
 
-get_query
+sh -x ./get_query.sh
+
+if [ $? -ne 0 ];then
+exit 1;
+fi
 
 hot
 
 python run.py -i ${DATA_PATH}/url.hot.sample  -u "印尼无线（热门）覆盖率监控"  -d ./history/id-id/`date +%Y%m%d`/hot/ 1>${DATA_PATH}/cover_hot.log  2>&1 &
 
+#exit
+
 random
 python run.py -i ${DATA_PATH}/url.random.sample -u "印尼无线（随机）覆盖率监控"   -d ./history/id-id/`date +%Y%m%d`/random/ 1>${DATA_PATH}/cover_random.log  2>&1 &
 
 
+function _scrapy
+{
 mkdir ./robot/data/`date +%Y%m%d`/
 robot_input=robot/data/`date +%Y%m%d`/url.list
 awk -F '\t'  '{print $1 }' ${DATA_PATH}/url.random.all  ${DATA_PATH}/url.hot.all | sort|uniq > ${robot_input}
@@ -86,6 +82,8 @@ cd  -
 mkdir -p ./intbogus/
 cp ${robot_input} ./intbogus/`date +%Y%m%d`.google
 cat robot/feeds/one/*.json  | python utils/parsejson.py | uniq >> ./intbogus/`date +%Y%m%d`.google
+}
 
+_scrapy
 wait
 

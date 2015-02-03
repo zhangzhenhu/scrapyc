@@ -2,7 +2,7 @@
 from .strategy import Strategy
 from utils.url import get_url_site,replace_site,remove_query
 from utils.case import Case
-from urllib
+import urllib
 
 def is_m1(url):
     up = url.split('?',1)

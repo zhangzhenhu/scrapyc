@@ -40,13 +40,13 @@ class Linkbase(Strategy):
                     case.close = True
                     continue
 
-            if l2patch and l2patch["del_reason"] != "-" :
+            if l2patch and "del_reason" in l2patch and l2patch["del_reason"] != "-" :
                 case.set_result("conclusion","linkbaseDel")
                 case.set_result("reason","del_reason="+l2patch["del_reason"])
                 case.close = True
                 continue
             
-            if l2base and l2base["del_reason"] != "-" :
+            if l2base and "del_reason" in l2base and l2base["del_reason"] != "-" :
                 case.set_result("conclusion","linkbaseDel")
                 case.set_result("reason",l2base["del_reason"])
                 case.close = True

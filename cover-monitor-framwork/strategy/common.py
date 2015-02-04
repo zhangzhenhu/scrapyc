@@ -43,7 +43,7 @@ class Common(Strategy):
 
     def pcccb(self,case,cc):
         ccdb = cc.get_data("pcccdb")
-        if  ccdb.get('Last-mod-time')  == "-" or ccdb.get("Weight") == "-":
+        if not ccdb or ccdb.get('Last-mod-time')  == "-" or ccdb.get("Weight") == "-":
             return
 
         weight = int(ccdb.get("Weight"))

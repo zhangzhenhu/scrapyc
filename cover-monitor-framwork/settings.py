@@ -14,13 +14,14 @@ COMPONENTS = {
     "component.wiseccdb.WiseCcdb" :None,
     "component.l2linkbase.L2base" :None,
     "component.l2patch.L2Patch" :None,
-    #"component.levelselect.LevelSelect" :None,
+    "component.robots.Robots" :None,
     #"component.levelall.LevelAll" :None,
     # "component.dc" :None,
 } 
 AFTER_STRATEGIES = [
     "strategy.ccdb.CCDB",
     "strategy.common.Common",
+    "strategy.robots.Robots",
     "strategy.linkbase.Linkbase",
     "strategy.select.Select",
     "strategy.close.Close",

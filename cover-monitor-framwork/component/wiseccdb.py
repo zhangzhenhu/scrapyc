@@ -8,4 +8,4 @@ class WiseCcdb(Component):
 
 
     name = "wiseccdb"
-    cmd = "sh -x ./tools/wdbtools/seekglobalwise.sh "
+    cmd = "sh -x ./tools/wdbtools/seekglobalwise_multi.sh "

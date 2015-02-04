@@ -7,4 +7,4 @@ class Robots(Component):
     """docstring for Robots"""
 
     name = "robots"
-    cmd = "sh -x ./tools/forbid/robots.sh "
+    cmd = "sh -x ./tools/dns/robots.sh "

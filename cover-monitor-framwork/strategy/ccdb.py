@@ -16,7 +16,7 @@ class CCDB(Strategy):
 
     def wiseccdb(self,case):
         ccdb = case.get_data("wiseccdb")
-        if  ccdb.get('Last-mod-time')  == "-" or ccdb.get("Weight") == "-":
+        if  not ccdb or ccdb.get('Last-mod-time')  == "-" or ccdb.get("Weight") == "-":
             return
         weight = int(ccdb.get("Weight"))
         wise = int(ccdb.get("Wise"))
@@ -41,7 +41,7 @@ class CCDB(Strategy):
 
     def pcccb(self,case):
         ccdb = case.get_data("pcccdb")
-        if  ccdb.get('Last-mod-time')  == "-" or ccdb.get("Weight") == "-":
+        if not ccdb or ccdb.get('Last-mod-time')  == "-" or ccdb.get("Weight") == "-":
             return
 
         weight = int(ccdb.get("Weight"))

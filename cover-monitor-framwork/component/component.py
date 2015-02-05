@@ -71,7 +71,7 @@ class Component(_threading.Thread):
 
     def run(self):
         print "[Component:%s] start" %self.name
-        if self.settings.getbool("RESUM") == False: 
+        if self.settings.getbool("RESUME") == False: 
             self.dump_case()
             self._run_cmd()
         self.parse(self.out_file)

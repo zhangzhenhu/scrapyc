@@ -103,12 +103,12 @@ class Framwork(object):
         self._load_after_strategy()
 
         self._run_before_strategy()
-        if resume :
-            self.load()
-            for case  in self.input_data:print case.data.keys()
-        else:
-            self._run_component()
-            self.dump()
+        # if resume :
+        #     #self.load()
+        #     for case  in self.input_data:print case.data.keys()
+        # else:
+        self._run_component()
+        #self.dump()
         self._run_after_strategy()
 
 

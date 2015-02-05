@@ -22,6 +22,7 @@ AFTER_STRATEGIES = [
     "strategy.ccdb.CCDB",
     "strategy.common.Common",
     "strategy.robots.Robots",
+    "strategy.forbid.Forbid",
     "strategy.linkbase.Linkbase",
     "strategy.select.Select",
     "strategy.close.Close",

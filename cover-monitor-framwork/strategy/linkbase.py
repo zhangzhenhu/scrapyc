@@ -38,11 +38,8 @@ class Linkbase(Strategy):
                     elif del_reason == "0" :
                         case.set_result("reason","urlnew=GET&&url_level=%s&&forceGET=%s"%(url_level,forceGET))
                         case.set_result("conclusion","unCrawl")
-                    elif del_reason == "61" :
-                        case.set_result("reason","DEL&&del_reason=61")
-                        case.set_result("conclusion","uplimitDel")
-                    else:
-                        case.set_result("reason","DEL&&del_reason=%s"%del_reason)
+                    elif del_reason != "0" :
+                        case.set_result("reason","del_reason=%s"%del_reason)
                         case.set_result("conclusion","linkbaseDel")                                          
                     case.close = True
                     continue

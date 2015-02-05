@@ -24,17 +24,20 @@ class CCDB(Strategy):
         if weight <=10 and weight != 9:
             case.set_result("conclusion","lowWeight")
             case.set_result("reason","weight=%d"%weight)
+            case.set_result("additional","wiseccdb")
             case.close = True
             return
         elif flag == "MARKDEL":
             case.set_result("conclusion","markDel")
             case.set_result("reason","flag=%s"%flag)
+            case.set_result("additional","wiseccdb")
             case.close = True
             return
         else:
 
             case.set_result("conclusion","noProblem")
             case.set_result("reason","wise=%d&&weight=%d&&flag=%s"%(wise,weight,flag))
+            case.set_result("additional","wiseccdb")
             case.close = True
             case.ok = True
             return
@@ -51,17 +54,20 @@ class CCDB(Strategy):
         if weight <=10 and weight != 9:
             case.set_result("conclusion","lowWeight")
             case.set_result("reason","weight=%d"%weight)
+            case.set_result("additional","pcccdb")
             case.close = True
             return
         elif flag == "MARKDEL":
             case.set_result("conclusion","markDel")
             case.set_result("reason","flag=%s"%flag)
+            case.set_result("additional","pcccdb")
             case.close = True
             return
         else:
 
             case.set_result("conclusion","noProblem")
             case.set_result("reason","wise=%d&&weight=%d&&flag=%s"%(wise,weight,flag))
+            case.set_result("additional","pcccdb")
             case.close = True
             case.ok = True
             return

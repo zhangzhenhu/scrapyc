@@ -28,15 +28,22 @@ class Linkbase(Strategy):
                     url_level  = ld.get("url_level")
                     forceGET  = ld.get("forceGET")
                     crawl_fail = ld.get("crawl_fail")
+                    del_reason = ld.get("del_reason")
                     if crawl_fail == True:
                         case.set_result("conclusion","crawlFail")
                         case.set_result("reason","crawl_total:%d&&crawl_fail:%d"%(ld.get("craw_count"),ld.get("fail_count")))                       
                     elif url_level in ["1","0"]:
                         case.set_result("conclusion","lowLevel")
                         case.set_result("reason","url_level=%s"%url_level)
-                    else:
+                    elif del_reason == "0" :
                         case.set_result("reason","urlnew=GET&&url_level=%s&&forceGET=%s"%(url_level,forceGET))
                         case.set_result("conclusion","unCrawl")
+                    elif del_reason == "61" :
+                        case.set_result("reason","DEL&&del_reason=61")
+                        case.set_result("conclusion","uplimitDel")
+                    else:
+                        case.set_result("reason","DEL&&del_reason=%s"%del_reason)
+                        case.set_result("conclusion","linkbaseDel")                                          
                     case.close = True
                     continue
 

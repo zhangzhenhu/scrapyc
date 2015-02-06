@@ -7,7 +7,7 @@ class IP(Strategy):
     """docstring for IP"""
     def run(self,data):
         for case in data:
-            if  case.get_result("conclusion") not in ["unCrawl"]:
+            if  case.result("conclusion") not in ["unCrawl"]:
                 continue
             ip = case.get_data("ip")
             if "ip" not in ip or ip["ip"] != "yes":

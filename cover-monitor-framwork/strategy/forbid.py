@@ -6,7 +6,7 @@ class Forbid(Strategy):
     """docstring for Forbid"""
     def run(self,data):
         for case in data:
-            if case.close and case.get_result("conclusion") in ["noProblem"]:
+            if case.close and case.result("conclusion") in ["noProblem"]:
                 continue
             # robots = case.get_data("robots")
             # if  not robots or robots.get('robots') != "DISALLOW":

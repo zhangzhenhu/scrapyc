@@ -20,7 +20,7 @@ class Report(Strategy):
 
         rf =os.path.join(jobdir,"report.html")
         f = open(rf,'w')
-        f.write(t.render(STATS = stats,FTP=casef))
+        f.write(t.render(STATS = stats,FTP=casef,OWNER=self.settings["REPORT_OWNER"]))
         f.close()
         
         email_bin = self.settings['REPORT_EMAIL_BIN']

@@ -13,4 +13,5 @@ class IP(Strategy):
             if not ip or "ip" not in ip or ip["ip"] != "yes":
                 case.set_result("conclusion","noIP")
                 case.set_result("reason","cc_noip")
+                case.set_result("owner","liangdong01@baidu.com")
                 case.close = True

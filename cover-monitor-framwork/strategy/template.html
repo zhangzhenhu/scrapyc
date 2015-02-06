@@ -40,6 +40,7 @@
 					<td>${name}</td>
 					<td>${value}</td>
 					<td>${"%.2f"%(value*100/float(STATS.count_ok+STATS.count_valid))}%</td>
+					<td>${OWNER.get(name)}</td>
 				</tr>
 			%endfor
 			%for  name,value in STATS.stats_invalid.items():

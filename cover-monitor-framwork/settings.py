@@ -45,7 +45,15 @@ REPORT_EMAIL_TO ="zhangzhenhu@baidu.com baihongxia@baidu.com kangqiusheng@baidu.
 REPORT_EMAIL_TO ="zhangzhenhu@baidu.com"
 REPORT_EMAIL_SVR = "hotswap-in.baidu.com"
 REPORT_EMAIL_TITLE = "国际化无线覆盖率监控"
-
+REPORT_OWNER={
+    "unCrawl":"wangyifang@baidu",
+    "notFound":"zhangzhenhu@baidu",
+    "noIP":"liangdong01@baidu",
+    "Forbidden":"zhouguanglu01@baidu.com",
+    "linkbaseDel":"zhongxiande@baidu",
+    "Forbidden_nm":"zhouguanglu01@baidu",
+    "lowWeight":"wangchuangang@baidu.com",
+}
 
 CONVERT_REPLACE = {
     "http://www.facebook.com/profile.php?id=128290960576624":"http://www.facebook.com/pages/Info-Kerja-Keluar-Negeri/128290960576624",

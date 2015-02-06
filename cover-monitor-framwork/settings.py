@@ -23,8 +23,8 @@ COMPONENTS = {
 AFTER_STRATEGIES = [
     "strategy.ccdb.CCDB",
     "strategy.common.Common",
-    "strategy.linkbase.Linkbase",
     "strategy.robots.Robots",
+    "strategy.linkbase.Linkbase",
     "strategy.forbid.Forbid",
     "strategy.ip.IP",
     "strategy.select.Select",

@@ -10,7 +10,7 @@ class Robots(Strategy):
                 continue
             robots = case.get_data("robots")
             if  not robots or robots.get('robots') != "DISALLOW":
-                return
+                continue
             case.set_result("conclusion","robots")
             case.set_result("reason","robots=DISALLOW")
             case.close = True

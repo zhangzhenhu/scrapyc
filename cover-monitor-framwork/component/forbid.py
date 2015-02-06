@@ -3,8 +3,8 @@ from .component import Component
 
 
 
-class IPForbid(Component):
+class Forbid(Component):
     """docstring for IPForbid"""
 
-    name = "IPForbid"
-    cmd = "sh -x ./tools/forbid/ip.sh "
+    name = "forbid"
+    cmd = "python ./tools/cc_forbid/start.py"

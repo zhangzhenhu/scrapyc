@@ -3,8 +3,8 @@ from .component import Component
 
 
 
-class UA(Component):
+class IP(Component):
     """docstring for Linkbase"""
 
-    name = "ua"
-    cmd = "sh -x ./tools/forbid/ua.sh "
+    name = "ip"
+    cmd = "sh -x ./tools/cc_ip/run.sh"

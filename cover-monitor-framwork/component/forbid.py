@@ -7,4 +7,4 @@ class Forbid(Component):
     """docstring for IPForbid"""
 
     name = "forbid"
-    cmd = "python ./tools/cc_forbid/start.py"
+    cmd = "sh -x  ./tools/cc_forbid/run.sh"

@@ -10,7 +10,7 @@ class IP(Strategy):
             if  case.result.get("conclusion") not in ["unCrawl"]:
                 continue
             ip = case.get_data("ip")
-            if "ip" not in ip or ip["ip"] != "yes":
+            if not ip or "ip" not in ip or ip["ip"] != "yes":
                 case.set_result("conclusion","noIP")
                 case.set_result("reason","cc_noip")
                 case.close = True

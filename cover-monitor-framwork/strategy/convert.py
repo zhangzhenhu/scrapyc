@@ -33,7 +33,7 @@ class Convert(Strategy):
                 origin = "http://" + origin[8:]
             if "#" in origin:
                 origin = origin.split("#",1)[0]
-            case.target = urllib.unquote(origin)
+            case.target = urllib.unquote(origin).replace(" ","%20")
 
             site = get_url_site(origin)
             if site in ["m.facebook.com","id-id.facebook.com"]:

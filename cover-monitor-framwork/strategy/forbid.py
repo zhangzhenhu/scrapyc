@@ -24,6 +24,7 @@ class Forbid(Strategy):
                 case.set_result("conclusion","Forbidden")
                 case.set_result("reason",forbid["forbidden"])
                 if "out" in forbid and forbid["out"]:
+                    case.set_result("conclusion","Forbidden_nm")
                     case.set_result("additional","out:%s"%(forbid["out"]))
                 case.close = True
         return                

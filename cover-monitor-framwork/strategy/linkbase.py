@@ -20,9 +20,17 @@ class Linkbase(Strategy):
                     case.close = True
                     continue
             if ld:
+                #import pdb
+                #pdb.set_trace()
                 urlnew = ld.get("urlnew")
-                weight = int(ld.get("weight"))
-                wise = int(ld.get("Wise"))
+                try:
+                    weight = int(ld.get("weight"))
+                except:
+                    weight = 0
+                try:
+                    wise = int(ld.get("Wise"))
+                except:
+                    wise = -1
                 if urlnew == "CHK":
                     if weight >10 or weight == 9 :
                         case.set_result("conclusion","noProblem")

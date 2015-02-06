@@ -25,7 +25,7 @@ fi
 }
 
 
-#get_query
+get_query
 
 
 awk -F '\t'  '{if(NR>1){ for (i=0;i<$2;i++){ print $1} }}'  ${QUERY_PATH}/query.$T > ${DATA_PATH}/query.$T.ext

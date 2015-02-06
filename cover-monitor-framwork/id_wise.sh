@@ -84,6 +84,6 @@ cp ${robot_input} ./intbogus/`date +%Y%m%d`.google
 cat robot/feeds/one/*.json  | python utils/parsejson.py | uniq >> ./intbogus/`date +%Y%m%d`.google
 }
 
-_scrapy
+#_scrapy
 wait
 

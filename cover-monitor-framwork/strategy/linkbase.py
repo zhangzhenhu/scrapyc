@@ -14,15 +14,29 @@ class Linkbase(Strategy):
             ld = case.get_data("linkbase")
             l2patch = case.get_data("l2patch")
             l2base = case.get_data("l2base")
+
             if ld and l2patch and l2base and ld.get("urlnew") == "-" and  l2patch.get("urlnew") == "-" and  l2base.get("urlnew") == "-":
                     case.set_result("conclusion","notFound")
                     case.close = True
                     continue
             if ld:
                 urlnew = ld.get("urlnew")
-                if urlnew == "CHK" :
-                    case.set_result("conclusion","lcDiff")
-                    case.close = True
+                weight = int(ld.get("weight"))
+                wise = int(ld.get("Wise"))
+                if urlnew == "CHK":
+                    if weight >10 or weight == 9 :
+                        case.set_result("conclusion","noProblem")
+                        case.set_result("reason","wise=%d&&weight=%d"%(wise,weight))
+                        #case.set_result("additional","pcccdb")
+                        case.close = True
+                        case.ok = True
+                    else:
+                        case.set_result("conclusion","lowWeight")
+                        case.set_result("reason","weight=%d"%weight)
+                        #case.set_result("additional","pcccdb")
+                        case.close = True                                               
+                    # case.set_result("conclusion","lcDiff")
+                    # case.close = True
                     continue
                 elif urlnew == "GET":
                     url_level  = ld.get("url_level")

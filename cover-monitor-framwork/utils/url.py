@@ -32,7 +32,18 @@ def remove_query(url,qname):
     if nq:
         return nurl[0] + "?" + nq[:-1]
     return nurl[0]
-
+def get_query(url,qname):
+    nurl = url.split("?",1)
+    if len(nurl) == 1 or not nurl[1]:
+        return None
+    nq = ""
+    qname = qname + "="
+    for item in nurl[1].split('&'):
+        if item.startswith(qname):
+            item = item.split("=")
+            if len(item) > 1: return item[1]
+            return None
+    return None
 
 
 import time

@@ -37,7 +37,11 @@ class Convert(Strategy):
 
             site = get_url_site(origin)
             if site in ["m.facebook.com","id-id.facebook.com"]:
-                origin = remove_query(origin,"refsrc")
+                if "profile.php?id=" in origin:
+                    refsrc = get_query(origin,"refsrc")
+                    origin = urllib.unquote(refsrc).replace(" ","%20")
+                else:
+                    origin = remove_query(origin,"refsrc")
                 case.add_common(origin)
                 case.target = replace_site(origin,"www.facebook.com")
                  

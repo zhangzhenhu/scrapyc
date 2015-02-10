@@ -32,9 +32,9 @@ class Convert(Strategy):
             origin = case.target
             site = get_url_site(origin)
             if site in ["m.facebook.com","id-id.facebook.com"]:
-                if "profile.php?id=" in origin:
+                if "profile.php?id=" in origin and "refsrc=" in origin:
                     refsrc = get_query(origin,"refsrc")
-                    origin = refsrc
+                    origin = urllib.unquote(refsrc.replace("%3A",":").replace("%2F","/")).replace(" ","%20")
                 else:
                     origin = remove_query(origin,"refsrc")
                 case.add_common(origin)

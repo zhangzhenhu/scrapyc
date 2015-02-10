@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .strategy import Strategy
-from utils.url import get_url_site,replace_site,remove_query
+from utils.url import get_url_site,replace_site,remove_query,get_query
 from utils.case import Case
 import urllib
 

@@ -24,12 +24,22 @@ def remove_m1(url):
 class Convert(Strategy):
     """docstring for Convert"""
     name = "convert"
+    
+
+    def normaliz(url):
+        if url.startswith("https://"):
+            url = "http://" + url[8:]
+        if "#" in url:
+            url = url.split("#",1)[0]
+        url = urllib.unquote(url).replace(" ","%20")
+        return url
+
 
     def run(self,data):
 
         for case in data:
 
-            origin = case.target
+            origin = self.normaliz(case.target)
             site = get_url_site(origin)
             if site in ["m.facebook.com","id-id.facebook.com"]:
                 if "profile.php?id=" in origin and "refsrc=" in origin:
@@ -37,6 +47,7 @@ class Convert(Strategy):
                     origin = urllib.unquote(refsrc.replace("%3A",":").replace("%2F","/")).replace(" ","%20")
                 else:
                     origin = remove_query(origin,"refsrc")
+                
                 case.add_common(origin)
                 case.target = replace_site(origin,"www.facebook.com")
                  
@@ -70,12 +81,8 @@ class Convert(Strategy):
             if case.target in REPLACE:
                 case.target = REPLACE[case.target]
 
-            origin = case.target
-            if origin.startswith("https://"):
-                origin = "http://" + origin[8:]
-            if "#" in origin:
-                origin = origin.split("#",1)[0]
-            case.target = urllib.unquote(origin).replace(" ","%20")
+
+            case.target = self.normaliz(case.target)
 
 
 if __name__ == '__main__':

@@ -8,4 +8,4 @@ class PCCcdb(Component):
 
 
     name = "pcccdb"
-    cmd = "sh -x ./tools/wdbtools/seekglobal.sh "
+    cmd = "sh -x ./tools/wdbtools/seekglobal_ex.sh "

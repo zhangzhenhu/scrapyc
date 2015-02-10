@@ -28,18 +28,13 @@ class Convert(Strategy):
     def run(self,data):
 
         for case in data:
-            origin = case.target
-            if origin.startswith("https://"):
-                origin = "http://" + origin[8:]
-            if "#" in origin:
-                origin = origin.split("#",1)[0]
-            case.target = urllib.unquote(origin).replace(" ","%20")
 
+            origin = case.target
             site = get_url_site(origin)
             if site in ["m.facebook.com","id-id.facebook.com"]:
                 if "profile.php?id=" in origin:
                     refsrc = get_query(origin,"refsrc")
-                    origin = urllib.unquote(refsrc).replace(" ","%20")
+                    origin = refsrc
                 else:
                     origin = remove_query(origin,"refsrc")
                 case.add_common(origin)
@@ -75,7 +70,12 @@ class Convert(Strategy):
             if case.target in REPLACE:
                 case.target = REPLACE[case.target]
 
-
+            origin = case.target
+            if origin.startswith("https://"):
+                origin = "http://" + origin[8:]
+            if "#" in origin:
+                origin = origin.split("#",1)[0]
+            case.target = urllib.unquote(origin).replace(" ","%20")
 
 
 if __name__ == '__main__':

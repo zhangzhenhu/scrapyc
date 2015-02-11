@@ -33,12 +33,18 @@ class Linkbase(Strategy):
                 except:
                     wise = -1
                 if urlnew == "CHK":
-                    if weight >10 or weight == 9 :
+                    if  weight == 9 or wise >0  :
                         case.set_result("conclusion","noProblem")
                         case.set_result("reason","wise=%d&&weight=%d"%(wise,weight))
                         #case.set_result("additional","pcccdb")
                         case.close = True
                         case.ok = True
+                    elif weight >10 :
+                        case.set_result("conclusion","wiseEorr")
+                        case.set_result("reason","wise=%d&&weight=%d"%(wise,weight))
+                        #case.set_result("additional","pcccdb")
+                        case.close = True
+
                     else:
                         case.set_result("conclusion","lowWeight")
                         case.set_result("reason","weight=%d"%weight)

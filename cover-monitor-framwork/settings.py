@@ -53,6 +53,13 @@ REPORT_OWNER={
     "linkbaseDel":"zhongxiande@baidu.com",
     "Forbidden_nm":"zhouguanglu01@baidu.com",
     "lowWeight":"wangchuangang@baidu.com",
+    "del_reason=61":"zhongxiande@baidu.com",
+    "del_reason=5":"xiongzhen@baidu.com",
+    "del_reason=24":"xiongzhen@baidu.com",
+    "del_reason=32":"kangqiusheng@baidu.com",
+    "del_reason=20":"",
+    "del_reason=1":"",
+    "del_reason=2":"",
 }
 
 CONVERT_REPLACE = {

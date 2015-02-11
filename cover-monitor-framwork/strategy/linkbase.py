@@ -64,12 +64,12 @@ class Linkbase(Strategy):
                     elif del_reason == "0" :
                         case.set_result("reason","urlnew=GET&&url_level=%s&&forceGET=%s"%(url_level,forceGET))
                         case.set_result("conclusion","unCrawl")
-                        case.set_result("owner","wangyifang@baidu.com")
+                        #case.set_result("owner","wangyifang@baidu.com")
                         case.close = True
                     elif del_reason != "0" :
                         case.set_result("reason","del_reason=%s"%del_reason)
-                        case.set_result("conclusion","linkbaseDel")       
-                        case.set_result("owner","zhongxiande@baidu.com")
+                        case.set_result("conclusion","del_reason=%s"%del_reason)       
+                        #case.set_result("owner","zhongxiande@baidu.com")
 
                         case.close = True
                         continue
@@ -77,14 +77,14 @@ class Linkbase(Strategy):
                     #continue
 
             if l2patch and "del_reason" in l2patch and l2patch["del_reason"] != "-" :
-                case.set_result("conclusion","linkbaseDel")
+                case.set_result("conclusion","del_reason="+l2patch["del_reason"])
                 case.set_result("reason","del_reason="+l2patch["del_reason"])
                 case.set_result("owner","zhongxiande@baidu.com") 
                 case.close = True
                 continue
             
             if l2base and "del_reason" in l2base and l2base["del_reason"] != "-" :
-                case.set_result("conclusion","linkbaseDel")
+                case.set_result("conclusion","del_reason="+l2base["del_reason"])
                 case.set_result("reason",l2base["del_reason"])
                 case.set_result("owner","zhongxiande@baidu.com") 
                 case.close = True

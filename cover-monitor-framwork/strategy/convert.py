@@ -65,6 +65,9 @@ class Convert(Strategy):
             elif site == "play.google.com":
                 origin = remove_query(origin,"referrer")
                 origin = remove_query(origin,"pcampaignid")
+                origin = remove_query(origin,"utm_term")
+                origin = remove_query(origin,"utm_medium")
+                origin = remove_query(origin,"hl")
                 #case.add_common(origin)
                 case.target = origin 
             elif site == "m.stafaband.info" :

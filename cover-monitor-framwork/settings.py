@@ -70,10 +70,10 @@ PC_SITE = ["www.facebook.com",
 "www.youtube.co.id",
 ]
 
-PC_SITE = [
+PC_DOMAIN = [
 ".blogspot.com",
 ".wordpress.com",
-""
+
 
 ]
 

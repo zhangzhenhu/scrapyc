@@ -26,7 +26,7 @@ class Convert(Strategy):
     name = "convert"
     
 
-    def normaliz(url):
+    def normaliz(self,url):
         if url.startswith("https://"):
             url = "http://" + url[8:]
         if "#" in url:

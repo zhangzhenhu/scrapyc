@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
 from .strategy import Strategy
-
+from utils.url import get_url_site
 
 class Linkbase(Strategy):
     """docstring for Linkbase"""
     name = "linkbase"
 
     def run(self,data):
-
+        PC_SITE = self.settings["PC_SITE"]
         for case in data:
             if case.close:
                 continue
             ld = case.get_data("linkbase")
             l2patch = case.get_data("l2patch")
             l2base = case.get_data("l2base")
+            site = get_url_site(case.target)
 
             if ld and l2patch and l2base and ld.get("urlnew") == "-" and  l2patch.get("urlnew") == "-" and  l2base.get("urlnew") == "-":
                     case.set_result("conclusion","notFound")
@@ -33,7 +34,7 @@ class Linkbase(Strategy):
                 except:
                     wise = -1
                 if urlnew == "CHK":
-                    if  weight == 9 or wise >0  :
+                    if  weight == 9 or wise >0  or (weight >10 and site  in PC_SITE) :
                         case.set_result("conclusion","noProblem")
                         case.set_result("reason","wise=%d&&weight=%d"%(wise,weight))
                         #case.set_result("additional","pcccdb")

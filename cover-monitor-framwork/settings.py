@@ -62,6 +62,19 @@ REPORT_OWNER={
     "del_reason=2":"",
 }
 
+PC_SITE = ["www.facebook.com",
+"www.imdb.com",
+"www.stafaband.info",
+"www.youtube.com",
+"twitter.com",
+]
+
+
+
+
+
+
+
 CONVERT_REPLACE = {
     "http://www.facebook.com/profile.php?id=128290960576624":"http://www.facebook.com/pages/Info-Kerja-Keluar-Negeri/128290960576624",
     "http://www.facebook.com/profile.php?id=165369583498686":"http://www.facebook.com/pages/Johnny-Andrean-Salon/165369583498686",

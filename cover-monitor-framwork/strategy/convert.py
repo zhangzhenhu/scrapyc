@@ -79,6 +79,9 @@ class Convert(Strategy):
             elif site == "anjingkita.com":
                 case.add_common(origin)
                 case.target = replace_site(origin,"www.anjingkita.com")
+            elif site == "m.imdb.com":
+                case.add_common(origin)
+                case.target = replace_site(origin,"www.imdb.com")                
 
             REPLACE = self.settings["CONVERT_REPLACE"]
             if case.target in REPLACE:

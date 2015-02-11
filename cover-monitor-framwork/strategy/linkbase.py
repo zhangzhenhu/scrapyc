@@ -54,20 +54,27 @@ class Linkbase(Strategy):
                     del_reason = ld.get("del_reason")
                     if crawl_fail == True:
                         case.set_result("conclusion","crawlFail")
-                        case.set_result("reason","crawl_total:%d&&crawl_fail:%d"%(ld.get("craw_count"),ld.get("fail_count")))                       
+                        case.set_result("reason","crawl_total:%d&&crawl_fail:%d"%(ld.get("craw_count"),ld.get("fail_count")))
+                        case.close = True
+
                     elif url_level in ["1","0"]:
                         case.set_result("conclusion","lowLevel")
                         case.set_result("reason","url_level=%s"%url_level)
+                        case.close = True
                     elif del_reason == "0" :
                         case.set_result("reason","urlnew=GET&&url_level=%s&&forceGET=%s"%(url_level,forceGET))
                         case.set_result("conclusion","unCrawl")
                         case.set_result("owner","wangyifang@baidu.com")
+                        case.close = True
                     elif del_reason != "0" :
                         case.set_result("reason","del_reason=%s"%del_reason)
                         case.set_result("conclusion","linkbaseDel")       
-                        case.set_result("owner","zhongxiande@baidu.com")                                   
-                    case.close = True
-                    continue
+                        case.set_result("owner","zhongxiande@baidu.com")
+
+                        case.close = True
+                        continue
+        
+                    #continue
 
             if l2patch and "del_reason" in l2patch and l2patch["del_reason"] != "-" :
                 case.set_result("conclusion","linkbaseDel")

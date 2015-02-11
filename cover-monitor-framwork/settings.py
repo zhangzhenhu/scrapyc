@@ -60,6 +60,7 @@ REPORT_OWNER={
     "del_reason=20":"zhongxiande@baidu.com",
     "del_reason=1":"",
     "del_reason=2":"",
+    "wiseEorr":"tianzhenlei@baidu.com",
 }
 
 PC_SITE = ["www.facebook.com",
@@ -68,6 +69,9 @@ PC_SITE = ["www.facebook.com",
 "www.youtube.com",
 "twitter.com",
 "www.youtube.co.id",
+"www.solopos.com",#◊‘  ≈‰
+
+
 ]
 
 PC_DOMAIN = [

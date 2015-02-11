@@ -6,8 +6,17 @@ class Linkbase(Strategy):
     """docstring for Linkbase"""
     name = "linkbase"
 
-    def run(self,data):
+    def is_pc(self,site):
         PC_SITE = self.settings["PC_SITE"]
+        PC_DOMAIN = self.settings["PC_DOMAIN"]
+        if site in PC_SITE: return True
+        for domain in PC_DOMAIN:
+            if site.endswith(domain):
+                return True
+        return False
+
+    def run(self,data):
+        
         for case in data:
             if case.close:
                 continue
@@ -34,7 +43,7 @@ class Linkbase(Strategy):
                 except:
                     wise = -1
                 if urlnew == "CHK":
-                    if  weight == 9 or wise >0  or (weight >10 and site  in PC_SITE) :
+                    if  weight == 9 or wise >0  or (weight >10 and self.is_pc(site) ) :
                         case.set_result("conclusion","noProblem")
                         case.set_result("reason","wise=%d&&weight=%d"%(wise,weight))
                         #case.set_result("additional","pcccdb")

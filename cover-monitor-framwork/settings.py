@@ -67,6 +67,14 @@ PC_SITE = ["www.facebook.com",
 "www.stafaband.info",
 "www.youtube.com",
 "twitter.com",
+"www.youtube.co.id",
+]
+
+PC_SITE = [
+".blogspot.com",
+".wordpress.com",
+""
+
 ]
 
 

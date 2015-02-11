@@ -57,7 +57,7 @@ REPORT_OWNER={
     "del_reason=5":"xiongzhen@baidu.com",
     "del_reason=24":"xiongzhen@baidu.com",
     "del_reason=32":"kangqiusheng@baidu.com",
-    "del_reason=20":"",
+    "del_reason=20":"zhongxiande@baidu.com",
     "del_reason=1":"",
     "del_reason=2":"",
 }

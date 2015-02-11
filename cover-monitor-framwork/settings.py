@@ -67,4 +67,5 @@ CONVERT_REPLACE = {
 "http://www.facebook.com/profile.php?id=570283562995480":"http://www.facebook.com/pages/Baju-Murah-Harga-Mulai-40rb-Leira-Online-Shop-Grosir-eceran/570283562995480",
 "http://www.facebook.com/profile.php?id=68304404153":"http://www.facebook.com/pages/Nam-Centre-Ballroom/68304404153",
     "http://www.facebook.com/profile.php?id=373368842775458":"http://www.facebook.com/pages/Artis-sexxx-SMP-SMA-gentoz-yukkkk/373368842775458",
+    "http://www.facebook.com/profile.php?id=549782498377679":"http://www.facebook.com/pages/Cerita-sex-remaja-dan-dewasa/549782498377679"
 }

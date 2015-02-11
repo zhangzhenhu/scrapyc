@@ -38,7 +38,7 @@
 				</tr>
 			%endfor
 			
-			%for  name,value in STATS.stats_valid.items():
+			%for  name,value in sorted(STATS.stats_valid.iteritems(), key=lambda d:d[1], reverse = True ):
 				<tr  align="center" class="bad" >
 					<td>${name}</td>
 					<td>${value}</td>

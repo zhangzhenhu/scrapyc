@@ -46,35 +46,35 @@ REPORT_EMAIL_TO ="zhangzhenhu@baidu.com"
 REPORT_EMAIL_SVR = "hotswap-in.baidu.com"
 REPORT_EMAIL_TITLE = "国际化无线覆盖率监控"
 REPORT_OWNER={
-    "unCrawl":{"owner","wangyifang@baidu.com","desc":u"""1. case站点流量手动上线
+    "unCrawl":{"owner":"wangyifang@baidu.com","desc":u"""1. case站点流量手动上线
 
 长线升级cc压力策略，保证中小站点流量 """},
-    "notFound":{"owner","zhangzhenhu@baidu.com","desc":u""" """},
-    "noIP":{"owner","liangdong01@baidu.com","desc":u""" """},
-    "Forbidden":{"owner","zhouguanglu01@baidu.com","desc":u"""1. 和站长谈判  预计3月初结论
+    "notFound":{"owner":"zhangzhenhu@baidu.com","desc":u""" """},
+    "noIP":{"owner":"liangdong01@baidu.com","desc":u""" """},
+    "Forbidden":{"owner":"zhouguanglu01@baidu.com","desc":u"""1. 和站长谈判  预计3月初结论
 2. 搭建日本出口 预计3月初完成
 """},
-    "linkbaseDel":{"owner","zhongxiande@baidu.com","desc":u"""短线配置白名单@钟贤德"""},
-    "Forbidden_nm":{"owner","zhouguanglu01@baidu.com","desc":u"""已配置匿名出口。需要持续关注效果@张博"""},
-    "lowWeight":{"owner","wangchuangang@baidu.com","desc":u""" """},
-    "del_reason=61":{"owner","zhongxiande@baidu.com","desc":u""" """},
-    "del_reason=5":{"owner","zhouguanglu01@baidu.com","desc":u"""play.google.com抓成中文被删除，可配置美国出口解决。@广露"""},
-    "del_reason=24":{"owner","xiongzhen@baidu.com","desc":u""" """},
-    "del_reason=32":{"owner","kangqiusheng@baidu.com","desc":u"""wise识别错误。
+    "linkbaseDel":{"owner":"zhongxiande@baidu.com","desc":u"""短线配置白名单@钟贤德"""},
+    "Forbidden_nm":{"owner":"zhouguanglu01@baidu.com","desc":u"""已配置匿名出口。需要持续关注效果@张博"""},
+    "lowWeight":{"owner":"wangchuangang@baidu.com","desc":u""" """},
+    "del_reason=61":{"owner":"zhongxiande@baidu.com","desc":u""" """},
+    "del_reason=5":{"owner":"zhouguanglu01@baidu.com","desc":u"""play.google.com抓成中文被删除，可配置美国出口解决。@广露"""},
+    "del_reason=24":{"owner":"xiongzhen@baidu.com","desc":u""" """},
+    "del_reason=32":{"owner":"kangqiusheng@baidu.com","desc":u"""wise识别错误。
 1.3月10号EC上线新版并进行刷库倒库
 2.跟进识别招回效果@王婷婷"""},
-    "del_reason=20":{"owner","zhongxiande@baidu.com","desc":u"""短线配置白名单@钟贤德"""},
-    "del_reason=1":{"owner","","desc":u""" """},
-    "del_reason=2":{"owner","","desc":u""" """},
-    "wiseEorr":{"owner","wangtingting10@baidu.com","desc":u"""wise识别错误。
+    "del_reason=20":{"owner":"zhongxiande@baidu.com","desc":u"""短线配置白名单@钟贤德"""},
+    "del_reason=1":{"owner":"","desc":u""" """},
+    "del_reason=2":{"owner":"","desc":u""" """},
+    "wiseEorr":{"owner":"wangtingting10@baidu.com","desc":u"""wise识别错误。
 1.3月10号EC上线新版并进行刷库倒库
 2.跟进识别招回效果@王婷婷
 """},
-    "weight2":{"owner","wangtingting10@baidu.com","desc":u"""wise识别错误。
+    "weight2":{"owner":"wangtingting10@baidu.com","desc":u"""wise识别错误。
 1.3月10号EC上线新版并进行刷库倒库
 2.跟进识别招回效果@王婷婷
 """},
-    "weight10":{"owner","wangtingting10@baidu.com","desc":u"""wise识别错误。
+    "weight10":{"owner":"wangtingting10@baidu.com","desc":u"""wise识别错误。
 1.3月10号EC上线新版并进行刷库倒库
 2.跟进识别招回效果@王婷婷
 """},

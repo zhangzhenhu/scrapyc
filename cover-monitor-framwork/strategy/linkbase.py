@@ -56,8 +56,8 @@ class Linkbase(Strategy):
                         case.close = True
 
                     else:
-                        case.set_result("conclusion","lowWeight")
-                        case.set_result("reason","weight=%d"%weight)
+                        case.set_result("conclusion","weight%d"%weight)
+                        case.set_result("reason","wise=%d&&weight=%d"%(wise,weight))
                         #case.set_result("additional","pcccdb")
                         case.close = True                                               
                     # case.set_result("conclusion","lcDiff")

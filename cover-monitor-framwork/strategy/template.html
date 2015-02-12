@@ -19,7 +19,7 @@
 	
 	
 
-	<li><span>补充了wise识别的问题（wiseError），对于自适配、自适应的页面，收录pc页是符合预期的，由于工具无法自动判断&&也是需要wise识别cover的，所以全部归到这一类问题，按照计划3月10号会上线新版识别&&重刷网页库。请 <font color="#FF0000"  >振雷</font>follow识别的召回</span></li>
+	<li><span>补充了wise识别的问题（wiseError），对于自适配、自适应的页面，收录pc页是符合预期的，由于工具无法自动判断&&也是需要wise识别cover的，所以全部归到这一类问题，按照计划3月10号会上线新版识别&&重刷网页库。请 <font color="#FF0000"  >王婷婷</font>follow识别的召回</span></li>
 	<li><span>请各个问题负责人及时follow各自的问题</span></li>
 
 	<table align="center" style="FONT-SIZE: 14px; face: Verdana" cellspacing="1" cellpadding="4" border="1">
@@ -29,6 +29,7 @@
 				<th>case数量</th>
 				<th>case占比</th>
 				<th>负责人</th>
+				<th>解决预期</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -38,6 +39,7 @@
 					<td>${name}</td>
 					<td>${value}</td>
 					<td>${"%.2f"%(value*100/float(STATS.count_ok+STATS.count_valid))}%</td>
+					<td></td>
 				</tr>
 			%endfor
 			
@@ -57,27 +59,37 @@
 					<td>${name}</td>
 					<td>${value}</td>
 					<td>null</td>
+					 <td></td>
+					 <td></td>
 				</tr>
 			%endfor
 				<tr  align="center" class="nocase" >
 					<td>覆盖率</td>
 					<td>${STATS.count_ok}</td>
 					<td>${"%.2f"%(STATS.count_ok*100/float(STATS.count_valid+STATS.count_ok))}%</td>
+					<td></td>
+					<td></td>
 				</tr>
 				<tr  align="center" class="case" >
 					<td>case率</td>
 					<td>${STATS.count_valid}</td>
 					<td>${"%.2f"%(STATS.count_valid*100/float(STATS.count_valid+STATS.count_ok))}%</td>
+					<td></td>
+					<td></td>
 				</tr>
 				<tr  align="center" class="total" >
 					<td>有效样本</td>
 					<td>${STATS.count_valid+STATS.count_ok}</td>
 					<td>100%</td>
+					<td></td>
+					<td></td>
 				</tr>
 				<tr  align="center" class="total" >
 					<td>样本总数</td>
 					<td>${STATS.count_total}</td>
 					<td>null</td>
+					<td></td>
+					<td></td>
 				</tr>
 			</tbody>
 

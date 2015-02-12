@@ -49,7 +49,7 @@
 					<td>${"%.2f"%(value*100/float(STATS.count_ok+STATS.count_valid))}%</td>
 
 					<td>${ow["owner"] if ow else ""}</td>
-					<td>${ow["desc"].encode("utf8") if ow else ""}</td>
+					<td>${ow["desc"] if ow else ""}</td>
 				</tr>
 			%endfor
 			%for  name,value in STATS.stats_invalid.items():

@@ -42,11 +42,14 @@
 			%endfor
 			
 			%for  name,value in sorted(STATS.stats_valid.iteritems(), key=lambda d:d[1], reverse = True ):
+			<% ow = OWNER.get(name) %>
 				<tr  align="center" class="bad" >
 					<td>${name}</td>
 					<td>${value}</td>
 					<td>${"%.2f"%(value*100/float(STATS.count_ok+STATS.count_valid))}%</td>
-					<td>${OWNER.get(name)}</td>
+
+					<td>${ow["owner"] if ow else ""}</td>
+					<td>${ow["desc"].encode("utf8") if ow else ""}</td>
 				</tr>
 			%endfor
 			%for  name,value in STATS.stats_invalid.items():

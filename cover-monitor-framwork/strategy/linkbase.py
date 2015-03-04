@@ -82,6 +82,7 @@ class Linkbase(Strategy):
                         case.set_result("conclusion","unCrawl")
                         #case.set_result("owner","wangyifang@baidu.com")
                         case.close = True
+                        continue
                     elif del_reason != "0" :
                         case.set_result("reason","del_reason=%s"%del_reason)
                         case.set_result("conclusion","del_reason=%s"%del_reason)       
@@ -91,7 +92,7 @@ class Linkbase(Strategy):
                         continue
         
                     #continue
-
+            if case.close == True:continue
             if l2patch and "del_reason" in l2patch and l2patch["del_reason"] != "-" :
                 case.set_result("conclusion","del_reason="+l2patch["del_reason"])
                 case.set_result("reason","del_reason="+l2patch["del_reason"])

@@ -73,9 +73,9 @@ class Convert(Strategy):
             elif site == "m.stafaband.info" :
                 case.add_common(origin)
                 case.target = replace_site(origin,"www.stafaband.info")             
-            elif site == "m.olx.co.id":
-                origin = remove_query(origin,"redirect")
-                case.target = origin
+            #elif site == "m.olx.co.id":
+             #   origin = remove_query(origin,"redirect")
+             #   case.target = origin
             elif site == "anjingkita.com":
                 case.add_common(origin)
                 case.target = replace_site(origin,"www.anjingkita.com")

@@ -35,6 +35,7 @@ MAX_RUN_TASK = 10
 EXTENSIONS = {
 #'scrapyc.server.utils.logstats.LogStats':200,
 }
+ALLOW_SITES=[]
 FEED_URI="file:///home/spider/zhangzhenhu/robot/%(name)s/%(time)s.json"
 FEED_FORMAT="jsonlines"
 MAX_DEPTH = 2

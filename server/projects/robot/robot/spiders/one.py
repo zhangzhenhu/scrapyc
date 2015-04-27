@@ -47,7 +47,7 @@ class RobotSpider(scrapy.Spider):
             abs_url =urljoin_rfc(base_url,relative_url)
             #print abs_url
             site = get_url_site(abs_url)
-            if site != base_site and not in ALLOW_SITES:
+            if site != base_site and site not in ALLOW_SITES:
                 continue
             schema = get_url_scheme(abs_url)
             if schema not in ["http","https"]:

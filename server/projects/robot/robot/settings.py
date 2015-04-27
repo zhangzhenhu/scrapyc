@@ -33,7 +33,7 @@ MAX_RUN_TASK = 10
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'robot (+http://www.yourdomain.com)'
 EXTENSIONS = {
-'scrapyc.server.utils.logstats.LogStats':200,
+#'scrapyc.server.utils.logstats.LogStats':200,
 }
 FEED_URI="file:///home/spider/zhangzhenhu/robot/%(name)s/%(time)s.json"
 FEED_FORMAT="jsonlines"

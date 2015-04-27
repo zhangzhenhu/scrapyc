@@ -14,7 +14,7 @@ class RobotSpider(scrapy.Spider):
     def start_requests(self):
         self.crawler.signals.connect(self.spider_idle,signals.spider_idle)
         for url in self.start_urls:
-            req =  scrapy.Request(abs_url,callback=self.parse)
+            req =  scrapy.Request(url,callback=self.parse)
             req.meta["depth"] =  1
             yield req            
         pass

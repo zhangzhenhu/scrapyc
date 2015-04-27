@@ -15,7 +15,7 @@ class RobotSpider(scrapy.Spider):
         self.crawler.signals.connect(self.spider_idle,signals.spider_idle)
         for url in self.start_urls:
             req =  scrapy.Request(url,callback=self.parse)
-            req.meta["depth"] =  1
+            #req.meta["depth"] =  1
             yield req            
         pass
     def parse(self, response):
@@ -30,12 +30,12 @@ class RobotSpider(scrapy.Spider):
             abs_url =urljoin_rfc(base_url,relative_url)
             #print abs_url
 
-            #yield
-            yield NimeiItem(url=abs_url,depth=depth+1)
-            if depth < MAX_DEPTH:
-                req =  scrapy.Request(abs_url,callback=self.parse)
-                req.meta["depth"] = depth + 1
-                yield req
+            yield scrapy.Request(abs_url,callback=self.parse)
+            yield NimeiItem(url=abs_url,depth=0)
+            # if depth < MAX_DEPTH:
+            #     req =  scrapy.Request(abs_url,callback=self.parse)
+            #     req.meta["depth"] = depth + 1
+            #     yield req
 
     def spider_idle(self,spider):
 

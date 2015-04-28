@@ -20,7 +20,7 @@ def get_url_scheme(url):
 
 
 class RobotSpider(scrapy.Spider):
-    name = "robot"
+    name = "one"
     allowed_domains = []
     start_urls = [    ]
     def __init__(self,*args, **kwargs):
@@ -33,7 +33,7 @@ class RobotSpider(scrapy.Spider):
         if fname:
             with open(fname) as fh:
                 for line in fh.readlines():
-                    url = line.strip().split()
+                    url = line.strip().split()[0]
                     req =  scrapy.Request(url,callback=self.parse)
                     yield req
         for url in self.start_urls:

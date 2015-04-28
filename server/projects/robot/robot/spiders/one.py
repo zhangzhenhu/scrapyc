@@ -61,7 +61,7 @@ class RobotSpider(scrapy.Spider):
             if schema not in ["http","https"]:
                 continue
             yield scrapy.Request(abs_url,callback=self.parse)
-            yield NimeiItem(url=abs_url,depth=0)
+            yield NimeiItem(url=abs_url,furl=response.url)
             # if depth < MAX_DEPTH:
             #     req =  scrapy.Request(abs_url,callback=self.parse)
             #     req.meta["depth"] = depth + 1

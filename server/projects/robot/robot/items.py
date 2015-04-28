@@ -11,5 +11,6 @@ import scrapy
 class NimeiItem(scrapy.Item):
     # define the fields for your item here like:
     url = scrapy.Field()
-    depth = scrapy.Field()
+    #depth = scrapy.Field()
+    furl = scrapy.Field()
     pass

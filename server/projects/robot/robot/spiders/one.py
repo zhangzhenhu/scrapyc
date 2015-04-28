@@ -21,13 +21,21 @@ def get_url_scheme(url):
 
 class RobotSpider(scrapy.Spider):
     name = "robot"
-    allowed_domains = ["sina.cn"]
-    start_urls = [
-        "http://news.sina.cn/",
-        "http://news.sina.cn/?vt=4&pos=3&sa=t124d8889597v84"
-    ]
+    allowed_domains = []
+    start_urls = [    ]
+    def __init__(self,*args, **kwargs):
+        super(RobotSpider, self).__init__(*args, **kwargs)
+        self._kwargs = kwargs
+
     def start_requests(self):
         self.crawler.signals.connect(self.spider_idle,signals.spider_idle)
+        fname = self.settings.get("INPUT_FILE",None)
+        if fname:
+            with open(fname) as fh:
+                for line in fh.readlines():
+                    url = line.strip().split()
+                    req =  scrapy.Request(url,callback=self.parse)
+                    yield req
         for url in self.start_urls:
             req =  scrapy.Request(url,callback=self.parse)
             #req.meta["depth"] =  1
@@ -35,10 +43,10 @@ class RobotSpider(scrapy.Spider):
         pass
     def parse(self, response):
         base_url  = get_base_url(response)
-        if "depth" in response.meta:
-            depth = response.meta["depth"]
-        else:
-            depth = 1
+        # if "depth" in response.meta:
+        #     depth = response.meta["depth"]
+        # else:
+        #     depth = 1
         MAX_DEPTH =  self.settings.get("MAX_DEPTH",1)
         ALLOW_SITES = self.settings.get("ALLOW_SITES",[])
         base_site = get_url_site(response.url)

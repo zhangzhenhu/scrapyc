@@ -44,3 +44,6 @@ DEPTH_PRIORITY = 1
 #DOWNLOAD_HANDLERS={'http':'scrapyc.server.utils.PhantomJSDownloadHandler.PhantomJSDownloadHandler',}
 WEBSERVICE_PORT=9805
 WEBSERVICE_ENABLED=1
+
+
+INPUT_FILE=None

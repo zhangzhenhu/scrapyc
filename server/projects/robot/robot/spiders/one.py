@@ -42,6 +42,8 @@ class RobotSpider(scrapy.Spider):
             yield req            
         pass
     def parse(self, response):
+        self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
+        #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         base_url  = get_base_url(response)
         # if "depth" in response.meta:
         #     depth = response.meta["depth"]

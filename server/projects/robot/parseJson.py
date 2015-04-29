@@ -3,5 +3,8 @@ import json
 
 
 for line  in sys.stdin:
-    jp = json.loads(line)
-    print jp["url"]
+    try:
+        jp = json.loads(line)
+    except:
+        continue
+    print jp["url"].encode("gbk")

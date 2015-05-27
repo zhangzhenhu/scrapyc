@@ -72,9 +72,10 @@ class RobotSpider(scrapy.Spider):
         # return
         # MAX_DEPTH =  self.settings.get("MAX_DEPTH",1)
         # ALLOW_SITES = self.settings.get("ALLOW_SITES",[])
-        
+        base_url  = get_base_url(response)
         for sel in response.xpath('//a/@href'):
             relative_url = sel.extract()
+            
             abs_url =urljoin_rfc(base_url,relative_url)
             #print abs_url
             schema = get_url_scheme(abs_url)

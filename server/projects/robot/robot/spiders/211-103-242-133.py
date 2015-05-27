@@ -17,7 +17,7 @@ class Parser(object):
             relative_url = sel.extract()
             abs_url =urljoin_rfc(base_url,relative_url)
                 #print abs_url
-            schema = get_url_scheme(abs_url)
+            #schema = get_url_scheme(abs_url)
             # if schema not in ["http","https"]:
             #     continue
             if abs_url[-1] == "/":

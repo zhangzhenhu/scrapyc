@@ -4,6 +4,7 @@ from w3lib.url import urljoin_rfc
 
 from scrapy import signals
 from robot.items import NimeiItem
+from scrapy.utils.misc import load_object
 
 def get_url_site(url):
     if "://" in url:
@@ -31,7 +32,7 @@ class RobotSpider(scrapy.Spider):
 
 
     def start_requests(self):
-        
+
         coms = self.settings.get("SITE_SPIDERS")
         for key,module in coms.items():
             comcls = load_object(module)

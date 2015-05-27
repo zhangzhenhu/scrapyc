@@ -69,9 +69,9 @@ class RobotSpider(scrapy.Spider):
         #     depth = response.meta["depth"]
         # else:
         #     depth = 1
-        return
-        MAX_DEPTH =  self.settings.get("MAX_DEPTH",1)
-        ALLOW_SITES = self.settings.get("ALLOW_SITES",[])
+        # return
+        # MAX_DEPTH =  self.settings.get("MAX_DEPTH",1)
+        # ALLOW_SITES = self.settings.get("ALLOW_SITES",[])
         
         for sel in response.xpath('//a/@href'):
             relative_url = sel.extract()
@@ -82,10 +82,10 @@ class RobotSpider(scrapy.Spider):
                 continue            
             site = get_url_site(abs_url)
             yield NimeiItem(url=abs_url,furl=response.url)
-            if site != base_site and site not in ALLOW_SITES:
-                continue
+            # if site != base_site and site not in ALLOW_SITES:
+            #     continue
 
-            yield scrapy.Request(abs_url,callback=self.parse)
+            # yield scrapy.Request(abs_url,callback=self.parse)
             # if depth < MAX_DEPTH:
             #     req =  scrapy.Request(abs_url,callback=self.parse)
             #     req.meta["depth"] = depth + 1

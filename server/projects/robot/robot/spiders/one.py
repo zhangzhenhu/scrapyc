@@ -27,13 +27,16 @@ class RobotSpider(scrapy.Spider):
     def __init__(self,*args, **kwargs):
         super(RobotSpider, self).__init__(*args, **kwargs)
         self._kwargs = kwargs
+
+
+
+    def start_requests(self):
+        
         coms = self.settings.get("SITE_SPIDERS")
         for key,module in coms.items():
             comcls = load_object(module)
             self.parses[key]= comcls(self)
 
-
-    def start_requests(self):
         self.crawler.signals.connect(self.spider_idle,signals.spider_idle)
         fname = self.settings.get("INPUT_FILE",None)
         if fname:
@@ -60,11 +63,12 @@ class RobotSpider(scrapy.Spider):
             for item in parser.parse(response) :
                 yield item
             return
-            
+
         # if "depth" in response.meta:
         #     depth = response.meta["depth"]
         # else:
         #     depth = 1
+        return
         MAX_DEPTH =  self.settings.get("MAX_DEPTH",1)
         ALLOW_SITES = self.settings.get("ALLOW_SITES",[])
         

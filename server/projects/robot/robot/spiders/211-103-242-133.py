@@ -3,6 +3,7 @@ from w3lib.url import urljoin_rfc
 
 from scrapy import signals
 from robot.items import NimeiItem
+import scrapy
 
 class Parser(object):
     """docstring for Parser"""

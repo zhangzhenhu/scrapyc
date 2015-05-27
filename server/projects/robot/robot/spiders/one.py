@@ -38,7 +38,7 @@ class RobotSpider(scrapy.Spider):
             comcls = load_object(module)
             self.parses[key]= comcls(self)
 
-        self.crawler.signals.connect(self.spider_idle,signals.spider_idle)
+        #self.crawler.signals.connect(self.spider_idle,signals.spider_idle)
         fname = self.settings.get("INPUT_FILE",None)
         if fname:
             with open(fname) as fh:

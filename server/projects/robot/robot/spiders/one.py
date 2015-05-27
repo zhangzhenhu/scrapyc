@@ -23,9 +23,15 @@ class RobotSpider(scrapy.Spider):
     name = "one"
     allowed_domains = []
     start_urls = [    ]
+    parses = {}
     def __init__(self,*args, **kwargs):
         super(RobotSpider, self).__init__(*args, **kwargs)
         self._kwargs = kwargs
+        coms = self.settings.get("SITE_SPIDERS")
+        for key,module in coms.items():
+            comcls = load_object(module)
+            self.parses[key]= comcls(self)
+
 
     def start_requests(self):
         self.crawler.signals.connect(self.spider_idle,signals.spider_idle)
@@ -46,14 +52,22 @@ class RobotSpider(scrapy.Spider):
         #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         if response.status / 100 != 2:
             return
-        base_url  = get_base_url(response)
+        
+        site = get_url_site(response.url)
+
+        if site in self.parses:
+            parser = self.parses[key]
+            for item in parser.parse(response) :
+                yield item
+            return
+            
         # if "depth" in response.meta:
         #     depth = response.meta["depth"]
         # else:
         #     depth = 1
         MAX_DEPTH =  self.settings.get("MAX_DEPTH",1)
         ALLOW_SITES = self.settings.get("ALLOW_SITES",[])
-        base_site = get_url_site(response.url)
+        
         for sel in response.xpath('//a/@href'):
             relative_url = sel.extract()
             abs_url =urljoin_rfc(base_url,relative_url)

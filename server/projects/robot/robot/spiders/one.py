@@ -60,7 +60,7 @@ class RobotSpider(scrapy.Spider):
         site = get_url_site(response.url)
 
         if site in self.parses:
-            parser = self.parses[key]
+            parser = self.parses[site]
             for item in parser.parse(response) :
                 yield item
             return

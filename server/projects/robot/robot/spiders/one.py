@@ -75,7 +75,7 @@ class RobotSpider(scrapy.Spider):
         base_url  = get_base_url(response)
         for sel in response.xpath('//a/@href'):
             relative_url = sel.extract()
-            
+
             abs_url =urljoin_rfc(base_url,relative_url)
             #print abs_url
             schema = get_url_scheme(abs_url)
@@ -85,8 +85,8 @@ class RobotSpider(scrapy.Spider):
             yield NimeiItem(url=abs_url,furl=response.url)
             # if site != base_site and site not in ALLOW_SITES:
             #     continue
-
-            # yield scrapy.Request(abs_url,callback=self.parse)
+            if relative_url.startswith("index_"):
+                yield scrapy.Request(abs_url,callback=self.parse)
             # if depth < MAX_DEPTH:
             #     req =  scrapy.Request(abs_url,callback=self.parse)
             #     req.meta["depth"] = depth + 1

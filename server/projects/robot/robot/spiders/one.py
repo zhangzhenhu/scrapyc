@@ -89,7 +89,7 @@ class RobotSpider(scrapy.Spider):
             yield NimeiItem(url=abs_url,furl=response.url)
             # if site != base_site and site not in ALLOW_SITES:
             #     continue
-            if relative_url.startswith("index_"):
+            if relative_url.startswith("forum_") or relative_url.startswith("/archives/"):
                 yield scrapy.Request(abs_url,callback=self.parse)
             # if depth < MAX_DEPTH:
             #     req =  scrapy.Request(abs_url,callback=self.parse)

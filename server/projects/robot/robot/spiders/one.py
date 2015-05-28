@@ -37,7 +37,8 @@ class RobotSpider(scrapy.Spider):
         for key,module in coms.items():
             comcls = load_object(module)
             self.parses[key]= comcls(self)
-
+            for item in self.parses[key]:
+                yield item
         #self.crawler.signals.connect(self.spider_idle,signals.spider_idle)
         fname = self.settings.get("INPUT_FILE",None)
         if fname:
@@ -49,7 +50,10 @@ class RobotSpider(scrapy.Spider):
         for url in self.start_urls:
             req =  scrapy.Request(url,callback=self.parse)
             #req.meta["depth"] =  1
-            yield req            
+            yield req
+
+
+
         pass
     def parse(self, response):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)

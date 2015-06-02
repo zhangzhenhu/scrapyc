@@ -5,6 +5,21 @@ from scrapy import signals
 from robot.items import NimeiItem
 import scrapy
 
+
+def get_url_site(url):
+    if "://" in url:
+        purl = url.split('://',1)[1]
+    else:
+        purl = url
+    return purl.split("/",1)[0]
+
+def get_url_scheme(url):
+    if ":" in url[:11]:
+        return  url.split(':',1)[0]
+    else:
+        return "http"
+
+        
 class Parser(object):
     """docstring for Parser"""
     def __init__(self, spider):

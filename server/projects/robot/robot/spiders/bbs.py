@@ -7,6 +7,7 @@ import scrapy
 
 class Parser(object):
     """docstring for Parser"""
+    name = "bbs"
     def __init__(self, spider):
         super(Parser, self).__init__()
         self.spider = spider

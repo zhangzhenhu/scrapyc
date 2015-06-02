@@ -11,7 +11,8 @@ class Parser(object):
     def __init__(self, spider):
         super(Parser, self).__init__()
         self.spider = spider
-
+    def start_requests():
+        return
     def parse(self,response):
 
         base_url  = get_base_url(response)

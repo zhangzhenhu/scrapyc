@@ -38,7 +38,7 @@ class Parser(object):
                 continue  
 
             yield NimeiItem(url=abs_url,furl=response.url)
-            if relative_url.startswith("forum") or relative_url.startswith("/archives/"):
+            if relative_url.startswith("forum_") or relative_url.startswith("forum-") or relative_url.startswith("/archives/"):
                 
                 yield scrapy.Request(abs_url)
             

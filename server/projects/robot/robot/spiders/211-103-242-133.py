@@ -10,7 +10,7 @@ class Parser(object):
     def __init__(self, spider):
         super(Parser, self).__init__()
         self.spider = spider
-    def start_requests():
+    def start_requests(self):
         return
     def parse(self,response):
 

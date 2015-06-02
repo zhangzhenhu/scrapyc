@@ -55,6 +55,6 @@ INPUT_FILE=None
 SITE_SPIDERS = {
     #"211.103.242.133:8080":"robot.spiders.211-103-242-133.Parser",
     #"www.weihai.gov.cn":"robot.spiders.weihai.Parser"
-
+    "www.im286.com":"robot.spiders.bbs.Parser"
 
 }

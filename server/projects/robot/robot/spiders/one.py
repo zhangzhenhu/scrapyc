@@ -65,7 +65,7 @@ class RobotSpider(scrapy.Spider):
 
         if site in self.parses:
             parser = self.parses[site]
-            self.log("Parser %s %s"%(response.url,parser.name),level=scrapy.log.INFO)
+            #self.log("Parser %s %s"%(response.url,parser.name),level=scrapy.log.INFO)
             for item in parser.parse(response) :
                 yield item
             return

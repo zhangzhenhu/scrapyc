@@ -9,7 +9,7 @@ import time
 import logging
 import os
 import socket
-from scrapyc.server.flask import ws
+from scrapyc.server.flaskui import ws
 def get_valid_port(start=8000,end=9000):
 
     def IsNotOpen(ip="127.0.0.1",port=0):

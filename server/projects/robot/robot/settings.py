@@ -50,7 +50,7 @@ WEBSERVICE_PORT=9885
 WEBSERVICE_ENABLED=1
 
 INPUT_FILE=None
-
+BAIDU_RPC_SERVER_URL="http://yq01-ps-exdata-svr00.yq01.baidu.com:8004/ExdataService/Exdata"
 
 SITE_SPIDERS = {
     #"211.103.242.133:8080":"robot.spiders.211-103-242-133.Parser",

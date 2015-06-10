@@ -78,7 +78,7 @@ class RobotSpider(scrapy.Spider):
 
     def baidu_rpc_request(self,data):
         data_post = json.dumps({"url":data})
-        return scrapy.Request(url=self.settings.get("BAIDU_RPC_SERVER_URL",None),callback=self.baidu_rpc_response,method="POST",body=data_post,headers={"Content-Type":'application/json'})
+        return scrapy.Request(url=self.settings.get("BAIDU_RPC_SERVER_URL",None),callback=self.baidu_rpc_response,method="POST",body=data_post,headers={"Content-Type":'application/json'},meta={"baidu_rpc":data})
     
     def baidu_rpc_response(self,response):
 
@@ -89,7 +89,7 @@ class RobotSpider(scrapy.Spider):
         if res["err_no"] != 0:
             self.log("Baidu_RPC %s rpc_error rpc_code:%d"%(response.url,res["err_no"]),level=scrapy.log.FATAL)
         else:
-            self.log("Baidu_RPC %s ok"%response.request.url ,level=scrapy.log.INFO)
+            self.log("Baidu_RPC %s ok"%response.meta["baidu_rpc"]["url"],level=scrapy.log.INFO)
 
 
     def spider_idle(self,spider):

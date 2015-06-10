@@ -272,3 +272,17 @@ def get_domain(url):
             # returns "abcde.co.uk"
 
     raise ValueError("Domain not in global list of TLDs")
+
+def get_url_site(url):
+    if "://" in url[:10]:
+        purl = url.split('://',1)[1]
+    else:
+        purl = url
+    return purl.split("/",1)[0]
+
+def get_url_scheme(url,default="http"):
+    if "://" in url[:10]:
+        purl = url.split('://',1)[0]
+    
+        
+    return default    

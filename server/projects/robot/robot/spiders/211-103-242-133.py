@@ -8,7 +8,7 @@ from scrapyc.server.utils.url import get_url_site,get_url_scheme
 
 
         
-class RobotSpider(robot.spiders.robot.RobotSpider):
+class RobotSpider(robot.spiders.base.RobotSpider):
     name = "211-103-242-133"
     allowed_domains = []
     start_urls = [    ]

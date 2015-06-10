@@ -38,7 +38,8 @@ class RobotSpider(robot.spiders.robot.RobotSpider):
             yield self.baidu_rpc_request({"url":url,"src_id":4})
             yield NimeiItem(url=url,furl=response.url)
             url = "http://hot.163.com/group/%s/post/%s/#!comment"%(item["groupAlias"],item["id"])
-
+            yield self.baidu_rpc_request({"url":url,"src_id":4})
+            yield NimeiItem(url=url,furl=response.url)
 
 
 

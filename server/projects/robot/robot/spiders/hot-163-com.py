@@ -11,7 +11,7 @@ import json
 
 
 class RobotSpider(base.RobotSpider):
-    name = "hot-163-com"
+    name = "hot.163.com"
     allowed_domains = []
     start_urls = [    ]
     parses = {}

@@ -78,7 +78,7 @@ class RobotSpider(scrapy.Spider):
 
     def baidu_rpc_request(self,data):
         data_post = json.dumps({"url":data})
-        yield scrapy.Request(url=self.settings.get("BAIDU_RPC_SERVER_URL",None),callback=self.baidu_rpc_response,method="POST",body=data_post,headers={"Content-Type":'application/json'})
+        return scrapy.Request(url=self.settings.get("BAIDU_RPC_SERVER_URL",None),callback=self.baidu_rpc_response,method="POST",body=data_post,headers={"Content-Type":'application/json'})
     
     def baidu_rpc_response(self,response):
 

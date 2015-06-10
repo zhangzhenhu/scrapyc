@@ -83,12 +83,13 @@ class RobotSpider(scrapy.Spider):
     def baidu_rpc_response(self,response):
 
         if response.status / 100 != 2:
-            self.log("BAIDU_RPC %s http_error http_code:%d"%(response.url,response.status),level=scrapy.log.FATAL)
+            self.log("Baidu_RPC %s http_error http_code:%d"%(response.url,response.status),level=scrapy.log.FATAL)
             return
         res = json.loads(response.body)
         if res["err_no"] != 0:
-            self.log("BAIDU_RPC %s rpc_error rpc_code:%d"%(response.url,res["err_no"]),level=scrapy.log.FATAL)
-
+            self.log("Baidu_RPC %s rpc_error rpc_code:%d"%(response.url,res["err_no"]),level=scrapy.log.FATAL)
+        else:
+            self.log("Baidu_RPC %s ok"%response.request.url ,level=scrapy.log.INFO)
 
 
     def spider_idle(self,spider):

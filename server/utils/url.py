@@ -13,7 +13,7 @@ The URL object is created automatically when
 argument; alternatively, the URL is a public-facing construct which can
 be used directly and is also accepted directly by ``create_engine()``.
 """
-
+from __future__ import with_statement
 import re
 from . import compat as util
 
@@ -241,7 +241,7 @@ def _parse_keyvalue_args(name):
 
 
 
-from __future__ import with_statement
+
 from urlparse import urlparse
 
 # load tlds, ignore comments and empty lines:

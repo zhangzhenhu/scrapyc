@@ -8,14 +8,13 @@ from scrapyc.server.utils.url import get_url_site,get_url_scheme
 
 
 
-class Parser(object):
-    """docstring for Parser"""
+class RobotSpider(robot.spiders.robot.RobotSpider):
     name = "bbs"
-    def __init__(self, spider):
-        super(Parser, self).__init__()
-        self.spider = spider
-    def start_requests(self):
-        return []
+
+    allowed_domains = []
+    start_urls = [    ]
+
+
     def parse(self,response):
 
         base_url  = get_base_url(response)

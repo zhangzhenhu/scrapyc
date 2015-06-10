@@ -12,7 +12,7 @@ class RobotSpider(robot.spiders.robot.RobotSpider):
     name = "211-103-242-133"
     allowed_domains = []
     start_urls = [    ]
-    parses = {}
+
 
 
     def parse(self,response):

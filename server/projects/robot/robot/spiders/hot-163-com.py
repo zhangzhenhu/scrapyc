@@ -26,16 +26,19 @@ class RobotSpider(robot.spiders.robot.RobotSpider):
         site = get_url_site(response.url)
 
         base_url  = get_base_url(response)
-        for sel in response.xpath('//a/@href'):
-            relative_url = sel.extract()
-            abs_url =urljoin_rfc(base_url,relative_url)
-            #print abs_url
-            schema = get_url_scheme(abs_url)
-            if schema not in ["http","https"]:
-                continue            
-            site = get_url_site(abs_url)
-            yield NimeiItem(url=abs_url,furl=response.url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+        res_data = json.loads(response.body)
+        for item in res_data["data"]:
+            url = "http://hot.163.com/group/%s/post/%s/"%(item["groupAlias"],item["id"])
+            yield self.baidu_rpc_request({"url":url,"src_id":4})
+            yield NimeiItem(url=url,furl=response.url)
+            url = "http://hot.163.com/user/%s"%item["creator"]["1423867826224889"]
+            yield self.baidu_rpc_request({"url":url,"src_id":4})
+            yield NimeiItem(url=url,furl=response.url)
+            url = "http://hot.163.com/group/%s"%item["groupAlias"]
+            yield self.baidu_rpc_request({"url":url,"src_id":4})
+            yield NimeiItem(url=url,furl=response.url)
+            url = "http://hot.163.com/group/%s/post/%s/#!comment"%(item["groupAlias"],item["id"])
+
 
 
 

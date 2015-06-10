@@ -4,12 +4,13 @@ from w3lib.url import urljoin_rfc
 
 from scrapy import signals
 from robot.items import NimeiItem
+from robot.spiders import base
 from scrapy.utils.misc import load_object
 from scrapyc.server.utils.url import get_url_site,get_url_scheme
 import json
 
 
-class RobotSpider(robot.spiders.base.RobotSpider):
+class RobotSpider(base.RobotSpider):
     name = "hot-163-com"
     allowed_domains = []
     start_urls = [    ]

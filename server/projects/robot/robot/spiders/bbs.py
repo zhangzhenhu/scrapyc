@@ -3,12 +3,13 @@ from w3lib.url import urljoin_rfc
 
 from scrapy import signals
 from robot.items import NimeiItem
+from robot.spiders import base
 import scrapy
 from scrapyc.server.utils.url import get_url_site,get_url_scheme
 
 
 
-class RobotSpider(robot.spiders.base.RobotSpider):
+class RobotSpider(base.RobotSpider):
     name = "bbs"
 
     allowed_domains = []

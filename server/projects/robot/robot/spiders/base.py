@@ -7,7 +7,7 @@ from robot.items import NimeiItem
 from scrapy.utils.misc import load_object
 from scrapyc.server.utils.url import get_url_site,get_url_scheme
 import json
-
+import random
 
 class RobotSpider(scrapy.Spider):
     name = "robot"
@@ -78,7 +78,13 @@ class RobotSpider(scrapy.Spider):
 
     def baidu_rpc_request(self,data):
         data_post = json.dumps({"url":data})
-        return scrapy.Request(url=self.settings.get("BAIDU_RPC_SERVER_URL",None),callback=self.baidu_rpc_response,method="POST",body=data_post,headers={"Content-Type":'application/json'},meta={"baidu_rpc":data})
+        server_list = self.settings.get("BAIDU_RPC_SERVER_URL",None)
+        if server_list == None:
+            self.log("Baidu_RPC no_server",level=scrapy.log.FATAL)
+            return
+        server_url = server_list[random.randint(0, len(server_list)-1)]
+
+        return scrapy.Request(url=server_url,callback=self.baidu_rpc_response,method="POST",body=data_post,headers={"Content-Type":'application/json'},meta={"baidu_rpc":data})
     
     def baidu_rpc_response(self,response):
 

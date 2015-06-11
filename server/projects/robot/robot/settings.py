@@ -50,7 +50,17 @@ WEBSERVICE_PORT=9885
 WEBSERVICE_ENABLED=1
 
 INPUT_FILE=None
-BAIDU_RPC_SERVER_URL="http://yq01-ps-exdata-svr00.yq01.baidu.com:8004/ExdataService/Exdata"
+BAIDU_RPC_SERVER_URL=[
+"http://yq01-ps-exdata-svr00.yq01.baidu.com:8004/ExdataService/Exdata",
+"http://yq01-ps-exdata-svr01.yq01.baidu.com:8004/ExdataService/Exdata",
+"http://yq01-ps-exdata-svr02.yq01.baidu.com:8004/ExdataService/Exdata",
+"http://yq01-ps-exdata-svr03.yq01.baidu.com:8004/ExdataService/Exdata",
+"http://yq01-ps-exdata-svr04.yq01.baidu.com:8004/ExdataService/Exdata",
+"http://yq01-ps-exdata-svr05.yq01.baidu.com:8004/ExdataService/Exdata",
+"http://yq01-ps-exdata-svr06.yq01.baidu.com:8004/ExdataService/Exdata",
+"http://yq01-ps-exdata-svr07.yq01.baidu.com:8004/ExdataService/Exdata",
+"http://yq01-ps-exdata-svr08.yq01.baidu.com:8004/ExdataService/Exdata",
+"http://yq01-ps-exdata-svr09.yq01.baidu.com:8004/ExdataService/Exdata",
 
 SITE_SPIDERS = {
     #"211.103.242.133:8080":"robot.spiders.211-103-242-133.Parser",

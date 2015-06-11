@@ -61,7 +61,7 @@ BAIDU_RPC_SERVER_URL=[
 "http://yq01-ps-exdata-svr07.yq01.baidu.com:8004/ExdataService/Exdata",
 "http://yq01-ps-exdata-svr08.yq01.baidu.com:8004/ExdataService/Exdata",
 "http://yq01-ps-exdata-svr09.yq01.baidu.com:8004/ExdataService/Exdata",
-
+]
 SITE_SPIDERS = {
     #"211.103.242.133:8080":"robot.spiders.211-103-242-133.Parser",
     #"www.weihai.gov.cn":"robot.spiders.weihai.Parser"

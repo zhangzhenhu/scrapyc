@@ -26,27 +26,11 @@ class RobotSpider(base.RobotSpider):
         if response.status / 100 != 2:
             return
         
-        res_data = json.loads(response.body)
-        if response.url.startswith("http://hot.163.com/post/list/"):
-            for item in res_data["data"]:
-                url = "http://hot.163.com/group/%s/post/%s/"%(item["groupAlias"],item["id"])
+        for href in response.xpath('//table//table//form//table//table//table//td[@class="J_VM"]/a[1]/@href').extract():
+            if href.startswith("../abstract/abstract"):
+                id = href[len("../abstract/abstract"):].replace(".shtml","")
+                url = "http://nytsqb.caas.cn/CN/article/downloadArticleFile.do?attachType=PDF&id="+id
                 yield self.baidu_rpc_request({"url":url,"src_id":4})
-                yield NimeiItem(url=url,furl=response.url)
-                url = "http://hot.163.com/user/%s"%item["creator"]["userId"]
-                yield self.baidu_rpc_request({"url":url,"src_id":4})
-                yield NimeiItem(url=url,furl=response.url)
-                url = "http://hot.163.com/group/%s"%item["groupAlias"]
-                yield self.baidu_rpc_request({"url":url,"src_id":4})
-                yield NimeiItem(url=url,furl=response.url)
-                url = "http://hot.163.com/group/%s/post/%s/#!comment"%(item["groupAlias"],item["id"])
-                yield self.baidu_rpc_request({"url":url,"src_id":4})
-                yield NimeiItem(url=url,furl=response.url)
-                url = "http://hot.163.com/post/list/group/%s/3/0/1000/new"%item["groupId"]
-                yield scrapy.Request(url=url)
-        elif response.url.startswith("http://hot.163.com/operate/PC/"):
-            for item in res_data["data"]:
-                yield self.baidu_rpc_request({"url":item["url"],"src_id":4})
-                yield NimeiItem(url=item["url"],furl=response.url)
 
     def spider_idle(self,spider):
 

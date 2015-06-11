@@ -41,7 +41,7 @@ EXTENSIONS = {
 }
 ALLOW_SITES=[]
 FEED_URI="file:///home/spider/zhangzhenhu/robot/%(name)s/%(time)s.json"
-FEED_FORMAT="jsonlines"
+#FEED_FORMAT="jsonlines"
 #MAX_DEPTH = 2
 #DEPTH_LIMIT = 10
 DEPTH_PRIORITY = 1

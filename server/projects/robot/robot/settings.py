@@ -47,7 +47,7 @@ FEED_URI="file:///home/spider/zhangzhenhu/robot/%(name)s/%(time)s.json"
 DEPTH_PRIORITY = 1
 #DOWNLOAD_HANDLERS={'http':'scrapyc.server.utils.PhantomJSDownloadHandler.PhantomJSDownloadHandler',}
 WEBSERVICE_PORT=9885
-WEBSERVICE_ENABLED=1
+WEBSERVICE_ENABLED=0
 
 INPUT_FILE=None
 BAIDU_RPC_SERVER_URL=[

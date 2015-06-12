@@ -16,7 +16,23 @@ class RobotSpider(base.RobotSpider):
     start_urls = [    ]
     parses = {}
 
+    def start_requests(self):
+        yield scrapy.Request("http://hot.163.com/group/list/100/week/grownup/ranking?offset=0",callback=self.parse_rank)
+        yield scrapy.Request("http://hot.163.com/group/list/channel/2/100/week/grownup/ranking?offset=0",callback=self.parse_rank)
+        yield scrapy.Request("http://hot.163.com/group/list/channel/3/100/week/grownup/ranking?offset=0",callback=self.parse_rank)
+        yield scrapy.Request("http://hot.163.com/group/list/channel/4/100/week/grownup/ranking?offset=0",callback=self.parse_rank)
+        yield scrapy.Request("http://hot.163.com/group/list/channel/5/100/week/grownup/ranking?offset=0",callback=self.parse_rank)
+        yield scrapy.Request("http://hot.163.com/group/list/channel/6/100/week/grownup/ranking?offset=0",callback=self.parse_rank)
 
+
+        yield scrapy.Request("http://hot.163.com/post/list/3/0/1000/hot",callback=self.parse)
+        yield scrapy.Request("http://hot.163.com/post/list/3/0/1000/new",callback=self.parse)
+        yield scrapy.Request("http://hot.163.com/operate/PC/activity/recommend",callback=self.parse)
+        yield scrapy.Request("http://hot.163.com/operate/PC/official/announcement",callback=self.parse)
+        #yield scrapy.Request("http://hot.163.com/post/list/group/1257003701853608/3/0/1000/new",callback=self.parse)
+
+        for item in super(RobotSpider, self).start_requests():
+            yield item
 
     def parse(self, response):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
@@ -45,6 +61,19 @@ class RobotSpider(base.RobotSpider):
             for item in res_data["data"]:
                 yield self.baidu_rpc_request({"url":item["url"],"src_id":4})
                 yield NimeiItem(url=item["url"],furl=response.url)
+    
+    def parse_rank(self,response):
+        self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
+        if response.status / 100 != 2:
+            return     
+         res_data = json.loads(response.body)
+         for item in res_data["data"]:
+            url = "http://hot.163.com/post/list/group/%s/3/0/1000/new"%item["groupId"]
+            yield scrapy.Request(url=url)
+            url = "http://hot.163.com/group/%s"%item["alias"]
+            yield self.baidu_rpc_request({"url":url,"src_id":4})
+
+
 
     def spider_idle(self,spider):
 

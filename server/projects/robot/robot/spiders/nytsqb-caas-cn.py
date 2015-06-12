@@ -1,3 +1,7 @@
+#encoding=utf8
+#Description:
+#学术项目，例行抓取一些pdf文档的链接。
+
 import scrapy
 from scrapy.utils.response import get_base_url
 from w3lib.url import urljoin_rfc
@@ -18,20 +22,43 @@ class RobotSpider(base.RobotSpider):
 
 
     def start_requests(self):
-        yield scrapy.Request("http://nytsqb.caas.cn/CN/volumn/current.shtml",callback=self.parse)
+        yield scrapy.Request("http://nytsqb.caas.cn/CN/volumn/current.shtml",callback=self.parse0)
+        yield scrapy.Request("http://qks.jhun.edu.cn/jhxs/CN/volumn/current.shtml",callback=self.parse1)
+        yield scrapy.Request("http://www.ces-transaction.com/CN/volumn/current.shtml",callback=self.parse2)
         
-    def parse(self, response):
+    def parse2(self, response):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
         #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         if response.status / 100 != 2:
             return
-        
+        prefix = "../article/downloadArticleFile.do?attachType=PDF&id="
+        for href in response.xpath('//form[@name="AbstractList"]//table//table//table//td/a/@href').extract():
+            if href.startswith(prefix):
+                id =href[len(prefix):]
+                url = "http://www.ces-transaction.com/CN/article/downloadArticleFile.do?attachType=PDF&id="+id
+                yield self.baidu_rpc_request({"url":url,"src_id":4})
+
+    def parse0(self, response):
+        self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
+        #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
+        if response.status / 100 != 2:
+            return
         for href in response.xpath('//table//table//form//table//table//table//td[@class="J_VM"]/a[1]/@href').extract():
             if href.startswith("../abstract/abstract"):
                 id = href[len("../abstract/abstract"):].replace(".shtml","")
                 url = "http://nytsqb.caas.cn/CN/article/downloadArticleFile.do?attachType=PDF&id="+id
                 yield self.baidu_rpc_request({"url":url,"src_id":4})
 
+    def parse1(self, response):
+        self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
+        #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
+        if response.status / 100 != 2:
+            return
+        for href in response.xpath('//table//table//form//table//table//table//td[@class="J_VM"]/a[1]/@href').extract():
+            if href.startswith("../abstract/abstract"):
+                id = href[len("../abstract/abstract"):].replace(".shtml","")
+                url = "http://qks.jhun.edu.cn/jhxs/CN/article/downloadArticleFile.do?attachType=PDF&id="+id
+                yield self.baidu_rpc_request({"url":url,"src_id":4})                
     def spider_idle(self,spider):
 
         if spider==self:

@@ -66,8 +66,8 @@ class RobotSpider(base.RobotSpider):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
         if response.status / 100 != 2:
             return     
-         res_data = json.loads(response.body)
-         for item in res_data["data"]:
+        res_data = json.loads(response.body)
+        for item in res_data["data"]:
             url = "http://hot.163.com/post/list/group/%s/3/0/1000/new"%item["groupId"]
             yield scrapy.Request(url=url)
             url = "http://hot.163.com/group/%s"%item["alias"]

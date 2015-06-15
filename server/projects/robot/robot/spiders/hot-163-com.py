@@ -41,7 +41,7 @@ class RobotSpider(base.RobotSpider):
             return
         
         res_data = json.loads(response.body)
-        if response.url.startswith("http://hot.163.com/post/list/"):
+        if response.url.startswith("http://hot.163.com/post/list/") and res_data["data"] != None:
             for item in res_data["data"]:
                 url = "http://hot.163.com/group/%s/post/%s/"%(item["groupAlias"],item["id"])
                 yield self.baidu_rpc_request({"url":url,"src_id":4})
@@ -57,8 +57,8 @@ class RobotSpider(base.RobotSpider):
                 yield NimeiItem(url=url,furl=response.url)
                 url = "http://hot.163.com/post/list/group/%s/3/0/1000/new"%item["groupId"]
                 yield scrapy.Request(url=url)
-        elif response.url.startswith("http://hot.163.com/operate/PC/"):
-            for item in res_data["data"]:
+        elif response.url.startswith("http://hot.163.com/operate/PC/") and res_data["data"] != None:
+            for item in res_data["data"] :
                 yield self.baidu_rpc_request({"url":item["url"],"src_id":4})
                 yield NimeiItem(url=item["url"],furl=response.url)
     
@@ -67,6 +67,8 @@ class RobotSpider(base.RobotSpider):
         if response.status / 100 != 2:
             return     
         res_data = json.loads(response.body)
+        if "data" not in res_data or res_data["data"] == None:
+            return
         for item in res_data["data"]:
             url = "http://hot.163.com/post/list/group/%s/3/0/1000/new"%item["groupId"]
             yield scrapy.Request(url=url)

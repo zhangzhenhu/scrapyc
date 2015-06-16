@@ -48,7 +48,10 @@ DEPTH_PRIORITY = 1
 #DOWNLOAD_HANDLERS={'http':'scrapyc.server.utils.PhantomJSDownloadHandler.PhantomJSDownloadHandler',}
 WEBSERVICE_PORT=9885
 WEBSERVICE_ENABLED=0
-
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy.contrib.downloadermiddleware.chunked.ChunkedTransferMiddleware': 53,
+    'scrapy.contrib.downloadermiddleware.httpcompression.HttpCompressionMiddleware',54
+}
 INPUT_FILE=None
 BAIDU_RPC_SERVER_URL=[
 "http://yq01-ps-exdata-svr00.yq01.baidu.com:8004/ExdataService/Exdata",

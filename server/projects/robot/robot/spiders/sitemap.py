@@ -35,7 +35,7 @@ class SiteMapSpider(base.RobotSpider):
         for match in self.RE_PATTERN_LOC.finditer(text):
             url = match.group(2)
             yield self.baidu_rpc_request({"url":url,"src_id":4})
-            yield NimeiItem(url=url,furl=response.url)
+            #yield NimeiItem(url=url,furl=response.url)
     
     def parse_index(self,response):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)

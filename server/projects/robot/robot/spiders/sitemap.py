@@ -10,6 +10,7 @@ from scrapy.utils.response import body_or_str
 from scrapyc.server.utils.url import get_url_site,get_url_scheme
 import json
 from scrapy.utils.gz import gunzip, is_gzipped
+from scrapy.http import Request, XmlResponse
 
 class SiteMapSpider(base.RobotSpider):
     name = "sitemap"

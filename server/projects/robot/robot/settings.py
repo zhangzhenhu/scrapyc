@@ -50,7 +50,7 @@ WEBSERVICE_PORT=9885
 WEBSERVICE_ENABLED=0
 DOWNLOADER_MIDDLEWARES = {
     'scrapy.contrib.downloadermiddleware.chunked.ChunkedTransferMiddleware': 53,
-    'scrapy.contrib.downloadermiddleware.httpcompression.HttpCompressionMiddleware',54
+    'scrapy.contrib.downloadermiddleware.httpcompression.HttpCompressionMiddleware':54
 }
 INPUT_FILE=None
 BAIDU_RPC_SERVER_URL=[

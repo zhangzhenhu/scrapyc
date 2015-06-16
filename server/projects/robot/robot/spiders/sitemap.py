@@ -19,7 +19,8 @@ class SiteMapSpider(base.RobotSpider):
     parses = {}
     RE_PATTERN_LOC=re.compile(r"(<%s[\s>])(.*?)(</%s>)" % ('loc', 'loc'), re.DOTALL)
     def start_requests(self):
-        yield scrapy.Request("http://wenwen.sogou.com/sitemap_index.xml",callback=self.parse_index)
+        #yield scrapy.Request("http://wenwen.sogou.com/sitemap_index.xml",callback=self.parse_index)
+        yield scrapy.Request("http://weibo.com/sitemap.xml",callback=self.parse_index)
 
         for item in super(SiteMapSpider, self).start_requests():
             yield item

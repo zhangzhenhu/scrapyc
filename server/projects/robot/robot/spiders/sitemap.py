@@ -44,7 +44,7 @@ class SiteMapSpider(base.RobotSpider):
             url = match.group(2)
             yield scrapy.Request(url=url,callback=self.parse_sitemap)
 
-   def _get_sitemap_body(self, response):
+    def _get_sitemap_body(self, response):
         """Return the sitemap body contained in the given response, or None if the
         response is not a sitemap.
         """

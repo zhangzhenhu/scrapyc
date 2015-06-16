@@ -38,7 +38,8 @@ class SiteMapSpider(base.RobotSpider):
     def parse_index(self,response):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
         if response.status / 100 != 2:
-            return     
+            return
+        text = body_or_str(response)
         for match in self.RE_PATTERN_LOC.finditer(text):
             url = match.group(2)
             yield scrapy.Request(url=url,callback=self.parse_sitemap)

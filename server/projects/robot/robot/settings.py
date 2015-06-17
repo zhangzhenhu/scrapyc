@@ -33,7 +33,11 @@ MAX_RUN_TASK = 10
 JOBDIR = os.path.join(HISTORY_PATH,str(os.getpid()))
 # if not os.path.exists(JOBDIR):
 #     os.makedirs(JOBDIR)
-
+CONCURRENT_REQUESTS=100
+CONCURRENT_REQUESTS_PER_DOMAIN=100
+CONCURRENT_REQUESTS_PER_IP=0
+DNSCACHE_ENABLED=True
+LOG_ENCODING="gbk"
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.124 Safari/537.36'
 EXTENSIONS = {

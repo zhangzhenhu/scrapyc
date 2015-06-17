@@ -55,14 +55,19 @@ class SiteMapSpider(base.RobotSpider):
         """Return the sitemap body contained in the given response, or None if the
         response is not a sitemap.
         """
-        if isinstance(response, XmlResponse):
-            return response.body
-        elif is_gzipped(response):
-            return gunzip(response.body)
-        elif response.url.endswith('.xml'):
-            return response.body
-        elif response.url.endswith('.xml.gz'):
-            return gunzip(response.body)
+        try:
+            if isinstance(response, XmlResponse):
+                return response.body
+            elif is_gzipped(response):
+                return gunzip(response.body)
+            elif response.url.endswith('.xml'):
+                return response.body
+            elif response.url.endswith('.xml.gz'):
+                return gunzip(response.body)
+        except Exception, e:
+            self.log("Error %s ungzip %s"%(response.url,e))
+        return response.body
+
 
     def spider_idle(self,spider):
 

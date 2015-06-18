@@ -21,11 +21,11 @@ class SiteMapSpider(base.RobotSpider):
     def start_requests(self):
         yield scrapy.Request("http://wenwen.sogou.com/sitemap_index.xml",callback=self.parse_index)
         yield scrapy.Request("http://weibo.com/sitemap.xml",callback=self.parse_index)
-        yield scrapy.Request("http://www.amazon.cn/sitemaps.f3053414d236e84.SitemapIndex_0.xml.gz",callback=self.parse_index)
-        yield scrapy.Request("http://www.amazon.cn/sitemaps.1946f6b8171de60.SitemapIndex_0.xml.gz",callback=self.parse_index)
-        yield scrapy.Request("http://www.amazon.cn/sitemaps.c21f969b5f03d33.SitemapIndex_0.xml.gz",callback=self.parse_index)
-        yield scrapy.Request("http://www.amazon.cn/sitemaps.f2a0cd103cc2954.SitemapIndex_0.xml.gz",callback=self.parse_index)
-        yield scrapy.Request("http://www.amazon.cn/sitemaps.bbb7d657c7e29fa.SitemapIndex_0.xml.gz",callback=self.parse_index)
+        #yield scrapy.Request("http://www.amazon.cn/sitemaps.f3053414d236e84.SitemapIndex_0.xml.gz",callback=self.parse_index)
+        #yield scrapy.Request("http://www.amazon.cn/sitemaps.1946f6b8171de60.SitemapIndex_0.xml.gz",callback=self.parse_index)
+        #yield scrapy.Request("http://www.amazon.cn/sitemaps.c21f969b5f03d33.SitemapIndex_0.xml.gz",callback=self.parse_index)
+        #yield scrapy.Request("http://www.amazon.cn/sitemaps.f2a0cd103cc2954.SitemapIndex_0.xml.gz",callback=self.parse_index)
+        #yield scrapy.Request("http://www.amazon.cn/sitemaps.bbb7d657c7e29fa.SitemapIndex_0.xml.gz",callback=self.parse_index)
 
         for item in super(SiteMapSpider, self).start_requests():
             yield item

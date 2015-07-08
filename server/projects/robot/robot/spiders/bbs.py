@@ -6,7 +6,7 @@ from robot.items import NimeiItem
 from robot.spiders import base
 import scrapy
 from scrapyc.server.utils.url import get_url_site,get_url_scheme
-
+import urlparse
 
 
 class RobotSpider(base.RobotSpider):
@@ -14,6 +14,14 @@ class RobotSpider(base.RobotSpider):
 
     allowed_domains = []
     start_urls = [    ]
+
+    def remove_param(self,url,rm_query=[]):
+        up = urlparse.urlparse(url)
+        n_query = ""
+        for name,value in urlparse.parse_qsl(up.query):
+            if name not in rm_query:
+                n_query += "&%s=%s"%(name,value)
+        return urlparse.urlunparse((up.schema,up.netloc,up.path, up.params,n_query[1:],up.fragment))
 
 
     def parse(self,response):

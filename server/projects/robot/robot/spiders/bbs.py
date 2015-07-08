@@ -14,11 +14,18 @@ class RobotSpider(base.RobotSpider):
 
     allowed_domains = []
     start_urls = [    ]
+    def parse_qsl(self,qs):
 
+        for item in qs.split("&"):
+            item = item.split("=",1)
+            if len(item) == 2:
+                yield (item[0],item[1])
+            else:
+                yield (item[0],"")
     def remove_param(self,url,rm_query=[]):
         up = urlparse.urlparse(url)
         n_query = ""
-        for name,value in urlparse.parse_qsl(up.query):
+        for name,value in self.parse_qsl(up.query):
             if name not in rm_query:
                 n_query += "&%s=%s"%(name,value)
         return urlparse.urlunparse((up.scheme,up.netloc,up.path, up.params,n_query[1:],up.fragment))

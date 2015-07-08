@@ -21,7 +21,7 @@ class RobotSpider(base.RobotSpider):
         for name,value in urlparse.parse_qsl(up.query):
             if name not in rm_query:
                 n_query += "&%s=%s"%(name,value)
-        return urlparse.urlunparse((up.schema,up.netloc,up.path, up.params,n_query[1:],up.fragment))
+        return urlparse.urlunparse((up.scheme,up.netloc,up.path, up.params,n_query[1:],up.fragment))
 
 
     def parse(self,response):

@@ -49,7 +49,7 @@ class RobotSpider(base.RobotSpider):
                 continue  
 
             #yield NimeiItem(url=abs_url,furl=response.url)
-            abs_url = self.remove_param(abs_url,["extra","orderby","typeid","filter",])
+            abs_url = self.remove_param(abs_url,["extra","orderby","typeid","filter","sortid","searchsort","vk_payway_13"])
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
             if relative_url.startswith("forum_") or relative_url.startswith("forum-") or relative_url.startswith("/archives/") or relative_url.startswith("forumdisplay.php?fid=") or relative_url.startswith("forum.php?mod=forumdisplay&fid="):
                 

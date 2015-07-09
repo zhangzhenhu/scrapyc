@@ -7,13 +7,14 @@ from robot.spiders import base
 import scrapy
 from scrapyc.server.utils.url import get_url_site,get_url_scheme
 import urlparse
-
+import re
 
 class RobotSpider(base.RobotSpider):
     name = "bbs"
 
     allowed_domains = []
     start_urls = [    ]
+    PATTERN1=re.compile("^thread\-\d+\-\d+\-\d+\.html.*")
     def parse_qsl(self,qs):
 
         for item in qs.split("&"):
@@ -52,6 +53,8 @@ class RobotSpider(base.RobotSpider):
             abs_url = self.remove_param(abs_url,["extra","orderby","typeid","filter","sortid","searchsort","vk_payway_13","sid","recommend","digest"])
             if "mod=redirect" in relative_url:
                 continue
+            if PATTERN1.match(path):
+                abs_url = re.sub("\-\d+\-\d+\.html.*","-1-1.html",abs_url,1)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
             if relative_url.startswith("forum_") or relative_url.startswith("forum-") or relative_url.startswith("/archives/") or relative_url.startswith("forumdisplay.php?fid=") or relative_url.startswith("forum.php?mod=forumdisplay&fid="):
                 

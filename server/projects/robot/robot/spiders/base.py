@@ -80,7 +80,7 @@ class RobotSpider(scrapy.Spider):
         data_post = json.dumps({"url":data})
         server_list = self.settings.get("BAIDU_RPC_SERVER_URL",None)
         if server_list == None:
-            self.log("Baidu_RPC no_server",level=scrapy.log.FATAL)
+            self.log("Baidu_RPC no_server",level=scrapy.log.CRITICAL)
             return
         server_url = server_list[random.randint(0, len(server_list)-1)]
 
@@ -89,11 +89,11 @@ class RobotSpider(scrapy.Spider):
     def baidu_rpc_response(self,response):
 
         if response.status / 100 != 2:
-            self.log("Baidu_RPC %s http_error http_code:%d"%(response.url,response.status),level=scrapy.log.FATAL)
+            self.log("Baidu_RPC %s http_error http_code:%d"%(response.url,response.status),level=scrapy.log.CRITICAL)
             return
         res = json.loads(response.body)
         if res["err_no"] != 0:
-            self.log("Baidu_RPC %s rpc_error rpc_code:%d"%(response.url,res["err_no"]),level=scrapy.log.FATAL)
+            self.log("Baidu_RPC %s rpc_error rpc_code:%d"%(response.url,res["err_no"]),level=scrapy.log.CRITICAL)
         else:
             self.log("Baidu_RPC %s ok"%response.meta["baidu_rpc"]["url"],level=scrapy.log.INFO)
 

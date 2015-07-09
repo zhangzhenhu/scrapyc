@@ -43,7 +43,9 @@ class RobotSpider(base.RobotSpider):
             relative_url = sel.extract()
             if relative_url.startswith("javascript:"):
                 continue
-
+            if "mod=redirect" in relative_url or "redirect.php" in relative_url:
+                continue
+                
             abs_url =urljoin_rfc(base_url,relative_url)
             schema = get_url_scheme(abs_url)
             if schema not in ["http","https"]:
@@ -51,8 +53,7 @@ class RobotSpider(base.RobotSpider):
 
             #yield NimeiItem(url=abs_url,furl=response.url)
             abs_url = self.remove_param(abs_url,["extra","orderby","typeid","filter","sortid","searchsort","vk_payway_13","sid","recommend","digest"])
-            if "mod=redirect" in relative_url:
-                continue
+
 
             if self.PATTERN1.match(abs_url):
                 abs_url = re.sub("\-\d+\-\d+\.html.*","-1-1.html",abs_url,1)

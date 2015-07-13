@@ -18,8 +18,39 @@ class RobotSpider(base.RobotSpider):
 
     def start_requests(self):
 
-        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=0&pageSize=100&pageContext=1",callback=self.parse)
-        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=2&categoryId=0&pageSize=100&pageContext=1",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=0&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=-10&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=103&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=101&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=122&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=102&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=112&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=106&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=104&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=110&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=115&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=119&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=111&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=107&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=118&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=108&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=100&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=114&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=117&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=109&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=105&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=113&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=1&categoryId=116&pageSize=100&pageContext=0",callback=self.parse)
+
+
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=2&categoryId=147&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=2&categoryId=121&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=2&categoryId=144&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=2&categoryId=148&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=2&categoryId=149&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=2&categoryId=153&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=2&categoryId=146&pageSize=100&pageContext=0",callback=self.parse)
+        yield scrapy.Request("http://android.myapp.com/myapp/cate/appList.htm?orgame=2&categoryId=151&pageSize=100&pageContext=0",callback=self.parse)
 
         for item in super(RobotSpider, self).start_requests():
             yield item

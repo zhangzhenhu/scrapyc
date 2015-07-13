@@ -38,7 +38,7 @@ class RobotSpider(base.RobotSpider):
         if res_data["count"] ==100:
             url = response.url
             hehe = url.split("=")
-            hehe[-1] = int(hehe[-1])+100
+            hehe[-1] = str(int(hehe[-1])+100)
             url = "=".join(hehe)
             yield scrapy.Request(url)
 

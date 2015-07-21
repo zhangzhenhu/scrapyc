@@ -28,19 +28,19 @@ class RobotSpider(base.RobotSpider):
         if response.status / 100 != 2:
             return
         for a in response.xpath('//a'):
-            text = xpath("@text").extract()
+            text = a.xpath("@text").extract()
             if len(text) !=1:
                 continue
             text = text[0]
             if "PDF" not in text:
                 continue
 
-            if href == "#" or href.startswith("javascript") and len( xpath("@onclick").extract()) ==1:
-                onclick =  xpath("@onclick").extract()[0]
+            if href == "#" or href.startswith("javascript") and len( a.xpath("@onclick").extract()) ==1:
+                onclick =  a.xpath("@onclick").extract()[0]
                 id = onclick.split(",")[1].replace("'","")
                 pdf = response.url.split("/CN/",1)[0] + "/CN/article/downloadArticleFile.do?attachType=PDF&id="+id
-            elif len( xpath("@href").extract()) ==1:
-                href = xpath("@href").extract()[0]
+            elif len( a.xpath("@href").extract()) ==1:
+                href = a.xpath("@href").extract()[0]
                 abs_url =urljoin_rfc(response.url,href)
                 pdf = abs_url
 

@@ -12,7 +12,7 @@ from robot.spiders import base
 from scrapy.utils.misc import load_object
 from scrapyc.server.utils.url import get_url_site,get_url_scheme
 import json
-
+import urllib
 
 class RobotSpider(base.RobotSpider):
     name = "pdf"

@@ -4,7 +4,7 @@
 
 import scrapy
 from scrapy.utils.response import get_base_url
-from w3lib.url import urljoin_rfc
+from w3lib.url import urljoin_rfc,safe_url_string
 
 from scrapy import signals
 from robot.items import NimeiItem
@@ -13,6 +13,7 @@ from scrapy.utils.misc import load_object
 from scrapyc.server.utils.url import get_url_site,get_url_scheme
 import json
 import urllib
+
 
 class RobotSpider(base.RobotSpider):
     name = "pdf"
@@ -98,12 +99,11 @@ class RobotSpider(base.RobotSpider):
             return
         base_url  = get_base_url(response)
         for sel in response.xpath('//table/tr/td/div/a/@href'):
-            relative_url = sel.extract().encode("gbk")
+            relative_url = sel.extract()
+            abs_url = urljoin_rfc(base_url,relative_url)
+            abs_url = safe_url_string(abs_url,encoding="gbk")
         
             if relative_url.endswith(".pdf") or relative_url.endswith(".doc"):
-                abs_url = urljoin_rfc(base_url,relative_url)
                 yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
             elif  relative_url.startswith("?currPath=") :
-                relative_url = "?currPath=" + urllib.quote(relative_url[10:].encode("gbk"))
-                abs_url = urljoin_rfc(base_url,relative_url)
                 yield scrapy.Request(url=abs_url,callback=self.parse2)

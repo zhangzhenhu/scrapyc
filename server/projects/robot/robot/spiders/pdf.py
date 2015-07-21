@@ -100,7 +100,8 @@ class RobotSpider(base.RobotSpider):
         for sel in response.xpath('//table/tr/td/div/a/@href'):
             relative_url = sel.extract()       
             abs_url =urljoin_rfc(base_url,relative_url)
+            
             if abs_url.endswith(".pdf") or abs_url.endswith(".doc"):
-                yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
+                yield self.baidu_rpc_request({"url":abs_url.encode("gbk"),"src_id":4}) 
             else:
                 yield scrapy.Request(url=abs_url.encode("gbk"),callback=self.parse2)

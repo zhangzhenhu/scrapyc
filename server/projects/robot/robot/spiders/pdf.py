@@ -99,7 +99,7 @@ class RobotSpider(base.RobotSpider):
             return
         base_url  = get_base_url(response)
         for sel in response.xpath('//table/tr/td/div/a/@href'):
-            relative_url = sel.extract()
+            relative_url = sel.extract().encode("gbk")
             abs_url = urljoin_rfc(base_url,relative_url)
             abs_url = safe_url_string(abs_url,encoding="gbk")
         

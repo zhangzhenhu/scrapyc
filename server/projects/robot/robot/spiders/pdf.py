@@ -74,7 +74,7 @@ class RobotSpider(base.RobotSpider):
             schema = get_url_scheme(abs_url)
             if schema not in ["http","https"]:
                 continue  
-            if abs_url.endswith(".pdf") or abs_url.endswith(".doc")
+            if abs_url.endswith(".pdf") or abs_url.endswith(".doc"):
                 yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
 
 

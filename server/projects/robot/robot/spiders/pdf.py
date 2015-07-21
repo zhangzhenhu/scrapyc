@@ -22,9 +22,9 @@ class RobotSpider(base.RobotSpider):
 
 
     def start_requests(self):
-        yield scrapy.Request("http://140.127.82.35/ETD-db/ETD-browse/browse?first_letter=all&browse_by=last_name",callback=self.parse1)
-        yield scrapy.Request("http://202.116.42.39/xxdy/ckwx/index.html",callback=self.parse0)
-        yield scrapy.Request("http://202.116.42.39/xxdy/ckwx/index2.html",callback=self.parse0)
+        # yield scrapy.Request("http://140.127.82.35/ETD-db/ETD-browse/browse?first_letter=all&browse_by=last_name",callback=self.parse1)
+        # yield scrapy.Request("http://202.116.42.39/xxdy/ckwx/index.html",callback=self.parse0)
+        # yield scrapy.Request("http://202.116.42.39/xxdy/ckwx/index2.html",callback=self.parse0)
         yield scrapy.Request("http://tszy.bfa.edu.cn/drms_bfa/portal/beiying/index109.113_list.jsp?currPath=%D1%A7%BF%C6%CD%BC%CA%E9%C7%E9%B1%A8/%B5%E7%D3%B0%D1%A7%BF%C6%B5%C4%B5%E7%D7%D3%D7%CA%D4%B4%D0%C5%CF%A2/hylw_jm",callback=self.parse2)
 
         for item in super(RobotSpider, self).start_requests():
@@ -103,7 +103,7 @@ class RobotSpider(base.RobotSpider):
             if relative_url.endswith(".pdf") or relative_url.endswith(".doc"):
                 abs_url = urljoin_rfc(base_url,relative_url)
                 yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
-            elif not relative_url.startswith("?currPath=") :
+            elif  relative_url.startswith("?currPath=") :
                 relative_url = "?currPath=" + urllib.quote(relative_url[10:].encode("gbk"))
                 abs_url = urljoin_rfc(base_url,relative_url)
                 yield scrapy.Request(url=abs_url,callback=self.parse2)

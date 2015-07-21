@@ -21,6 +21,11 @@ class RobotSpider(base.RobotSpider):
     parses = {}
 
 
+    def start_requests(self):
+        yield scrapy.Request("http://140.127.82.35/ETD-db/ETD-browse/browse?first_letter=all&browse_by=last_name",callback=self.parse0)
+
+        for item in super(RobotSpider, self).start_requests():
+            yield item
 
     def parse(self, response):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
@@ -53,4 +58,17 @@ class RobotSpider(base.RobotSpider):
             #url = "http://www.zjnyxb.cn/CN/article/downloadArticleFile.do?attachType=PDF&id="+id
             #print pdf
             yield self.baidu_rpc_request({"url":pdf,"src_id":4})                             
+
+    def parse0(self, response):
+        self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
+        #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
+        if response.status / 100 != 2:
+            return
+        for href in response.xpath("//td/a/@href").extract():
+            href = href.split("?URN=")
+            if len(href) != 2:
+                continue
+            etd = href[1]
+            pdf = "140.127.82.35/ETD-db/ETD-search/getfile?URN=%s&filename=%s.pdf"%(etd,etd)
+            yield self.baidu_rpc_request({"url":pdf,"src_id":4}) 
 

@@ -36,6 +36,9 @@ class RobotSpider(scrapy.Spider):
                     url = line.strip().split()[0]
                     req =  scrapy.Request(url,callback=self.parse)
                     yield req
+        url = self.settings.get("url",None)
+        if url:
+            yield scrapy.Request(url,callback=self.parse)
         for url in self.start_urls:
             req =  scrapy.Request(url,callback=self.parse)
             #req.meta["depth"] =  1

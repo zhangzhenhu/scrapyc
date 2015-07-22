@@ -167,7 +167,7 @@ class RobotSpider(base.RobotSpider):
                 ctype  = filename.split(".")[-1].lower() 
             else:
                 ctype = None
-            if ctype in ["jpeg","jpg","swf","rar","zip","gz","gif","mov","png","bmp","exe","pps","db"]:
+            if ctype in ["jpeg","jpg","swf","rar","zip","gz","gif","mov","png","bmp","exe","pps","db","txt"]:
                 continue
 
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4})

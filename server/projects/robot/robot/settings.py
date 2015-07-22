@@ -50,6 +50,7 @@ FEED_URI="file:///home/spider/zhangzhenhu/robot/%(name)s/%(time)s.json"
 #DEPTH_LIMIT = 10
 DEPTH_PRIORITY = 0
 #DOWNLOAD_HANDLERS={'http':'scrapyc.server.utils.PhantomJSDownloadHandler.PhantomJSDownloadHandler',}
+DOWNLOAD_TIMEOUT = 360
 WEBSERVICE_PORT=9885
 WEBSERVICE_ENABLED=0
 DOWNLOADER_MIDDLEWARES = {

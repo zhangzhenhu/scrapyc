@@ -26,7 +26,15 @@ class RobotSpider(base.RobotSpider):
         # yield scrapy.Request("http://140.127.82.35/ETD-db/ETD-browse/browse?first_letter=all&browse_by=last_name",callback=self.parse1)
         # yield scrapy.Request("http://202.116.42.39/xxdy/ckwx/index.html",callback=self.parse0)
         # yield scrapy.Request("http://202.116.42.39/xxdy/ckwx/index2.html",callback=self.parse0)
-        yield scrapy.Request("http://tszy.bfa.edu.cn/drms_bfa/portal/beiying/index109.113_list.jsp?currPath=%D1%A7%BF%C6%CD%BC%CA%E9%C7%E9%B1%A8/%B5%E7%D3%B0%D1%A7%BF%C6%B5%C4%B5%E7%D7%D3%D7%CA%D4%B4%D0%C5%CF%A2/hylw_jm",callback=self.parse2)
+        
+        #yield scrapy.Request("http://tszy.bfa.edu.cn/drms_bfa/portal/beiying/index109.113_list.jsp?currPath=%D1%A7%BF%C6%CD%BC%CA%E9%C7%E9%B1%A8/%B5%E7%D3%B0%D1%A7%BF%C6%B5%C4%B5%E7%D7%D3%D7%CA%D4%B4%D0%C5%CF%A2/hylw_jm",callback=self.parse2)
+
+        for i in range(1,2919):
+            url = "http://cameo.net.cn/List.asp?ces=C&pageNO=%d"%i
+            yield scrapy.Request(url,callback=self.parse_cameo)
+            yield self.baidu_rpc_request({"url":url,"src_id":4}) 
+        
+        yield scrapy.Request("http://cf.lcchina.org.cn/",callback=self.parse_all)
 
         for item in super(RobotSpider, self).start_requests():
             yield item
@@ -76,7 +84,7 @@ class RobotSpider(base.RobotSpider):
             if schema not in ["http","https"]:
                 continue  
             if abs_url.endswith(".pdf") or abs_url.endswith(".doc"):
-                yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
+                yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
 
 
     def parse1(self, response):
@@ -107,3 +115,29 @@ class RobotSpider(base.RobotSpider):
                 yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
             elif  relative_url.startswith("?currPath=") :
                 yield scrapy.Request(url=abs_url,callback=self.parse2)
+
+    def parse_cameo(self, response):
+        self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
+        #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
+        if response.status / 100 != 2:
+            return
+        base_url  = get_base_url(response)
+        for sel in response.xpath('//a/@href'):
+            relative_url = sel.extract().encode("gbk")
+            abs_url = urljoin_rfc(base_url,relative_url)
+            abs_url = safe_url_string(abs_url,encoding="gbk")
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
+
+    def parse_all(self, response):
+        self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
+        #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
+        if response.status / 100 != 2:
+            return
+        base_url  = get_base_url(response)
+        for sel in response.xpath('//a/@href'):
+            relative_url = sel.extract().encode("gbk")
+            abs_url = urljoin_rfc(base_url,relative_url)
+            abs_url = safe_url_string(abs_url,encoding="gbk")
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+            yield scrapy.Request(url=abs_url,callback=self.parse_all)
+           

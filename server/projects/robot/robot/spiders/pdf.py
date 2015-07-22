@@ -29,10 +29,10 @@ class RobotSpider(base.RobotSpider):
         
         #yield scrapy.Request("http://tszy.bfa.edu.cn/drms_bfa/portal/beiying/index109.113_list.jsp?currPath=%D1%A7%BF%C6%CD%BC%CA%E9%C7%E9%B1%A8/%B5%E7%D3%B0%D1%A7%BF%C6%B5%C4%B5%E7%D7%D3%D7%CA%D4%B4%D0%C5%CF%A2/hylw_jm",callback=self.parse2)
 
-        for i in range(1,2919):
-            url = "http://cameo.net.cn/List.asp?ces=C&pageNO=%d"%i
-            yield scrapy.Request(url,callback=self.parse_cameo)
-            yield self.baidu_rpc_request({"url":url,"src_id":4}) 
+        # for i in range(1,2919):
+        #     url = "http://cameo.net.cn/List.asp?ces=C&pageNO=%d"%i
+        #     yield scrapy.Request(url,callback=self.parse_cameo)
+        #     yield self.baidu_rpc_request({"url":url,"src_id":4}) 
         
         yield scrapy.Request("http://cf.lcchina.org.cn/",callback=self.parse_all)
 

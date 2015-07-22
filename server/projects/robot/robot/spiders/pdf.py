@@ -34,24 +34,24 @@ class RobotSpider(base.RobotSpider):
         #     yield scrapy.Request(url,callback=self.parse_cameo)
         #     yield self.baidu_rpc_request({"url":url,"src_id":4}) 
         
-        yield scrapy.Request("http://cf.lcchina.org.cn/",callback=self.parse_all)
+        #yield scrapy.Request("http://cf.lcchina.org.cn/",callback=self.parse_all)
 
 
-        for i in range(1,1501):
-            url = "http://tkuir.lib.tku.edu.tw:8080/dspace/browse-title?itemsPerPage=50&page=%d"%i
-            yield scrapy.Request(url,callback=self.parse_cameo)
-            yield self.baidu_rpc_request({"url":url,"src_id":4}) 
+        # for i in range(1,1501):
+        #     url = "http://tkuir.lib.tku.edu.tw:8080/dspace/browse-title?itemsPerPage=50&page=%d"%i
+        #     yield scrapy.Request(url,callback=self.parse_cameo)
+        #     yield self.baidu_rpc_request({"url":url,"src_id":4}) 
         
-        url = "http://tkuir.lib.tku.edu.tw:8080/dspace/browse-title?itemsPerPage=50"
-        yield scrapy.Request(url,callback=self.parse_cameo)
-        yield self.baidu_rpc_request({"url":url,"src_id":4}) 
-        i = 0
-        while i < 73334:
+        # url = "http://tkuir.lib.tku.edu.tw:8080/dspace/browse-title?itemsPerPage=50"
+        # yield scrapy.Request(url,callback=self.parse_cameo)
+        # yield self.baidu_rpc_request({"url":url,"src_id":4}) 
+        # i = 0
+        # while i < 73334:
             
-            url = "http://dspace.lib.ntnu.edu.tw/browse?type=title&sort_by=1&order=ASC&rpp=100&etal=-1&null=&offset=%d"%i
-            i += 100
-            yield scrapy.Request(url,callback=self.parse_cameo)
-            yield self.baidu_rpc_request({"url":url,"src_id":4}) 
+        #     url = "http://dspace.lib.ntnu.edu.tw/browse?type=title&sort_by=1&order=ASC&rpp=100&etal=-1&null=&offset=%d"%i
+        #     i += 100
+        #     yield scrapy.Request(url,callback=self.parse_cameo)
+        #     yield self.baidu_rpc_request({"url":url,"src_id":4}) 
     
 
         for item in super(RobotSpider, self).start_requests():
@@ -167,7 +167,7 @@ class RobotSpider(base.RobotSpider):
                 ctype  = filename.split(".")[-1].lower() 
             else:
                 ctype = None
-            if ctype in ["jpeg","jpg","swf","rar","zip","gz","gif","mov","png","bmp","exe","pps","db","txt","pptx",'xls',"ppt"]:
+            if ctype in ["jpeg","jpg","swf","rar","zip","gz","gif","mov","png","bmp","exe","pps","db","txt","pptx",'xls',"ppt","xlsx"]:
                 continue
 
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4})

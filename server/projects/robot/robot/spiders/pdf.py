@@ -37,7 +37,7 @@ class RobotSpider(base.RobotSpider):
         yield scrapy.Request("http://cf.lcchina.org.cn/",callback=self.parse_all)
 
 
-        for i in range(1,1501)
+        for i in range(1,1501):
             url = "http://tkuir.lib.tku.edu.tw:8080/dspace/browse-title?itemsPerPage=50&page=%d"%i
             yield scrapy.Request(url,callback=self.parse_cameo)
             yield self.baidu_rpc_request({"url":url,"src_id":4}) 

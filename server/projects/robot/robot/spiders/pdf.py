@@ -161,13 +161,21 @@ class RobotSpider(base.RobotSpider):
                 continue            
             abs_url = urljoin_rfc(base_url,relative_url)
             abs_url = safe_url_string(abs_url,encoding=response.encoding)
+
+            filename = abs_url.split("?")[0].split("/")[-1]
+            if filename :
+                ctype  = filename.split(".")[-1].lower() 
+            else:
+                ctype = None
+            if ctype in ["jpeg","jpg","swf","rar","zip","gz","gif","mov","png"]:
+                continue
+
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
 
             site = get_url_site(abs_url)
             if site != base_site:
                 continue
-            filename = abs_url.split("?")[0].split("/")[-1]
-            if filename and filename.split(".")[-1].lower() in ["jpeg","jpg","pdf","swf","rar","zip","gz","doc","gif","ppt","mov"]:
+            if ctype in ["pdf","doc","ppt","docx"]:
                 continue
             yield scrapy.Request(url=abs_url,callback=self.parse_all)
            

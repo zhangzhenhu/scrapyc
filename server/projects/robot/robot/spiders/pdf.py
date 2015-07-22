@@ -153,6 +153,8 @@ class RobotSpider(base.RobotSpider):
         if response.status / 100 != 2:
             return
         base_url  = get_base_url(response)
+        base_site = get_url_site(base_url)
+
         for sel in response.xpath('//a/@href'):
             relative_url = sel.extract().encode(response.encoding)
             if relative_url.startswith("javascript:") or relative_url=="#":
@@ -160,8 +162,12 @@ class RobotSpider(base.RobotSpider):
             abs_url = urljoin_rfc(base_url,relative_url)
             abs_url = safe_url_string(abs_url,encoding=response.encoding)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+
+            site = get_url_site(base_url)
+            if site != base_site:
+                continue
             filename = abs_url.split("?")[0].split("/")[-1]
-            if filename and filename.split(".")[-1].lower() in ["jpeg","jpg","pdf","swf","rar","zip","gz","doc","gif"]:
+            if filename and filename.split(".")[-1].lower() in ["jpeg","jpg","pdf","swf","rar","zip","gz","doc","gif","ppt","mov"]:
                 continue
             yield scrapy.Request(url=abs_url,callback=self.parse_all)
            

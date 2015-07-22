@@ -24,8 +24,8 @@ class RobotSpider(base.RobotSpider):
 
     def start_requests(self):
         yield scrapy.Request("http://140.127.82.35/ETD-db/ETD-browse/browse?first_letter=all&browse_by=last_name",callback=self.parse1)
-        yield scrapy.Request("http://202.116.42.39/xxdy/ckwx/index.html",callback=self.parse0)
-        yield scrapy.Request("http://202.116.42.39/xxdy/ckwx/index2.html",callback=self.parse0)
+        yield scrapy.Request("http://202.116.42.39/xxdy/ckwx/index.html",callback=self.parse_cameo)
+        yield scrapy.Request("http://202.116.42.39/xxdy/ckwx/index2.html",callback=self.parse_cameo)
         
         yield scrapy.Request("http://tszy.bfa.edu.cn/drms_bfa/portal/beiying/index109.113_list.jsp?currPath=%D1%A7%BF%C6%CD%BC%CA%E9%C7%E9%B1%A8/%B5%E7%D3%B0%D1%A7%BF%C6%B5%C4%B5%E7%D7%D3%D7%CA%D4%B4%D0%C5%CF%A2/hylw_jm",callback=self.parse2)
 
@@ -35,6 +35,24 @@ class RobotSpider(base.RobotSpider):
             yield self.baidu_rpc_request({"url":url,"src_id":4}) 
         
         yield scrapy.Request("http://cf.lcchina.org.cn/",callback=self.parse_all)
+
+
+        for i in range(1,1501)
+            url = "http://tkuir.lib.tku.edu.tw:8080/dspace/browse-title?itemsPerPage=50&page=%d"%i
+            yield scrapy.Request(url,callback=self.parse_cameo)
+            yield self.baidu_rpc_request({"url":url,"src_id":4}) 
+        
+        url = "http://tkuir.lib.tku.edu.tw:8080/dspace/browse-title?itemsPerPage=50"
+        yield scrapy.Request(url,callback=self.parse_cameo)
+        yield self.baidu_rpc_request({"url":url,"src_id":4}) 
+        i = 0
+        while i < 73334:
+            
+            url = "http://dspace.lib.ntnu.edu.tw/browse?type=title&sort_by=1&order=ASC&rpp=100&etal=-1&null=&offset=%d"%i
+            i += 100
+            yield scrapy.Request(url,callback=self.parse_cameo)
+            yield self.baidu_rpc_request({"url":url,"src_id":4}) 
+    
 
         for item in super(RobotSpider, self).start_requests():
             yield item
@@ -71,20 +89,7 @@ class RobotSpider(base.RobotSpider):
             #print pdf
             yield self.baidu_rpc_request({"url":pdf,"src_id":4})                             
 
-    def parse0(self, response):
-        self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
-        #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
-        if response.status / 100 != 2:
-            return
-        base_url  = get_base_url(response)
-        for sel in response.xpath('//a/@href'):
-            relative_url = sel.extract()                
-            abs_url =urljoin_rfc(base_url,relative_url)
-            schema = get_url_scheme(abs_url)
-            if schema not in ["http","https"]:
-                continue  
-            if abs_url.endswith(".pdf") or abs_url.endswith(".doc"):
-                yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+
 
 
     def parse1(self, response):
@@ -98,7 +103,16 @@ class RobotSpider(base.RobotSpider):
                 continue
             etd = href[1]
             pdf = "140.127.82.35/ETD-db/ETD-search/getfile?URN=%s&filename=%s.pdf"%(etd,etd)
-            yield self.baidu_rpc_request({"url":pdf,"src_id":4}) 
+            yield self.baidu_rpc_request({"url":pdf,"src_id":4})
+
+        base_url  = get_base_url(response)
+        for sel in response.xpath('//a/@href'):
+            relative_url = sel.extract().encode(response.encoding)
+            abs_url = urljoin_rfc(base_url,relative_url)
+            abs_url = safe_url_string(abs_url,encoding=response.encoding)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
+
+
 
     def parse2(self, response):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
@@ -107,9 +121,9 @@ class RobotSpider(base.RobotSpider):
             return
         base_url  = get_base_url(response)
         for sel in response.xpath('//table/tr/td/div/a/@href'):
-            relative_url = sel.extract().encode("gbk")
+            relative_url = sel.extract().encode(response.encoding)
             abs_url = urljoin_rfc(base_url,relative_url)
-            abs_url = safe_url_string(abs_url,encoding="gbk")
+            abs_url = safe_url_string(abs_url,encoding=response.encoding)
         
             if relative_url.endswith(".pdf") or relative_url.endswith(".doc"):
                 yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
@@ -123,9 +137,9 @@ class RobotSpider(base.RobotSpider):
             return
         base_url  = get_base_url(response)
         for sel in response.xpath('//a/@href'):
-            relative_url = sel.extract().encode("gbk")
+            relative_url = sel.extract().encode(response.encoding)
             abs_url = urljoin_rfc(base_url,relative_url)
-            abs_url = safe_url_string(abs_url,encoding="gbk")
+            abs_url = safe_url_string(abs_url,encoding=response.encoding)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
 
     def parse_all(self, response):
@@ -135,9 +149,9 @@ class RobotSpider(base.RobotSpider):
             return
         base_url  = get_base_url(response)
         for sel in response.xpath('//a/@href'):
-            relative_url = sel.extract().encode("gbk")
+            relative_url = sel.extract().encode(response.encoding)
             abs_url = urljoin_rfc(base_url,relative_url)
-            abs_url = safe_url_string(abs_url,encoding="gbk")
+            abs_url = safe_url_string(abs_url,encoding=response.encoding)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
             yield scrapy.Request(url=abs_url,callback=self.parse_all)
            

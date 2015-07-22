@@ -163,7 +163,7 @@ class RobotSpider(base.RobotSpider):
             abs_url = safe_url_string(abs_url,encoding=response.encoding)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
 
-            site = get_url_site(base_url)
+            site = get_url_site(abs_url)
             if site != base_site:
                 continue
             filename = abs_url.split("?")[0].split("/")[-1]

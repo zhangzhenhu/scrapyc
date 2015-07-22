@@ -167,7 +167,7 @@ class RobotSpider(base.RobotSpider):
                 ctype  = filename.split(".")[-1].lower() 
             else:
                 ctype = None
-            if ctype in ["jpeg","jpg","swf","rar","zip","gz","gif","mov","png"]:
+            if ctype in ["jpeg","jpg","swf","rar","zip","gz","gif","mov","png","bmp","exe"]:
                 continue
 
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
@@ -175,7 +175,7 @@ class RobotSpider(base.RobotSpider):
             site = get_url_site(abs_url)
             if site != base_site:
                 continue
-            if ctype in ["pdf","doc","ppt","docx"]:
+            if ctype in ["pdf","doc","ppt","docx",".pptx"]:
                 continue
             yield scrapy.Request(url=abs_url,callback=self.parse_all)
            

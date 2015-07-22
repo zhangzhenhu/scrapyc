@@ -89,7 +89,12 @@ class RobotSpider(base.RobotSpider):
             #print pdf
             yield self.baidu_rpc_request({"url":pdf,"src_id":4})                             
 
-
+        base_url  = get_base_url(response)
+        for sel in response.xpath('//a/@href'):
+            relative_url = sel.extract().encode(response.encoding)
+            abs_url = urljoin_rfc(base_url,relative_url)
+            abs_url = safe_url_string(abs_url,encoding=response.encoding)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
 
 
     def parse1(self, response):

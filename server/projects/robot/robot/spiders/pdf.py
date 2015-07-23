@@ -24,8 +24,9 @@ class RobotSpider(base.RobotSpider):
 
     def start_requests(self):
         #yield scrapy.Request("http://140.127.82.35/ETD-db/ETD-browse/browse?first_letter=all&browse_by=last_name",callback=self.parse1)
-        yield scrapy.Request("http://202.116.42.39/xxdy/ckwx/index.html",callback=self.parse_cameo)
-        yield scrapy.Request("http://202.116.42.39/xxdy/ckwx/index2.html",callback=self.parse_cameo)
+        #yield scrapy.Request("http://202.116.42.39/xxdy/ckwx/index.html",callback=self.parse_cameo)
+        #yield scrapy.Request("http://202.116.42.39/xxdy/ckwx/index2.html",callback=self.parse_cameo)
+        yield scrapy.Request("http://www.zgyszz.com/qklist/li0s/p1.html",callback=self.parse_zgyszz)
         
         #yield scrapy.Request("http://tszy.bfa.edu.cn/drms_bfa/portal/beiying/index109.113_list.jsp?currPath=%D1%A7%BF%C6%CD%BC%CA%E9%C7%E9%B1%A8/%B5%E7%D3%B0%D1%A7%BF%C6%B5%C4%B5%E7%D7%D3%D7%CA%D4%B4%D0%C5%CF%A2/hylw_jm",callback=self.parse2)
 
@@ -179,3 +180,40 @@ class RobotSpider(base.RobotSpider):
                 continue
             yield scrapy.Request(url=abs_url,callback=self.parse_all)
            
+
+    def parse_zgyszz(self,response):
+        self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
+        #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
+        if response.status / 100 != 2:
+            return
+
+        base_url  = get_base_url(response)
+        base_site = get_url_site(base_url)
+        if  "qklist/show-" in base_url and "Location" in response.headers:
+            relative_url = response.headers["Location"]
+            abs_url = urljoin_rfc(base_url,relative_url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+            return
+
+        for sel in response.xpath("//div[@class='main_box']//table/tr[1]/td/a/@href"):
+            relative_url = sel.extract().encode(response.encoding)
+            if relative_url.startswith("javascript:") or relative_url=="#":
+                continue            
+            abs_url = urljoin_rfc(base_url,relative_url)
+            abs_url = safe_url_string(abs_url,encoding=response.encoding)
+            request = scrapy.Request(abs_url,callback=self.parse_zgyszz)
+            request.meta["dont_redirect"] = True
+            yield request
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+        
+        for sel in response.xpath("//div[@class='flickr']/a/@href"):
+            relative_url = sel.extract().encode(response.encoding)
+            if relative_url.startswith("javascript:") or relative_url=="#":
+                continue            
+            abs_url = urljoin_rfc(base_url,relative_url)
+            abs_url = safe_url_string(abs_url,encoding=response.encoding)
+            request = scrapy.Request(abs_url,callback=self.parse_zgyszz)
+            yield request
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+
+

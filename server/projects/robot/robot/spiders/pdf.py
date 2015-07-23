@@ -189,11 +189,20 @@ class RobotSpider(base.RobotSpider):
 
         base_url  = get_base_url(response)
         base_site = get_url_site(base_url)
-        if  "qklist/show-" in base_url and "Location" in response.headers:
-            relative_url = response.headers["Location"]
+        if  "qklist/show-" in base_url:
+
+            downLink = response.xpath("//div[@id='down']//a/@onclick").extract()[0]
+            relative_url = downLink.split("'")[1]
+
             abs_url = urljoin_rfc(base_url,relative_url)
+            request = scrapy.Request(abs_url,callback=self.parse_zgyszz)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+            
             return
+        if '/upload/qklist/' in base_url:
+            yield self.baidu_rpc_request({"url":base_url,"src_id":4})
+            return
+
 
         for sel in response.xpath("//div[@class='main_box']//table/tr[1]/td/a/@href"):
             relative_url = sel.extract().encode(response.encoding)
@@ -202,7 +211,7 @@ class RobotSpider(base.RobotSpider):
             abs_url = urljoin_rfc(base_url,relative_url)
             abs_url = safe_url_string(abs_url,encoding=response.encoding)
             request = scrapy.Request(abs_url,callback=self.parse_zgyszz)
-            request.meta["dont_redirect"] = True
+            #request.meta["dont_redirect"] = True
             yield request
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
         

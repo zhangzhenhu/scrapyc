@@ -36,6 +36,8 @@ JOBDIR = os.path.join(HISTORY_PATH,str(os.getpid()))
 CONCURRENT_REQUESTS=100
 CONCURRENT_REQUESTS_PER_DOMAIN=100
 CONCURRENT_REQUESTS_PER_IP=0
+DOWNLOAD_DELAY=0
+RANDOMIZE_DOWNLOAD_DELAY=True
 DNSCACHE_ENABLED=True
 LOG_ENCODING="gbk"
 # Crawl responsibly by identifying yourself (and your website) on the user-agent

@@ -195,7 +195,8 @@ class RobotSpider(base.RobotSpider):
             relative_url = downLink.split("'")[1]
 
             abs_url = urljoin_rfc(base_url,relative_url)
-            request = scrapy.Request(abs_url,callback=self.parse_zgyszz)
+            yield scrapy.Request(abs_url,callback=self.parse_zgyszz)
+
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
             
             return

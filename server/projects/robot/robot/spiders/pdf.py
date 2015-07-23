@@ -188,7 +188,7 @@ class RobotSpider(base.RobotSpider):
             return
 
         #base_site = get_url_site(base_url)
-        if  "qklist/show-" in base_url:
+        if  "qklist/show-" in response.url:
             base_url  = get_base_url(response)
 
             downLink = response.xpath("//div[@id='down']//a/@onclick").extract()[0]
@@ -200,11 +200,11 @@ class RobotSpider(base.RobotSpider):
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
             
             return
-        if '/upload/qklist/' in base_url:
+        if '/upload/qklist/' in response.url:
             yield self.baidu_rpc_request({"url":response.url,"src_id":4})
             return
 
-        base_url  = get_base_url(response)
+        base_url  = response.url
         for sel in response.xpath("//div[@class='main_box']//table/tr[1]/td/a/@href"):
             relative_url = sel.extract().encode(response.encoding)
             if relative_url.startswith("javascript:") or relative_url=="#":

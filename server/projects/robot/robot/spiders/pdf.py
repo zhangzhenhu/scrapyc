@@ -75,7 +75,7 @@ class RobotSpider(base.RobotSpider):
             if len(href) != 1:
                 continue
             href = href[0]
-            if href == "#" or href.startswith("javascript") and len( a.xpath("@onclick").extract()) ==1:
+            if  ( href == "#" or href.startswith("javascript") )and len( a.xpath("@onclick").extract()) ==1:
                 onclick =  a.xpath("@onclick").extract()[0]
                 onclick = onclick.split(",")
                 if len(onclick) < 2:

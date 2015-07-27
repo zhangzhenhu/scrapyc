@@ -103,6 +103,8 @@ class RobotSpider(base.RobotSpider):
         base_url  = get_base_url(response)
         for sel in response.xpath('//a/@href'):
             relative_url = sel.extract().encode(response.encoding)
+            if relative_url.startswith("javascript:") or relative_url=="#":
+                continue         
             abs_url = urljoin_rfc(base_url,relative_url)
             abs_url = safe_url_string(abs_url,encoding=response.encoding)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 

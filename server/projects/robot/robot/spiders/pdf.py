@@ -81,7 +81,12 @@ class RobotSpider(base.RobotSpider):
                 if len(onclick) < 2:
                     continue
                 id = onclick[1].split(")",1)[0].replace("'","")
-                pdf = response.url.split("/CN/",1)[0] + "/CN/article/downloadArticleFile.do?attachType=PDF&id="+id
+                if  "/CN/" in response.url:
+                    pdf = response.url.split("/CN/",1)[0] + "/CN/article/downloadArticleFile.do?attachType=PDF&id="+id
+                elif "/EN/" in response.url:
+                    pdf = response.url.split("/EN/",1)[0] + "/EN/article/downloadArticleFile.do?attachType=PDF&id="+id
+                else:
+                    continue
             elif len( a.xpath("@href").extract()) ==1:
                 href = a.xpath("@href").extract()[0]
                 abs_url =urljoin_rfc(response.url,href)

@@ -95,6 +95,7 @@ class RobotSpider(base.RobotSpider):
                 continue
             #url = "http://www.zjnyxb.cn/CN/article/downloadArticleFile.do?attachType=PDF&id="+id
             #print pdf
+            self.log("PDF_URL %s"%(pdf),level=scrapy.log.INFO)
             yield self.baidu_rpc_request({"url":pdf,"src_id":4})
             count += 1                         
 
@@ -106,7 +107,7 @@ class RobotSpider(base.RobotSpider):
             abs_url = urljoin_rfc(base_url,relative_url)
             abs_url = safe_url_string(abs_url,encoding=response.encoding)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
-        self.log("PDF %s %d"%(response.url,count),level=scrapy.log.INFO)
+        self.log("PDF_TOTAL %s %d"%(response.url,count),level=scrapy.log.INFO)
 
     def parse1(self, response):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)

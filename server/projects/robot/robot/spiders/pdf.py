@@ -65,9 +65,7 @@ class RobotSpider(base.RobotSpider):
             return
         count = 0
         for a in response.xpath('//a'):
-            text = a.xpath("//text()").extract()
-            if len(text) == 0:
-                continue
+            text = a.xpath("string(.)").extract()
             text = "".join(text).strip()
             if len(text) > 5 or  "PDF" not in text:
                 continue

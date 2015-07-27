@@ -65,12 +65,10 @@ class RobotSpider(base.RobotSpider):
             return
         count = 0
         for a in response.xpath('//a'):
-            text = a.xpath("u/text()").extract()
-            if len(text) !=1:
-                text = a.xpath("text()").extract()
-            if len(text) !=1:
+            text = a.xpath("//text()").extract()
+            if len(text) == 0:
                 continue
-            text = text[0]
+            text = " ".join(text)
             if "PDF" not in text:
                 continue
             href = a.xpath("@href").extract()

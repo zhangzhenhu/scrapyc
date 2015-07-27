@@ -87,7 +87,7 @@ class RobotSpider(base.RobotSpider):
                     pdf = response.url.split("/EN/",1)[0] + "/EN/article/downloadArticleFile.do?attachType=PDF&id="+id
                 else:
                     continue
-            elif  href != "#" and not href.startswith("javascript"):
+            elif "attachType=PDF&id=" in href :
                 
                 abs_url =urljoin_rfc(response.url,href)
                 pdf = abs_url

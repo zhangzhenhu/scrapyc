@@ -91,7 +91,8 @@ class RobotSpider(base.RobotSpider):
                 href = a.xpath("@href").extract()[0]
                 abs_url =urljoin_rfc(response.url,href)
                 pdf = abs_url
-
+            else:
+                continue
             #url = "http://www.zjnyxb.cn/CN/article/downloadArticleFile.do?attachType=PDF&id="+id
             #print pdf
             yield self.baidu_rpc_request({"url":pdf,"src_id":4})

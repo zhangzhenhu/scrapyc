@@ -68,8 +68,8 @@ class RobotSpider(base.RobotSpider):
             text = a.xpath("//text()").extract()
             if len(text) == 0:
                 continue
-            text = " ".join(text)
-            if "PDF" not in text:
+            text = "".join(text).strip()
+            if len(text) > 5 or  "PDF" not in text:
                 continue
             href = a.xpath("@href").extract()
             if len(href) != 1:

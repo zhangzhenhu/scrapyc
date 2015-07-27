@@ -96,7 +96,7 @@ class RobotSpider(scrapy.Spider):
             return
         res = json.loads(response.body)
         if res["err_no"] != 0:
-            self.log("Baidu_RPC %s rpc_error rpc_code:%d"%(response.url,res["err_no"]),level=scrapy.log.CRITICAL)
+            self.log("Baidu_RPC %s rpc_error rpc_code:%d %s"%(response.url,res["err_no"],response.meta["baidu_rpc"]["url"]),level=scrapy.log.CRITICAL)
         else:
             self.log("Baidu_RPC %s ok"%response.meta["baidu_rpc"]["url"],level=scrapy.log.INFO)
 

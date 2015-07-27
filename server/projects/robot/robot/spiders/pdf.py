@@ -75,7 +75,7 @@ class RobotSpider(base.RobotSpider):
             if len(href) != 1:
                 continue
             href = href[0]
-            if  ( href == "#" or href.startswith("javascript") )and len( a.xpath("@onclick").extract()) ==1:
+            if  ( href == "#" or href.startswith("javascript") ) and len( a.xpath("@onclick").extract()) ==1:
                 onclick =  a.xpath("@onclick").extract()[0]
                 onclick = onclick.split(",")
                 if len(onclick) < 2:
@@ -87,8 +87,8 @@ class RobotSpider(base.RobotSpider):
                     pdf = response.url.split("/EN/",1)[0] + "/EN/article/downloadArticleFile.do?attachType=PDF&id="+id
                 else:
                     continue
-            elif len( a.xpath("@href").extract()) ==1:
-                href = a.xpath("@href").extract()[0]
+            elif  href != "#" and not href.startswith("javascript"):
+                
                 abs_url =urljoin_rfc(response.url,href)
                 pdf = abs_url
             else:

@@ -1,14 +1,15 @@
+
 import scrapy
 from scrapy.utils.response import get_base_url
-from w3lib.url import urljoin_rfc
+from w3lib.url import urljoin_rfc,safe_url_string
 
 from scrapy import signals
 from robot.items import NimeiItem
+from robot.spiders import base
 from scrapy.utils.misc import load_object
 from scrapyc.server.utils.url import get_url_site,get_url_scheme
 import json
-import random
-
+import urllib
 class RpcSpider(base.RobotSpider):
     name = "rpc"
     allowed_domains = []

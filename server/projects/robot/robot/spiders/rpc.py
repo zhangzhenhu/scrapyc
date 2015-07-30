@@ -15,7 +15,7 @@ class RpcSpider(scrapy.Spider):
     start_urls = [    ]
 
     def __init__(self,*args, **kwargs):
-        super(RobotSpider, self).__init__(*args, **kwargs)
+        super(RpcSpider, self).__init__(*args, **kwargs)
         self._kwargs = kwargs
 
     def start_requests(self):

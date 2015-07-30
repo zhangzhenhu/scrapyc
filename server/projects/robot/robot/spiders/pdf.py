@@ -78,7 +78,10 @@ class RobotSpider(base.RobotSpider):
                 onclick = onclick.split(",")
                 if len(onclick) < 2:
                     continue
-                id = onclick[1].split(")",1)[0].replace("'","")
+                if onclick[0].startswith("showArticleFile"):
+                    id = onclick[-1].split(")",1)[0].replace("'","")
+                else:
+                    id = onclick[1].split(")",1)[0].replace("'","")
                 if  "/CN/" in response.url:
                     pdf = response.url.split("/CN/",1)[0] + "/CN/article/downloadArticleFile.do?attachType=PDF&id="+id
                 elif "/EN/" in response.url:
@@ -100,7 +103,7 @@ class RobotSpider(base.RobotSpider):
         base_url  = get_base_url(response)
         for sel in response.xpath('//a/@href'):
             relative_url = sel.extract().encode(response.encoding)
-            if relative_url.startswith("javascript:") or relative_url=="#":
+            if relative_url.startswith("javascript:") or relative_url.startswith("mailto:") or relative_url=="#":
                 continue         
             abs_url = urljoin_rfc(base_url,relative_url)
             abs_url = safe_url_string(abs_url,encoding=response.encoding)
@@ -123,6 +126,8 @@ class RobotSpider(base.RobotSpider):
         base_url  = get_base_url(response)
         for sel in response.xpath('//a/@href'):
             relative_url = sel.extract().encode(response.encoding)
+            if relative_url.startswith("javascript:") or relative_url.startswith("mailto:") or relative_url=="#":
+                continue                  
             abs_url = urljoin_rfc(base_url,relative_url)
             abs_url = safe_url_string(abs_url,encoding=response.encoding)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
@@ -153,6 +158,8 @@ class RobotSpider(base.RobotSpider):
         base_url  = get_base_url(response)
         for sel in response.xpath('//a/@href'):
             relative_url = sel.extract().encode(response.encoding)
+            if relative_url.startswith("javascript:") or relative_url.startswith("mailto:") or relative_url=="#":
+                continue                  
             abs_url = urljoin_rfc(base_url,relative_url)
             abs_url = safe_url_string(abs_url,encoding=response.encoding)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
@@ -167,8 +174,8 @@ class RobotSpider(base.RobotSpider):
 
         for sel in response.xpath('//a/@href'):
             relative_url = sel.extract().encode(response.encoding)
-            if relative_url.startswith("javascript:") or relative_url=="#":
-                continue            
+            if relative_url.startswith("javascript:") or relative_url.startswith("mailto:") or relative_url=="#":
+                continue              
             abs_url = urljoin_rfc(base_url,relative_url)
             abs_url = safe_url_string(abs_url,encoding=response.encoding)
 
@@ -216,8 +223,8 @@ class RobotSpider(base.RobotSpider):
         base_url  = response.url
         for sel in response.xpath("//div[@class='main_box']//table/tr[1]/td/a/@href"):
             relative_url = sel.extract().encode(response.encoding)
-            if relative_url.startswith("javascript:") or relative_url=="#":
-                continue            
+            if relative_url.startswith("javascript:") or relative_url.startswith("mailto:") or relative_url=="#":
+                continue              
             abs_url = urljoin_rfc(base_url,relative_url)
             abs_url = safe_url_string(abs_url,encoding=response.encoding)
             request = scrapy.Request(abs_url,callback=self.parse_zgyszz)
@@ -227,8 +234,8 @@ class RobotSpider(base.RobotSpider):
         
         for sel in response.xpath("//div[@class='flickr']/a/@href"):
             relative_url = sel.extract().encode(response.encoding)
-            if relative_url.startswith("javascript:") or relative_url=="#":
-                continue            
+            if relative_url.startswith("javascript:") or relative_url.startswith("mailto:") or relative_url=="#":
+                continue         
             abs_url = urljoin_rfc(base_url,relative_url)
             abs_url = safe_url_string(abs_url,encoding=response.encoding)
             request = scrapy.Request(abs_url,callback=self.parse_zgyszz)

@@ -22,6 +22,7 @@ class RobotSpider(base.RobotSpider):
         while start <= today:
             url = "http://wccdaily.scol.com.cn/shtml/hxdsb/%s/index.shtml"%start.strftime("%Y%m%d")
             yield scrapy.Request(url)
+            start += datetime.timedelta(days=1)
         for item in super(RobotSpider, self).start_requests():
             yield item        
     #PATTERN1=re.compile(".*thread\-\d+\-\d+\-\d+\.html.*")

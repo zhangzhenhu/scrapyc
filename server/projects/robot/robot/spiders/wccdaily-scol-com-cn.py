@@ -56,4 +56,12 @@ class RobotSpider(base.RobotSpider):
             relative_url = sel.split("'")[1]
             abs_url =urljoin_rfc(base_url,relative_url)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+            if "v" in relative_url:
+                yield scrapy.Request(url=abs_url)
+        for sel in response.xpath("//*/@href").extract():
+            if not sel.endswith("html"):
+                continue
+            relative_url = href
+            abs_url =urljoin_rfc(base_url,relative_url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
             

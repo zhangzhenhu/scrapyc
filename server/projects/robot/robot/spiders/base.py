@@ -100,6 +100,18 @@ class RobotSpider(scrapy.Spider):
         else:
             self.log("Baidu_RPC %s ok"%response.meta["baidu_rpc"]["url"],level=scrapy.log.INFO)
 
+    def is_valid_url(self,url):
+        if url.startswith("javascript:") or url.startswith("mailto:") or url =="#":
+            return False
+        filename = url.split("?")[0].split("/")[-1]
+        if filename :
+            ctype  = filename.split(".")[-1].lower() 
+        else:
+            ctype = None
+        if ctype in ["jpeg","jpg","swf","rar","zip","gz","gif","mov","png","bmp","exe","pps","db","txt","pptx",'xls',"ppt","xlsx"]:
+            return False
+        return True
+
 
     def spider_idle(self,spider):
 

@@ -21,7 +21,7 @@ class RobotSpider(base.RobotSpider):
         # yield scrapy.Request("http://cpfd.cnki.com.cn/Area/CPFDUnit-0009.htm")
         # yield scrapy.Request("http://cyfd.cnki.com.cn/catenav.aspx")
         # yield scrapy.Request("http://cdmd.cnki.com.cn/Area/CDMDUnitArticle-10183-2015-1.htm")
-        # yield scrapy.Request("")
+        yield scrapy.Request("http://www.cnki.com.cn/CJFD/CJFD_index.htm")
         # yield scrapy.Request("")
         # yield scrapy.Request("")
         # yield scrapy.Request("")
@@ -50,7 +50,21 @@ class RobotSpider(base.RobotSpider):
         #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         if response.status / 100 != 2:
             return
+        site = get_url_site(response.url)
+        if site == "www.cnki.com.cn":
+            self.parse_www(response)
+    def parse_www(self,response):
+        base_url  = get_base_url(response)
+        for href in response.xpath('//a/@href').extract():
+            if not self.is_valid_url(href):
+                continue
+            relative_url = href
+            abs_url =urljoin_rfc(base_url,relative_url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+            if "Journal" in relative_url or 'Navi' in relative_url:
+                yield scrapy.Request(url=abs_url)
 
+    def parse_cdmd(self,response):
         base_url  = get_base_url(response)
         for href in response.xpath('//a/@href').extract():
             if not self.is_valid_url(href):

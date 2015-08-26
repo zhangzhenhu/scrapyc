@@ -79,7 +79,7 @@ class RobotSpider(scrapy.Spider):
             #     yield scrapy.Request(abs_url,callback=self.parse)
 
 
-    def baidu_rpc_request(self,data):
+    def baidu_rpc_request(self,data,furl=""):
         data_post = json.dumps({"url":data})
         server_list = self.settings.get("BAIDU_RPC_SERVER_URL",None)
         if server_list == None:
@@ -87,7 +87,7 @@ class RobotSpider(scrapy.Spider):
             return
         server_url = server_list[random.randint(0, len(server_list)-1)]
 
-        return scrapy.Request(url=server_url,callback=self.baidu_rpc_response,method="POST",body=data_post,headers={"Content-Type":'application/json'},meta={"baidu_rpc":data})
+        return scrapy.Request(url=server_url,callback=self.baidu_rpc_response,method="POST",body=data_post,headers={"Content-Type":'application/json'},meta={"baidu_rpc":data,"furl":furl})
     
     def baidu_rpc_response(self,response):
 
@@ -98,7 +98,7 @@ class RobotSpider(scrapy.Spider):
         if res["err_no"] != 0:
             self.log("Baidu_RPC %s rpc_error rpc_code:%d %s"%(response.url,res["err_no"],response.meta["baidu_rpc"]["url"]),level=scrapy.log.CRITICAL)
         else:
-            self.log("Baidu_RPC %s ok"%response.meta["baidu_rpc"]["url"],level=scrapy.log.INFO)
+            self.log("Baidu_RPC %s %s ok"%(response.meta["furl"],response.meta["baidu_rpc"]["url"],level=scrapy.log.INFO)
 
     def is_valid_url(self,url):
         if url.startswith("javascript:") or url.startswith("mailto:") or url =="#":

@@ -17,8 +17,8 @@ class RobotSpider(base.RobotSpider):
     start_urls = [    ]
     def start_requests(self):
 
-        # yield scrapy.Request("http://c.wanfangdata.com.cn/Periodical.aspx")
-        # yield scrapy.Request("http://c.wanfangdata.com.cn/LastUpdatedPeriodical.aspx")
+        yield scrapy.Request("http://c.wanfangdata.com.cn/Periodical.aspx")
+        yield scrapy.Request("http://c.wanfangdata.com.cn/LastUpdatedPeriodical.aspx")
         # yield scrapy.Request("http://cyfd.cnki.com.cn/catenav.aspx")
         # yield scrapy.Request("http://cdmd.cnki.com.cn/Area/CDMDUnitArticle-10183-2015-1.htm")
         # yield scrapy.Request("")
@@ -57,7 +57,7 @@ class RobotSpider(base.RobotSpider):
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
-            for pattern in ["Periodical-[\w-]+\.aspx$","periodical/[\w\-0-9]+/\d{4}-\d+\.aspx","PeriodicalSubject.aspx\?NodeId=[\w\.0-9&=]+"]:
+            for pattern in ["Periodical-[\w\-0-9]+\.aspx$","periodical/[\w\-0-9]+/\d{4}-\d+\.aspx","PeriodicalSubject.aspx\?NodeId=[\w\.0-9&=]+"]:
                 if re.search(pattern,relative_url):
                     yield scrapy.Request(url=abs_url)
 

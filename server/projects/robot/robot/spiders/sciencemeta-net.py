@@ -58,6 +58,8 @@ class RobotSpider(base.RobotSpider):
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+            if re.search("/issue/archive/\d+$",abs_url):
+                yield scrapy.Request(url=abs_url)
         for href in response.xpath("//div[@id='content']//div[@class='sp_site_jlogo']//a/@href").extract():
             abs_url = href + "/issue/archive"
             

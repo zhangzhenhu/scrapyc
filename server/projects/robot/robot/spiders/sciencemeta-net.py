@@ -52,14 +52,21 @@ class RobotSpider(base.RobotSpider):
         if response.status / 100 != 2:
             return
         base_url  = get_base_url(response)
+        count = 0
         for href in response.xpath('//a/@href').extract():
             if not self.is_valid_url(href):
                 continue
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
+            if "/article/view/" in abs_url:
+                count += 1
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4},response.url)
             if re.search("/issue/archive/\d+$",abs_url):
                 yield scrapy.Request(url=abs_url)
+
+
+        if count < 10:
+            self.log("Fuck %s"%response.url,level=scrapy.log.INFO)
         for href in response.xpath("//div[@id='content']//div[@class='sp_site_jlogo']//a/@href").extract():
             abs_url = href + "/issue/archive"
             

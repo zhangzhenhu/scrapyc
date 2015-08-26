@@ -17,7 +17,7 @@ class RobotSpider(base.RobotSpider):
     start_urls = [    ]
     def start_requests(self):
 
-        for i in range(1,17)
+        for i in range(1,17):
             yield scrapy.Request("http://sciencemeta.net/index.php/index/index/journals?metaDisciplineExamples=&searchInitial=&journalsPage=%d#journals"%i)
        
         # yield scrapy.Request("http://cyfd.cnki.com.cn/catenav.aspx")

@@ -98,7 +98,7 @@ class RobotSpider(scrapy.Spider):
         if res["err_no"] != 0:
             self.log("Baidu_RPC %s rpc_error rpc_code:%d %s"%(response.url,res["err_no"],response.meta["baidu_rpc"]["url"]),level=scrapy.log.CRITICAL)
         else:
-            self.log("Baidu_RPC %s %s ok"%(response.meta["furl"],response.meta["baidu_rpc"]["url"],level=scrapy.log.INFO)
+            self.log("Baidu_RPC %s %s ok"%(response.meta["furl"],response.meta["baidu_rpc"]["url"]),level=scrapy.log.INFO)
 
     def is_valid_url(self,url):
         if url.startswith("javascript:") or url.startswith("mailto:") or url =="#":

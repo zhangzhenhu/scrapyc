@@ -61,4 +61,24 @@ class RobotSpider(base.RobotSpider):
             if "Area" in relative_url:
                 yield scrapy.Request(url=abs_url)
 
-            
+        js = response.xpath("//table/tbody/tr/td/script").extract()
+        if js:
+            js = js[0]
+            articleTotal = re.search("var\s+articleTotal\s+=\s+(\d+);",js)
+            countPerPage = re.search("var\s+countPerPage\s+=\s+(\d+);",js)
+            curYear = re.search("var\s+curYear\s+=\s+(\d+);",js)
+            curUnit = re.search("var\s+curUnit\s+=\s+(\d+);",js)
+            if articleTotal and curUnit and countPerPage and curYear:
+                articleTotal = int(articleTotal.groups()[0])
+                countPerPage = int(countPerPage.groups()[0])
+                curYear = curYear.groups()[0]
+                curUnit = curUnit.groups()[0]
+                totalPage = articleTotal / countPerPage
+                if articleTotal % countPerPage != 0:
+                    totalPage += 1
+                i = 1
+                print response.url,url,articleTotal,countPerPage,totalPage
+                while i <= totalPage:
+                    url = "/Area/CDMDUnitArticle-%s-%s-%d.html"%(curUnit,curYear,i)
+                    print response.url,url,articleTotal,countPerPage,totalPage
+                    i += 1

@@ -66,7 +66,7 @@ class RobotSpider(base.RobotSpider):
 
 
         if count < 10:
-            self.log("Fuck %s"%response.url,level=scrapy.log.INFO)
+            self.log("Fuck %s %d"%(response.url,count),level=scrapy.log.INFO)
         for href in response.xpath("//div[@id='content']//div[@class='sp_site_jlogo']//a/@href").extract():
             abs_url = href + "/issue/archive"
             

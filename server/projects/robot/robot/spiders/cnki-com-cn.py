@@ -125,7 +125,7 @@ class CDmdSpider(base.RobotSpider):
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
 
         #解析历年索引页
-        for href in response.xpath("//a[@class='zt_name']/@href").extract():
+        for href in response.xpath("//a[@class='content_gray02']/@href").extract():
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)

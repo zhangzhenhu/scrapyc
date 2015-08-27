@@ -17,10 +17,10 @@ class RobotSpider(base.RobotSpider):
     start_urls = [    ]
     def start_requests(self):
 
-        for i in range(1,18):
-            yield scrapy.Request("http://sciencemeta.net/index.php/index/index/journals?metaDisciplineExamples=&searchInitial=&journalsPage=%d#journals"%i)
+        # for i in range(1,18):
+        #     yield scrapy.Request("http://sciencemeta.net/index.php/index/index/journals?metaDisciplineExamples=&searchInitial=&journalsPage=%d#journals"%i)
        
-        # yield scrapy.Request("http://cyfd.cnki.com.cn/catenav.aspx")
+        yield scrapy.Request("http://sciencemeta.net/index.php/index/about/siteMap",self.parse_sitemap)
         # yield scrapy.Request("http://cdmd.cnki.com.cn/Area/CDMDUnitArticle-10183-2015-1.htm")
         # yield scrapy.Request("")
         # yield scrapy.Request("")
@@ -45,6 +45,16 @@ class RobotSpider(base.RobotSpider):
                 n_query += "&%s=%s"%(name,value)
         return urlparse.urlunparse((up.scheme,up.netloc,up.path, up.params,n_query[1:],up.fragment))
 
+    def parse_sitemap(self,response):
+        self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
+        #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
+        if response.status / 100 != 2:
+            return
+       for href in response.xpath("//div[@id='siteMap']/ul/li/ul//a/@href").extract():
+            abs_url = href.replace("/index/index","/issue/archive")
+            yield scrapy.Request(url=abs_url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},response.url)
+
 
     def parse(self,response):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
@@ -61,16 +71,14 @@ class RobotSpider(base.RobotSpider):
             if "/article/view/" in abs_url:
                 count += 1
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4},response.url)
-            if re.search("/issue/archive/\d+$",abs_url) or "searchInitial" in abs_url:
+            if re.search("/issue/archive/\d+$",abs_url):
                 yield scrapy.Request(url=abs_url)
 
-
-        if count < 10:
-            self.log("Fuck %s %d"%(response.url,count),level=scrapy.log.INFO)
-        for href in response.xpath("//div[@id='content']//div[@class='sp_site_jlogo']//a/@href").extract():
-            abs_url = href + "/issue/archive"
+        self.log("Fuck %s %d"%(response.url,count),level=scrapy.log.INFO)
+        # for href in response.xpath("//div[@id='content']//div[@class='sp_site_jlogo']//a/@href").extract():
+        #     abs_url = href + "/issue/archive"
             
-            yield scrapy.Request(url=abs_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},response.url)
+        #     yield scrapy.Request(url=abs_url)
+        #     yield self.baidu_rpc_request({"url":abs_url,"src_id":4},response.url)
 
        

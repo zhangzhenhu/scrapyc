@@ -1,3 +1,4 @@
+#encoding=utf8
 from scrapy.utils.response import get_base_url
 from w3lib.url import urljoin_rfc
 
@@ -10,8 +11,8 @@ import urlparse
 import re
 import datetime
 
-class RobotSpider(base.RobotSpider):
-    name = "cnki.com.cn"
+class WwwSpider(base.RobotSpider):
+    name = "www.cnki.com.cn"
 
     allowed_domains = []
     start_urls = [    ]
@@ -25,7 +26,7 @@ class RobotSpider(base.RobotSpider):
         # yield scrapy.Request("")
         # yield scrapy.Request("")
         # yield scrapy.Request("")
-        for item in super(RobotSpider, self).start_requests():
+        for item in super(WwwSpider, self).start_requests():
             yield item        
     #PATTERN1=re.compile(".*thread\-\d+\-\d+\-\d+\.html.*")
     def parse_qsl(self,qs):
@@ -64,17 +65,73 @@ class RobotSpider(base.RobotSpider):
             if "Journal" in relative_url or 'Navi' in relative_url:
                 yield scrapy.Request(url=abs_url)
 
+  
+
+class CDmdSpider(base.RobotSpider):
+    name = "cdmd.cnki.com.cn"
+
+    allowed_domains = []
+    start_urls = [    ]
+    def start_requests(self):
+        for i in range(1,42):
+            yield scrapy.Request("http://cdmd.cnki.com.cn/Area/CDMDUnit-%4d.htm"%i,callback=self.parse_unit)
+
+        # yield scrapy.Request("")
+        for item in super(CDmdSpider, self).start_requests():
+            yield item        
+    #PATTERN1=re.compile(".*thread\-\d+\-\d+\-\d+\.html.*")
+    def parse_qsl(self,qs):
+
+        for item in qs.split("&"):
+            item = item.split("=",1)
+            if len(item) == 2:
+                yield (item[0],item[1])
+            elif len(item) == 1 and item[0]:
+                yield (item[0],"")
+    def remove_param(self,url,rm_query=[]):
+        up = urlparse.urlparse(url)
+        n_query = ""
+        for name,value in self.parse_qsl(up.query):
+            if name not in rm_query and name :
+                n_query += "&%s=%s"%(name,value)
+        return urlparse.urlunparse((up.scheme,up.netloc,up.path, up.params,n_query[1:],up.fragment))
+
+
+    def parse_unit(self,response):
+        self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
+        #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
+        if response.status / 100 != 2:
+            return
+        site = get_url_site(response.url)
+        base_url  = get_base_url(response)
+
+        for href in response.xpath("//a[@class='zt_name']/@href").extract():
+            # if not self.is_valid_url(href):
+            #     continue
+            if href == "#":continue
+            relative_url = href
+            abs_url =urljoin_rfc(base_url,relative_url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
+
     def parse_cdmd(self,response):
         base_url  = get_base_url(response)
-        for href in response.xpath('//a/@href').extract():
+        #解析期刊
+        for href in response.xpath("//a[@class='zt_name']/@href").extract():
             if not self.is_valid_url(href):
                 continue
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
-            if "Area" in relative_url:
-                yield scrapy.Request(url=abs_url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
 
+        #解析历年索引页
+        for href in response.xpath("//a[@class='zt_name']/@href").extract():
+            relative_url = href
+            abs_url =urljoin_rfc(base_url,relative_url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
+
+        #解析当前索引页的翻页
         js = response.xpath("//table/tbody/tr/td/script").extract()
         if js:
             js = js[0]
@@ -95,4 +152,4 @@ class RobotSpider(base.RobotSpider):
                 while i <= totalPage:
                     url = "/Area/CDMDUnitArticle-%s-%s-%d.html"%(curUnit,curYear,i)
                     print response.url,url,articleTotal,countPerPage,totalPage
-                    i += 1
+                    i += 1                    

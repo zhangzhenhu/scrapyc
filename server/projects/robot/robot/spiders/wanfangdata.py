@@ -88,7 +88,7 @@ class RobotSpider(base.RobotSpider):
         for href in response.xpath("//div[@id='wrap3']//ul[@class='new_ul5']/li/p/a/@href").extract():
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            #yield scrapy.Request(url=abs_url,callback=self.parse_content)            
+            yield scrapy.Request(url=abs_url,callback=self.parse_content)            
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
 
 

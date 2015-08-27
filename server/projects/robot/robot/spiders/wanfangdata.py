@@ -54,6 +54,7 @@ class RobotSpider(base.RobotSpider):
             return
         base_url  = get_base_url(response)
         #解析期刊首页
+        count = 0
         for href in response.xpath("//div[@id='divperilist']/ul/li/a/@href").extract():
             if href.startswith("Rss.ashx?"):
                 continue
@@ -61,6 +62,8 @@ class RobotSpider(base.RobotSpider):
             abs_url =urljoin_rfc(base_url,relative_url)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
             yield scrapy.Request(url=abs_url,callback=self.parse_content)
+            count += 1
+        self.log("Fuck %s %d"%(response.url,count),level=scrapy.log.INFO)
 
         #解析索引页翻页
         for href in response.xpath("//div[@id='divperilist']/table//a/@href").extract():
@@ -85,7 +88,7 @@ class RobotSpider(base.RobotSpider):
         for href in response.xpath("//div[@id='wrap3']//ul[@class='new_ul5']/li/p/a/@href").extract():
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            yield scrapy.Request(url=abs_url,callback=self.parse_content)            
+            #yield scrapy.Request(url=abs_url,callback=self.parse_content)            
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
 
 

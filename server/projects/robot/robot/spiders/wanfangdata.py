@@ -1,3 +1,4 @@
+#encoding=GBK
 from scrapy.utils.response import get_base_url
 from w3lib.url import urljoin_rfc
 

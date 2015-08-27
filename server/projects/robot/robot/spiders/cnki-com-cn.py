@@ -148,8 +148,8 @@ class CDmdSpider(base.RobotSpider):
                 if articleTotal % countPerPage != 0:
                     totalPage += 1
                 i = 1
-                print response.url,url,articleTotal,countPerPage,totalPage
+                #print response.url,url,articleTotal,countPerPage,totalPage
                 while i <= totalPage:
                     url = "/Area/CDMDUnitArticle-%s-%s-%d.html"%(curUnit,curYear,i)
-                    print response.url,url,articleTotal,countPerPage,totalPage
+                    #print response.url,url,articleTotal,countPerPage,totalPage
                     i += 1                    

@@ -74,7 +74,7 @@ class CDmdSpider(base.RobotSpider):
     start_urls = [    ]
     def start_requests(self):
         for i in range(1,42):
-            yield scrapy.Request("http://cdmd.cnki.com.cn/Area/CDMDUnit-%4d.htm"%i,callback=self.parse_unit)
+            yield scrapy.Request("http://cdmd.cnki.com.cn/Area/CDMDUnit-%04d.htm"%i,callback=self.parse_unit)
 
         # yield scrapy.Request("")
         for item in super(CDmdSpider, self).start_requests():

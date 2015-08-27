@@ -59,7 +59,7 @@ class RobotSpider(base.RobotSpider):
                 continue
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
             yield scrapy.Request(url=abs_url,callback=self.parse_content)
 
         #解析索引页翻页
@@ -69,7 +69,7 @@ class RobotSpider(base.RobotSpider):
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
             yield scrapy.Request(url=abs_url,callback=self.parse_index)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
 
     def parse_content(self,response):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
@@ -79,14 +79,14 @@ class RobotSpider(base.RobotSpider):
         base_url  = get_base_url(response)
         #解析文章
         for href in response.xpath("//div[@id='wrap3']//a[@class='qkcontent_name']/@href").extract():
-            yield self.baidu_rpc_request({"url":href,"src_id":4})
+            yield self.baidu_rpc_request({"url":href,"src_id":4},furl=response.url)
 
         #解析历史期刊首页
         for href in response.xpath("//div[@id='wrap3']//ul[@class='new_ul5']/li/p/a/@href").extract():
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
             yield scrapy.Request(url=abs_url,callback=self.parse_content)            
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
 
 
     def parse(self,response):

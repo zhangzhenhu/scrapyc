@@ -17,7 +17,7 @@ class RobotSpider(base.RobotSpider):
     start_urls = [    ]
     def start_requests(self):
 
-        for i in range(1,17):
+        for i in range(1,18):
             yield scrapy.Request("http://sciencemeta.net/index.php/index/index/journals?metaDisciplineExamples=&searchInitial=&journalsPage=%d#journals"%i)
        
         # yield scrapy.Request("http://cyfd.cnki.com.cn/catenav.aspx")
@@ -61,7 +61,7 @@ class RobotSpider(base.RobotSpider):
             if "/article/view/" in abs_url:
                 count += 1
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4},response.url)
-            if re.search("/issue/archive/\d+$",abs_url):
+            if re.search("/issue/archive/\d+$",abs_url) or "searchInitial" in abs_url:
                 yield scrapy.Request(url=abs_url)
 
 

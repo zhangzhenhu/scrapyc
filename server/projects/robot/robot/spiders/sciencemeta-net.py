@@ -50,7 +50,7 @@ class RobotSpider(base.RobotSpider):
         #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         if response.status / 100 != 2:
             return
-       for href in response.xpath("//div[@id='siteMap']/ul/li/ul//a/@href").extract():
+        for href in response.xpath("//div[@id='siteMap']/ul/li/ul//a/@href").extract():
             abs_url = href.replace("/index/index","/issue/archive")
             yield scrapy.Request(url=abs_url)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4},response.url)

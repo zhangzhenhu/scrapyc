@@ -75,7 +75,8 @@ class CDmdSpider(base.RobotSpider):
     def start_requests(self):
         for i in range(1,42):
             yield scrapy.Request("http://cdmd.cnki.com.cn/Area/CDMDUnit-%04d.htm"%i,callback=self.parse_unit,headers={"Cache-Control":"no-cache","Cookie":"SID=110005; SID_cdmd=209021; CNZZDATA1356416=cnzz_eid%3D1750068259-1440478982-%26ntime%3D1440666594","Pragma":"no-cache"})
-
+        for i in range(1,32):
+            yield scrapy.Request("http://cpfd.cnki.com.cn/Area/CPFDUnit-%04d.htm"%i,callback=self.parse_unit)
         # yield scrapy.Request("")
         for item in super(CDmdSpider, self).start_requests():
             yield item        
@@ -126,7 +127,7 @@ class CDmdSpider(base.RobotSpider):
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
             count += 1
         #预测后续翻页
-        if count in [2,15,21] and re.match("http://cdmd\.cnki\.com\.cn/Area/CDMDUnitArticle-\d+-\d{4}-\d+\.htm",response.url):
+        if count in [2,15,21] and re.search("/Area/CDMDUnitArticle-\d+-\d{4}-\d+\.htm",response.url) :
             up = response.url.split("-")
             pageNo = up[-1].split('.')[0]
             pageNo = int(pageNo)+1

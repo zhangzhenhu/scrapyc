@@ -77,7 +77,7 @@ class RobotSpider(base.RobotSpider):
         for href in response.xpath("//em/a/@href").extract():
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)            
-            yield self.baidu_rpc_request({"url":href,"src_id":4},furl=response.url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
 
         #解析历史期刊首页
         for href in response.xpath("//ol[@class='date']/li/a/@href").extract():

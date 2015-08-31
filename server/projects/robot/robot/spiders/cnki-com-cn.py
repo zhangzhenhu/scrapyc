@@ -127,7 +127,7 @@ class CDmdSpider(base.RobotSpider):
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
             count += 1
         #预测后续翻页
-        if count in [2,15,21] and re.search("/Area/CDMDUnitArticle-\d+-\d{4}-\d+\.htm",response.url) :
+        if count in [15,21] and re.search("/Area/CDMDUnitArticle-\d+-\d{4}-\d+\.htm",response.url) :
             up = response.url.split("-")
             pageNo = up[-1].split('.')[0]
             pageNo = int(pageNo)+1

@@ -131,10 +131,12 @@ class CDmdSpider(base.RobotSpider):
             up = response.url.split("-")
             pageNo = up[-1].split('.')[0]
             pageNo = int(pageNo)+1
-            abs_url = up[0]+"-"+up[1]+"-"+up[2]+"-"+str(pageNo)+".htm"
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
-            yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
-            self.log("Nimei %s"%abs_url,level=scrapy.log.INFO)
+            if pageNo< 150:
+
+                abs_url = up[0]+"-"+up[1]+"-"+up[2]+"-"+str(pageNo)+".htm"
+                yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+                yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
+                self.log("Nimei %s"%abs_url,level=scrapy.log.INFO)
 
         #解析历年索引页
         for href in response.xpath("//a[@class='content_gray02']/@href").extract():

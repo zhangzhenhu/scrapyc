@@ -73,8 +73,8 @@ class CDmdSpider(base.RobotSpider):
     allowed_domains = []
     start_urls = [    ]
     def start_requests(self):
-        for i in range(1,42):
-            yield scrapy.Request("http://cdmd.cnki.com.cn/Area/CDMDUnit-%04d.htm"%i,callback=self.parse_unit,headers={"Cache-Control":"no-cache","Cookie":"SID=110005; SID_cdmd=209021; CNZZDATA1356416=cnzz_eid%3D1750068259-1440478982-%26ntime%3D1440666594","Pragma":"no-cache"})
+        # for i in range(1,42):
+        #     yield scrapy.Request("http://cdmd.cnki.com.cn/Area/CDMDUnit-%04d.htm"%i,callback=self.parse_unit,headers={"Cache-Control":"no-cache","Cookie":"SID=110005; SID_cdmd=209021; CNZZDATA1356416=cnzz_eid%3D1750068259-1440478982-%26ntime%3D1440666594","Pragma":"no-cache"})
         for i in range(1,32):
             yield scrapy.Request("http://cpfd.cnki.com.cn/Area/CPFDUnit-%04d.htm"%i,callback=self.parse_unit)
         # yield scrapy.Request("")
@@ -125,7 +125,23 @@ class CDmdSpider(base.RobotSpider):
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            if "CPFDCONFArticleList" in relative_url:
+                yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
             count += 1
+
+
+        #预测后续翻页
+        if count in [15,21] and re.search("/Area/CPFDCONFArticleList-[\d\w]+-\d+\.htm",response.url) :
+            up = response.url.split("-")
+            pageNo = up[-1].split('.')[0]
+            pageNo = int(pageNo)+1
+            if pageNo< 150:
+
+                abs_url = up[0]+"-"+up[1]+"-"+str(pageNo)+".htm"
+                yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+                yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
+                self.log("Nimei %s"%abs_url,level=scrapy.log.INFO)
+
         #预测后续翻页
         if count in [15,21] and re.search("/Area/CDMDUnitArticle-\d+-\d{4}-\d+\.htm",response.url) :
             up = response.url.split("-")

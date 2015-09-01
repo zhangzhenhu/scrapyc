@@ -156,7 +156,7 @@ class CDmdSpider(base.RobotSpider):
 
 
 
-class CDmdSpider(base.RobotSpider):
+class CPfdSpider(base.RobotSpider):
     name = "cpfd.cnki.com.cn"
 
     allowed_domains = []

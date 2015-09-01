@@ -103,7 +103,7 @@ class CDmdSpider(base.RobotSpider):
         #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         if response.status / 100 != 2:
             return
-                    
+
         base_url  = get_base_url(response)
         #解析期刊
         count = 0
@@ -155,7 +155,7 @@ class CDmdSpider(base.RobotSpider):
                 i = 1
                 #print response.url,url,articleTotal,countPerPage,totalPage
                 while i <= totalPage:
-                    url = "http://cdmd.cnki.com.cn/Area/CDMDUnitArticle-%s-%s-%d.html"%(curUnit,curYear,i)
+                    url = "http://cdmd.cnki.com.cn/Area/CDMDUnitArticle-%s-%s-%d.htm"%(curUnit,curYear,i)
                     #print response.url,url,articleTotal,countPerPage,totalPage
                     self.log("Nimei-js %s"%url,level=scrapy.log.INFO)
                     yield scrapy.Request(url=url,callback=self.parse_cdmd)                    
@@ -252,7 +252,7 @@ class CPfdSpider(base.RobotSpider):
                 i = 1
                 #print response.url,url,articleTotal,countPerPage,totalPage
                 while i <= totalPage:
-                    url = "http://cpfd.cnki.com.cn/Area/CPFDCONFArticleList-%s-%d.html"%(curCode,i)
+                    url = "http://cpfd.cnki.com.cn/Area/CPFDCONFArticleList-%s-%d.htm"%(curCode,i)
                     self.log("Nimei-js %s"%url,level=scrapy.log.INFO)
                     yield scrapy.Request(url=url,callback=self.parse_cdmd)
                     i += 1                            

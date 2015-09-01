@@ -230,7 +230,7 @@ class CPfdSpider(base.RobotSpider):
             countPerPage = re.search("var\s+countPerPage\s+=\s+(\d+);",js)
             curCode = re.search("var\s+curCode\s+=\s+'([\w\d]+)';",js)
             #curPage  = re.search("var\s+curPage \s+=\s+(\d+);",js)
-            if articleTotal and curUnit and curCode:
+            if articleTotal  and curCode:
                 articleTotal = int(articleTotal.groups()[0])
                 countPerPage = int(countPerPage.groups()[0])
                 curCode = curCode.groups()[0]

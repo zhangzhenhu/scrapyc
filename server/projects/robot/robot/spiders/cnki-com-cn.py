@@ -166,7 +166,7 @@ class CPfdSpider(base.RobotSpider):
         for i in range(1,32):
             yield scrapy.Request("http://cpfd.cnki.com.cn/Area/CPFDUnit-%04d.htm"%i,callback=self.parse_unit)
         # yield scrapy.Request("")
-        for item in super(CDmdSpider, self).start_requests():
+        for item in super(CPfdSpider, self).start_requests():
             yield item        
  
 

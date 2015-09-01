@@ -242,6 +242,6 @@ class CPfdSpider(base.RobotSpider):
                 #print response.url,url,articleTotal,countPerPage,totalPage
                 while i <= totalPage:
                     url = "http://cpfd.cnki.com.cn/Area/CPFDCONFArticleList-%s-%d.html"%(curCode,i)
-                    #print response.url,url,articleTotal,countPerPage,totalPage
+                    self.log("Nimei-js %s"%url,level=scrapy.log.INFO)
                     yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
                     i += 1                            

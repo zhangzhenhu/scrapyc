@@ -99,6 +99,11 @@ class CDmdSpider(base.RobotSpider):
             yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
 
     def parse_cdmd(self,response):
+        self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
+        #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
+        if response.status / 100 != 2:
+            return
+                    
         base_url  = get_base_url(response)
         #解析期刊
         count = 0
@@ -132,27 +137,29 @@ class CDmdSpider(base.RobotSpider):
             yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
 
         #解析当前索引页的翻页
-        # js = response.xpath("//table/tbody/tr/td/script").extract()
-        # if js:
-        #     js = js[0]
-        #     articleTotal = re.search("var\s+articleTotal\s+=\s+(\d+);",js)
-        #     countPerPage = re.search("var\s+countPerPage\s+=\s+(\d+);",js)
-        #     curYear = re.search("var\s+curYear\s+=\s+(\d+);",js)
-        #     curUnit = re.search("var\s+curUnit\s+=\s+(\d+);",js)
-        #     if articleTotal and curUnit and countPerPage and curYear:
-        #         articleTotal = int(articleTotal.groups()[0])
-        #         countPerPage = int(countPerPage.groups()[0])
-        #         curYear = curYear.groups()[0]
-        #         curUnit = curUnit.groups()[0]
-        #         totalPage = articleTotal / countPerPage
-        #         if articleTotal % countPerPage != 0:
-        #             totalPage += 1
-        #         i = 1
-        #         #print response.url,url,articleTotal,countPerPage,totalPage
-        #         while i <= totalPage:
-        #             url = "/Area/CDMDUnitArticle-%s-%s-%d.html"%(curUnit,curYear,i)
-        #             #print response.url,url,articleTotal,countPerPage,totalPage
-        #             i += 1                    
+        js = response.xpath("//table/tbody/tr/td/script").extract()
+        if js:
+            js = js[0]
+            articleTotal = re.search("var\s+articleTotal\s+=\s+(\d+);",js)
+            countPerPage = re.search("var\s+countPerPage\s+=\s+(\d+);",js)
+            curYear = re.search("var\s+curYear\s+=\s+(\d+);",js)
+            curUnit = re.search("var\s+curUnit\s+=\s+(\d+);",js)
+            if articleTotal and curUnit and countPerPage and curYear:
+                articleTotal = int(articleTotal.groups()[0])
+                countPerPage = int(countPerPage.groups()[0])
+                curYear = curYear.groups()[0]
+                curUnit = curUnit.groups()[0]
+                totalPage = articleTotal / countPerPage
+                if articleTotal % countPerPage != 0:
+                    totalPage += 1
+                i = 1
+                #print response.url,url,articleTotal,countPerPage,totalPage
+                while i <= totalPage:
+                    url = "http://cdmd.cnki.com.cn/Area/CDMDUnitArticle-%s-%s-%d.html"%(curUnit,curYear,i)
+                    #print response.url,url,articleTotal,countPerPage,totalPage
+                    self.log("Nimei-js %s"%url,level=scrapy.log.INFO)
+                    yield scrapy.Request(url=url,callback=self.parse_cdmd)                    
+                    i += 1                    
 
 
 
@@ -188,6 +195,10 @@ class CPfdSpider(base.RobotSpider):
             yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
 
     def parse_cdmd(self,response):
+        self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
+        #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
+        if response.status / 100 != 2:
+            return        
         base_url  = get_base_url(response)
         #解析期刊
         count = 0
@@ -243,5 +254,5 @@ class CPfdSpider(base.RobotSpider):
                 while i <= totalPage:
                     url = "http://cpfd.cnki.com.cn/Area/CPFDCONFArticleList-%s-%d.html"%(curCode,i)
                     self.log("Nimei-js %s"%url,level=scrapy.log.INFO)
-                    yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
+                    yield scrapy.Request(url=url,callback=self.parse_cdmd)
                     i += 1                            

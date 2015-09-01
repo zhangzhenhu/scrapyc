@@ -223,7 +223,7 @@ class CPfdSpider(base.RobotSpider):
             yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
 
         #解析当前索引页的翻页
-        js = response.xpath("//table/tbody/tr/td/script").extract()
+        js = response.xpath("//table/tr/td/script").extract()
         if js:
             js = js[0]
             articleTotal = re.search("var\s+articleTotal\s+=\s+(\d+);",js)

@@ -36,8 +36,8 @@ class WwwSpider(base.RobotSpider):
     def parse_www(self,response):
         base_url  = get_base_url(response)
         for href in response.xpath('//a/@href').extract():
-            if not self.is_valid_url(href):
-                continue
+            # if not self.is_valid_url(href):
+            #     continue
             relative_url = href
 
             if "Journal" in relative_url or 'Navi' in relative_url:

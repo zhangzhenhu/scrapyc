@@ -18,33 +18,12 @@ class WwwSpider(base.RobotSpider):
     start_urls = [    ]
     def start_requests(self):
 
-        # yield scrapy.Request("http://cdmd.cnki.com.cn/Area/CDMDUnit-0002.htm")
-        # yield scrapy.Request("http://cpfd.cnki.com.cn/Area/CPFDUnit-0009.htm")
-        # yield scrapy.Request("http://cyfd.cnki.com.cn/catenav.aspx")
-        # yield scrapy.Request("http://cdmd.cnki.com.cn/Area/CDMDUnitArticle-10183-2015-1.htm")
+
         yield scrapy.Request("http://www.cnki.com.cn/CJFD/CJFD_index.htm")
-        # yield scrapy.Request("")
-        # yield scrapy.Request("")
-        # yield scrapy.Request("")
+
         for item in super(WwwSpider, self).start_requests():
             yield item        
     #PATTERN1=re.compile(".*thread\-\d+\-\d+\-\d+\.html.*")
-    def parse_qsl(self,qs):
-
-        for item in qs.split("&"):
-            item = item.split("=",1)
-            if len(item) == 2:
-                yield (item[0],item[1])
-            elif len(item) == 1 and item[0]:
-                yield (item[0],"")
-    def remove_param(self,url,rm_query=[]):
-        up = urlparse.urlparse(url)
-        n_query = ""
-        for name,value in self.parse_qsl(up.query):
-            if name not in rm_query and name :
-                n_query += "&%s=%s"%(name,value)
-        return urlparse.urlunparse((up.scheme,up.netloc,up.path, up.params,n_query[1:],up.fragment))
-
 
     def parse(self,response):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
@@ -60,10 +39,15 @@ class WwwSpider(base.RobotSpider):
             if not self.is_valid_url(href):
                 continue
             relative_url = href
-            abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+
             if "Journal" in relative_url or 'Navi' in relative_url:
+                abs_url =urljoin_rfc(base_url,relative_url)
                 yield scrapy.Request(url=abs_url)
+                self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO) 
+            elif "/Article/" in relative_url
+                abs_url =urljoin_rfc(base_url,relative_url)
+                #yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+                self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)                
 
   
 

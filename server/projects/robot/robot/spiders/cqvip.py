@@ -54,14 +54,16 @@ class RobotSpider(base.RobotSpider):
             if re.match("/[Jj]ournal/\d+(_\d+)?\.shtml",href)   :
                 relative_url = href
                 abs_url =urljoin_rfc(base_url,relative_url)
-                yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+                #yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+                self.log("Parse %s %s"%(abs_url,response.url),level=scrapy.log.INFO)
                 yield scrapy.Request(url=abs_url,callback=self.parse_index)
 
             #解析期刊首页
             if "QK" in href or "qk" in href:
                 relative_url = href
                 abs_url =urljoin_rfc(base_url,relative_url)
-                yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+                self.log("Parse %s %s"%(abs_url,response.url),level=scrapy.log.INFO)
+                #yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
                 yield scrapy.Request(url=abs_url,callback=self.parse_content)   
                 count += 1
         self.log("Fuck %s %d"%(response.url,count),level=scrapy.log.INFO)
@@ -77,14 +79,15 @@ class RobotSpider(base.RobotSpider):
         for href in response.xpath("//em/a/@href").extract():
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)            
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
-
+            #yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            self.log("Parse %s %s"%(abs_url,response.url),level=scrapy.log.INFO)
         #解析历史期刊首页
         for href in response.xpath("//ol[@class='date']/li/a/@href").extract():
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
             yield scrapy.Request(url=abs_url,callback=self.parse_content)            
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            #yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            self.log("Parse %s %s"%(abs_url,response.url),level=scrapy.log.INFO)
 
 
        

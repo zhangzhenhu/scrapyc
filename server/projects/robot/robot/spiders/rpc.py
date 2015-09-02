@@ -26,8 +26,8 @@ class RpcSpider(base.RobotSpider):
             with open(fname) as fh:
                 for line in fh.readlines():
                     url = line.strip().split()[0]
-                    yield self.baidu_rpc_request({"url":url,"src_id":4})
+                    yield self.baidu_rpc_request({"url":url,"src_id":22})
         url = self.settings.get("url",None)
         if url:
-            yield self.baidu_rpc_request({"url":url,"src_id":4})
+            yield self.baidu_rpc_request({"url":url,"src_id":22})
 

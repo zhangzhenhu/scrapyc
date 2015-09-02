@@ -44,7 +44,7 @@ class WwwSpider(base.RobotSpider):
                 abs_url =urljoin_rfc(base_url,relative_url)
                 yield scrapy.Request(url=abs_url)
                 self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO) 
-            elif "/Article/" in relative_url
+            elif "/Article/" in relative_url:
                 abs_url =urljoin_rfc(base_url,relative_url)
                 #yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
                 self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)                

@@ -30,22 +30,21 @@ class WwwSpider(base.RobotSpider):
         #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         if response.status / 100 != 2:
             return
-        site = get_url_site(response.url)
-        if site == "www.cnki.com.cn":
-            self.parse_www(response)
-    def parse_www(self,response):
         base_url  = get_base_url(response)
         for href in response.xpath('//a/@href').extract():
             # if not self.is_valid_url(href):
             #     continue
             relative_url = href
-
+            abs_url =urljoin_rfc(base_url,relative_url)
+            site = get_url_site(abs_url)
+            if site != "www.cnki.com.cn":
+                continue
             if "Journal" in relative_url or 'Navi' in relative_url:
-                abs_url =urljoin_rfc(base_url,relative_url)
+                
                 yield scrapy.Request(url=abs_url)
                 self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO) 
             elif "/Article/" in relative_url:
-                abs_url =urljoin_rfc(base_url,relative_url)
+                #abs_url =urljoin_rfc(base_url,relative_url)
                 #yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
                 self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)                
 

@@ -60,7 +60,8 @@ class RobotSpider(base.RobotSpider):
                 continue
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)
+            #yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
             yield scrapy.Request(url=abs_url,callback=self.parse_content)
             count += 1
         self.log("Fuck %s %d"%(response.url,count),level=scrapy.log.INFO)
@@ -71,7 +72,8 @@ class RobotSpider(base.RobotSpider):
                 continue
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            yield scrapy.Request(url=abs_url,callback=self.parse_index)
+            self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)
+            #yield scrapy.Request(url=abs_url,callback=self.parse_index)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
 
     def parse_content(self,response):
@@ -82,14 +84,16 @@ class RobotSpider(base.RobotSpider):
         base_url  = get_base_url(response)
         #解析文章
         for href in response.xpath("//div[@id='wrap3']//a[@class='qkcontent_name']/@href").extract():
-            yield self.baidu_rpc_request({"url":href,"src_id":4},furl=response.url)
+            self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)
+            #yield self.baidu_rpc_request({"url":href,"src_id":4},furl=response.url)
 
         #解析历史期刊首页
         for href in response.xpath("//div[@id='wrap3']//ul[@class='new_ul5']/li/p/a/@href").extract():
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
             yield scrapy.Request(url=abs_url,callback=self.parse_content)            
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            #yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)
 
 
     def parse(self,response):
@@ -103,9 +107,10 @@ class RobotSpider(base.RobotSpider):
                 continue
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+            #yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
             for pattern in ["Periodical-[\w\-0-9]+\.aspx$","periodical/[\w\-0-9]+/\d{4}-\d+\.aspx","PeriodicalSubject.aspx\?NodeId=[\w\.0-9&=]+"]:
                 if re.search(pattern,relative_url):
                     yield scrapy.Request(url=abs_url)
+                    self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)
 
        

@@ -21,7 +21,7 @@ class HandleSpider(base.RobotSpider):
 
         yield scrapy.Request("http://nccur.lib.nccu.edu.tw/browse-title",callback=self.parse)
         # yield scrapy.Request("")
-        for item in super(RobotSpider, self).start_requests():
+        for item in super(HandleSpider, self).start_requests():
             yield item        
 
 

@@ -47,7 +47,7 @@ class HandleSpider(base.RobotSpider):
 
         #解析翻页
         for href in response.xpath('//table/tr/td/table/tr/td/a/@href').extract():
-            if "page=" not in href:
+            if "page=" not in href or "itemsPerPage=" in href:
                 continue
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)

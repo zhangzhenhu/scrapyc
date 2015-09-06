@@ -73,8 +73,8 @@ class RobotSpider(base.RobotSpider):
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
             self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)
-            #yield scrapy.Request(url=abs_url,callback=self.parse_index)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            yield scrapy.Request(url=abs_url,callback=self.parse_index)
+            #yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
 
     def parse_content(self,response):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
@@ -84,7 +84,7 @@ class RobotSpider(base.RobotSpider):
         base_url  = get_base_url(response)
         #解析文章
         for href in response.xpath("//div[@id='wrap3']//a[@class='qkcontent_name']/@href").extract():
-            self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)
+            self.log("Parse %s %s"%(response.url,href),level=scrapy.log.INFO)
             #yield self.baidu_rpc_request({"url":href,"src_id":4},furl=response.url)
 
         #解析历史期刊首页

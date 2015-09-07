@@ -34,7 +34,7 @@ class RobotSpider(base.RobotSpider):
         if "journal" in response.url.lower():
             self.parse_index(response)
         else:
-            self.parse_content(response):
+            self.parse_content(response)
         
 
     def parse_index(self,response):

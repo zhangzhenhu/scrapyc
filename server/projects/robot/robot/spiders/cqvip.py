@@ -28,21 +28,14 @@ class RobotSpider(base.RobotSpider):
         for item in super(RobotSpider, self).start_requests():
             yield item        
     #PATTERN1=re.compile(".*thread\-\d+\-\d+\-\d+\.html.*")
-    def parse_qsl(self,qs):
 
-        for item in qs.split("&"):
-            item = item.split("=",1)
-            if len(item) == 2:
-                yield (item[0],item[1])
-            elif len(item) == 1 and item[0]:
-                yield (item[0],"")
-    def remove_param(self,url,rm_query=[]):
-        up = urlparse.urlparse(url)
-        n_query = ""
-        for name,value in self.parse_qsl(up.query):
-            if name not in rm_query and name :
-                n_query += "&%s=%s"%(name,value)
-        return urlparse.urlunparse((up.scheme,up.netloc,up.path, up.params,n_query[1:],up.fragment))
+    def parse(self,response):
+
+        if "journal" in response.url.lower():
+            self.parse_index(response)
+        else:
+            self.parse_content(response):
+        
 
     def parse_index(self,response):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)

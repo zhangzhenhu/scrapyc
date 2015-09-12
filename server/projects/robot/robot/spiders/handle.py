@@ -37,7 +37,7 @@ class HandleSpider(base.RobotSpider):
         for href in response.xpath('//table/tr/td/strong/a/@href').extract():
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             #self.log("Parse %s %s"%(abs_url,response.url),level=scrapy.log.INFO)
             #yield scrapy.Request(url=abs_url,callback=self.parse)
 
@@ -45,7 +45,7 @@ class HandleSpider(base.RobotSpider):
         for href in response.xpath('//table[@class="object_table"]/tr/td[4]/a/@href').extract():
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             #self.log("Parse %s %s"%(abs_url,response.url),level=scrapy.log.INFO)
             #yield scrapy.Request(url=abs_url,callback=self.parse)
 
@@ -56,7 +56,7 @@ class HandleSpider(base.RobotSpider):
 
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             #self.log("Parse %s %s"%(abs_url,response.url),level=scrapy.log.INFO)
             yield scrapy.Request(url=abs_url,callback=self.parse)
 

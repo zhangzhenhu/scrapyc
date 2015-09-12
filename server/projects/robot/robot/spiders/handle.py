@@ -23,6 +23,7 @@ class HandleSpider(base.RobotSpider):
         yield scrapy.Request("http://thesis.lib.ncu.edu.tw/browse-title",callback=self.parse)
         yield scrapy.Request("http://ir.lib.ncu.edu.tw/browse-title",callback=self.parse)
         yield scrapy.Request("http://nchuir.lib.nchu.edu.twbrowse-title",callback=self.parse)
+        yield scrapy.Request("http://hermes-ir.lib.hit-u.ac.jp/rs/browse-title",callback=self.parse)
         # yield scrapy.Request("")
         for item in super(HandleSpider, self).start_requests():
             yield item        
@@ -33,7 +34,7 @@ class HandleSpider(base.RobotSpider):
         if response.status / 100 != 2:
             return
         base_url  = get_base_url(response)
-        for href in response.xpath('//table[@class="object_table"]/tr/td/strong/a/@href').extract():
+        for href in response.xpath('//table/tr/td/strong/a/@href').extract():
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
@@ -50,8 +51,9 @@ class HandleSpider(base.RobotSpider):
 
         #解析翻页
         for href in response.xpath('//table/tr/td/table/tr/td/a/@href').extract():
-            if "page=" not in href or "itemsPerPage=" in href:
+            if ("page=" not in href  and "browse-title?top=" not in href ) or "itemsPerPage=" in href:
                 continue
+
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)

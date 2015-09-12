@@ -19,11 +19,11 @@ class RobotSpider(base.RobotSpider):
     start_urls = [    ]
     def start_requests(self):
 
-        yield scrapy.Request("http://www.cqvip.com/journal/63.shtml",callback=self.parse_index)
-        yield scrapy.Request("http://www.cqvip.com/journal/1.shtml",callback=self.parse_index)
-        yield scrapy.Request("http://www.cqvip.com/journal/67.shtml",callback=self.parse_index)
-        yield scrapy.Request("http://www.cqvip.com/journal/64.shtml",callback=self.parse_index)
-        yield scrapy.Request("http://www.cqvip.com/journal/66.shtml",callback=self.parse_index)
+        # yield scrapy.Request("http://www.cqvip.com/journal/63.shtml",callback=self.parse_index)
+        # yield scrapy.Request("http://www.cqvip.com/journal/1.shtml",callback=self.parse_index)
+        # yield scrapy.Request("http://www.cqvip.com/journal/67.shtml",callback=self.parse_index)
+        # yield scrapy.Request("http://www.cqvip.com/journal/64.shtml",callback=self.parse_index)
+        # yield scrapy.Request("http://www.cqvip.com/journal/66.shtml",callback=self.parse_index)
         # yield scrapy.Request("")
         for item in super(RobotSpider, self).start_requests():
             yield item        

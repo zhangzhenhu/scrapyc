@@ -32,9 +32,11 @@ class RobotSpider(base.RobotSpider):
     def parse(self,response):
 
         if "journal" in response.url.lower():
-            self.parse_index(response)
+            for item in self.parse_index(response):
+                yield item 
         else:
-            self.parse_content(response)
+            for item in self.parse_content(response):
+                yield item
         
 
     def parse_index(self,response):

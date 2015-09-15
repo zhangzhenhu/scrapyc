@@ -83,8 +83,12 @@ class HandleCNSpider(base.RobotSpider):
         if response.status / 100 != 2:
             return 
         ret = re.search("var totalItemCount = (\d+);",response.body)
+        totalItemCount = 0
         if ret:
             totalItemCount = int(ret.groups()[0])
+            self.log("Parse %s totalItemCount %d"%(response.url,totalItemCount),level=scrapy.log.INFO)
+        else:
+            self.log("Parse %s totalItemCount NULL"%(response.url),level=scrapy.log.INFO)
         offset = 0
         while offset < totalItemCount:
             yield scrapy.Request("http://dspace.imech.ac.cn/browse?order=DESC&rpp=100&sort_by=2&year=&offset=%d&type=dateissued"%offset,callback=self.parse)

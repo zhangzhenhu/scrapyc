@@ -68,6 +68,8 @@ class HandleCNSpider(base.RobotSpider):
     start_urls = [    ]
     def start_requests(self):
 
+        yield scrapy.Request("http://www.irgrid.ac.cn/browse?type=dateissued",callback=self.parse_first)
+        yield scrapy.Request("http://ir.las.ac.cn/browse?type=dateissued",callback=self.parse_first)
         yield scrapy.Request("http://dspace.imech.ac.cn/browse?type=dateissued",callback=self.parse_first)
         yield scrapy.Request("http://ir.sia.ac.cn/browse?type=dateissued",callback=self.parse_first)
         yield scrapy.Request("http://ir.ioe.ac.cn/browse?type=dateissued",callback=self.parse_first)

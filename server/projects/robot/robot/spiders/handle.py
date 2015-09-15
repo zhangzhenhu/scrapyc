@@ -104,7 +104,7 @@ class HandleCNSpider(base.RobotSpider):
             if relative_url.startswith("/simple-search?"):
                 continue
 
-            abs_url =urljoin_rfc(base_url,relative_url.split(":",1)[0])
+            abs_url =urljoin_rfc(base_url,relative_url.split("?",1)[0])
             yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             #self.log("Parse %s %s"%(abs_url,response.url),level=scrapy.log.INFO)
             #yield scrapy.Request(url=abs_url,callback=self.parse)

@@ -69,10 +69,20 @@ class HandleCNSpider(base.RobotSpider):
     def start_requests(self):
 
         yield scrapy.Request("http://dspace.imech.ac.cn/browse?type=dateissued",callback=self.parse_first)
-        # yield scrapy.Request("http://thesis.lib.ncu.edu.tw/browse-title",callback=self.parse)
-        # yield scrapy.Request("http://ir.lib.ncu.edu.tw/browse-title",callback=self.parse)
-        # yield scrapy.Request("http://nchuir.lib.nchu.edu.tw/browse-title",callback=self.parse)
-        # yield scrapy.Request("http://hermes-ir.lib.hit-u.ac.jp/rs/browse-title",callback=self.parse)
+        yield scrapy.Request("http://ir.sia.ac.cn/browse?type=dateissued",callback=self.parse_first)
+        yield scrapy.Request("http://ir.ioe.ac.cn/browse?type=dateissued",callback=self.parse_first)
+        yield scrapy.Request("http://210.75.237.14/browse?type=dateissued",callback=self.parse_first)
+        yield scrapy.Request("http://210.77.90.120/browse?type=dateissued",callback=self.parse_first)
+        yield scrapy.Request("http://222.77.69.102:8089/qzyx/browse?type=dateissued",callback=self.parse_first)
+        yield scrapy.Request("http://icsnn2010.semi.ac.cn/browse?type=dateissued",callback=self.parse_first)
+        yield scrapy.Request("http://ir.nsl.ac.cn/browse?type=dateissued",callback=self.parse_first)
+        yield scrapy.Request("http://159.226.240.226/browse?type=dateissued",callback=self.parse_first)
+        yield scrapy.Request("http://210.39.5.17/browse?type=dateissued",callback=self.parse_first)
+        yield scrapy.Request("http://210.77.64.217/browse?type=dateissued",callback=self.parse_first)
+        yield scrapy.Request("http://ir.psych.ac.cn:8080/browse?type=dateissued",callback=self.parse_first)
+        yield scrapy.Request("http://124.16.151.184/browse?type=dateissued",callback=self.parse_first)
+        yield scrapy.Request("http://202.127.25.144/browse?type=dateissued",callback=self.parse_first)
+
         # yield scrapy.Request("")
         for item in super(HandleCNSpider, self).start_requests():
             yield item        

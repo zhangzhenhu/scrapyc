@@ -21,32 +21,13 @@ class RobotSpider(base.RobotSpider):
 
         # yield scrapy.Request("http://c.wanfangdata.com.cn/Periodical.aspx")
         # yield scrapy.Request("http://c.wanfangdata.com.cn/LastUpdatedPeriodical.aspx")
-        for letter in string.ascii_uppercase:
-            url = "http://c.wanfangdata.com.cn/PeriodicalLetter.aspx?NodeID=%s"%letter
-            yield scrapy.Request(url,self.parse_index)
-        # yield scrapy.Request("http://cdmd.cnki.com.cn/Area/CDMDUnitArticle-10183-2015-1.htm")
-        # yield scrapy.Request("")
-        # yield scrapy.Request("")
-        # yield scrapy.Request("")
-        # yield scrapy.Request("")
+        # for letter in string.ascii_uppercase:
+        #     url = "http://c.wanfangdata.com.cn/PeriodicalLetter.aspx?NodeID=%s"%letter
+        #     yield scrapy.Request(url,self.parse_index)
+
         for item in super(RobotSpider, self).start_requests():
             yield item        
     #PATTERN1=re.compile(".*thread\-\d+\-\d+\-\d+\.html.*")
-    def parse_qsl(self,qs):
-
-        for item in qs.split("&"):
-            item = item.split("=",1)
-            if len(item) == 2:
-                yield (item[0],item[1])
-            elif len(item) == 1 and item[0]:
-                yield (item[0],"")
-    def remove_param(self,url,rm_query=[]):
-        up = urlparse.urlparse(url)
-        n_query = ""
-        for name,value in self.parse_qsl(up.query):
-            if name not in rm_query and name :
-                n_query += "&%s=%s"%(name,value)
-        return urlparse.urlunparse((up.scheme,up.netloc,up.path, up.params,n_query[1:],up.fragment))
 
     def parse_index(self,response):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
@@ -60,8 +41,8 @@ class RobotSpider(base.RobotSpider):
                 continue
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)
-            #yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            #self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             yield scrapy.Request(url=abs_url,callback=self.parse_content)
             count += 1
         self.log("Fuck %s %d"%(response.url,count),level=scrapy.log.INFO)
@@ -84,16 +65,16 @@ class RobotSpider(base.RobotSpider):
         base_url  = get_base_url(response)
         #解析文章
         for href in response.xpath("//div[@id='wrap3']//a[@class='qkcontent_name']/@href").extract():
-            self.log("Parse %s %s"%(response.url,href),level=scrapy.log.INFO)
-            #yield self.baidu_rpc_request({"url":href,"src_id":4},furl=response.url)
+            #self.log("Parse %s %s"%(response.url,href),level=scrapy.log.INFO)
+            yield self.baidu_rpc_request({"url":href,"src_id":4},furl=response.url)
 
         #解析历史期刊首页
-        for href in response.xpath("//div[@id='wrap3']//ul[@class='new_ul5']/li/p/a/@href").extract():
-            relative_url = href
-            abs_url =urljoin_rfc(base_url,relative_url)
-            yield scrapy.Request(url=abs_url,callback=self.parse_content)            
-            #yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
-            self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)
+        # for href in response.xpath("//div[@id='wrap3']//ul[@class='new_ul5']/li/p/a/@href").extract():
+        #     relative_url = href
+        #     abs_url =urljoin_rfc(base_url,relative_url)
+        #     yield scrapy.Request(url=abs_url,callback=self.parse_content)            
+        #     yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+        #     self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)
 
 
     def parse(self,response):

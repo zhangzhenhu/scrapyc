@@ -97,7 +97,7 @@ class RobotSpider(base.RobotSpider):
             #url = "http://www.zjnyxb.cn/CN/article/downloadArticleFile.do?attachType=PDF&id="+id
             #print pdf
             self.log("PDF_URL %s"%(pdf),level=scrapy.log.INFO)
-            yield self.baidu_rpc_request({"url":pdf,"src_id":4})
+            yield self.baidu_rpc_request({"url":pdf,"src_id":22})
             count += 1                         
 
         base_url  = get_base_url(response)
@@ -107,7 +107,7 @@ class RobotSpider(base.RobotSpider):
                 continue         
             abs_url = urljoin_rfc(base_url,relative_url)
             abs_url = safe_url_string(abs_url,encoding=response.encoding)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22}) 
         self.log("PDF_TOTAL %s %d"%(response.url,count),level=scrapy.log.INFO)
 
     def parse1(self, response):
@@ -121,7 +121,7 @@ class RobotSpider(base.RobotSpider):
                 continue
             etd = href[1]
             pdf = "140.127.82.35/ETD-db/ETD-search/getfile?URN=%s&filename=%s.pdf"%(etd,etd)
-            yield self.baidu_rpc_request({"url":pdf,"src_id":4})
+            yield self.baidu_rpc_request({"url":pdf,"src_id":22})
 
         base_url  = get_base_url(response)
         for sel in response.xpath('//a/@href'):
@@ -130,7 +130,7 @@ class RobotSpider(base.RobotSpider):
                 continue                  
             abs_url = urljoin_rfc(base_url,relative_url)
             abs_url = safe_url_string(abs_url,encoding=response.encoding)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22}) 
 
 
 
@@ -146,7 +146,7 @@ class RobotSpider(base.RobotSpider):
             abs_url = safe_url_string(abs_url,encoding=response.encoding)
         
             if relative_url.endswith(".pdf") or relative_url.endswith(".doc"):
-                yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
+                yield self.baidu_rpc_request({"url":abs_url,"src_id":22}) 
             elif  relative_url.startswith("?currPath=") :
                 yield scrapy.Request(url=abs_url,callback=self.parse2)
 
@@ -162,7 +162,7 @@ class RobotSpider(base.RobotSpider):
                 continue                  
             abs_url = urljoin_rfc(base_url,relative_url)
             abs_url = safe_url_string(abs_url,encoding=response.encoding)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4}) 
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22}) 
 
     def parse_all(self, response):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
@@ -187,7 +187,7 @@ class RobotSpider(base.RobotSpider):
             if ctype in ["jpeg","jpg","swf","rar","zip","gz","gif","mov","png","bmp","exe","pps","db","txt","pptx",'xls',"ppt","xlsx"]:
                 continue
 
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22})
 
             site = get_url_site(abs_url)
             if site != base_site:
@@ -213,11 +213,11 @@ class RobotSpider(base.RobotSpider):
             abs_url = urljoin_rfc(base_url,relative_url)
             yield scrapy.Request(abs_url,callback=self.parse_zgyszz)
 
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22})
             
             return
         if '/upload/qklist/' in response.url:
-            yield self.baidu_rpc_request({"url":response.url,"src_id":4})
+            yield self.baidu_rpc_request({"url":response.url,"src_id":22})
             return
 
         base_url  = response.url
@@ -230,7 +230,7 @@ class RobotSpider(base.RobotSpider):
             request = scrapy.Request(abs_url,callback=self.parse_zgyszz)
             #request.meta["dont_redirect"] = True
             yield request
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22})
         
         for sel in response.xpath("//div[@class='flickr']/a/@href"):
             relative_url = sel.extract().encode(response.encoding)
@@ -240,6 +240,6 @@ class RobotSpider(base.RobotSpider):
             abs_url = safe_url_string(abs_url,encoding=response.encoding)
             request = scrapy.Request(abs_url,callback=self.parse_zgyszz)
             yield request
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22})
 
 

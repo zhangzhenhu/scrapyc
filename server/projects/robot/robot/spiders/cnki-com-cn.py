@@ -16,9 +16,8 @@ class WwwSpider(base.RobotSpider):
 
     allowed_domains = []
     start_urls = [    ]
+
     def start_requests(self):
-
-
         yield scrapy.Request("http://www.cnki.com.cn/CJFD/CJFD_index.htm")
 
         for item in super(WwwSpider, self).start_requests():
@@ -31,22 +30,45 @@ class WwwSpider(base.RobotSpider):
         if response.status / 100 != 2:
             return
         base_url  = get_base_url(response)
-        for href in response.xpath('//a/@href').extract():
-            # if not self.is_valid_url(href):
-            #     continue
+        #解析文章
+        for href in response.xpath("//table[@id='articleList']/tr/td/a/@href"):
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            site = get_url_site(abs_url)
-            if site != "www.cnki.com.cn":
-                continue
-            if "Journal" in relative_url or 'Navi' in relative_url:
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22})
+
+        #解析当年各期
+        for href in response.xpath("//table[@id='issueList']/tr/td/a/@href").extract():
+
+            relative_url = href
+            abs_url =urljoin_rfc(base_url,relative_url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22})
+            yield scrapy.Request(url=abs_url)
+
+        #解析历年各期
+         # for href in response.xpath("//table[@id='yearList']//a/@href").extract():
+
+         #    relative_url = href
+         #    abs_url =urljoin_rfc(base_url,relative_url)
+         #    yield self.baidu_rpc_request({"url":abs_url,"src_id":22})
+         #    yield scrapy.Request(url=abs_url)
+                   
+        #解析期刊首页
+         for href in response.xpath("//table[@class='r_list']/tr/td/span/span[1]/a/@href").extract():
+
+            relative_url = href
+            abs_url =urljoin_rfc(base_url,relative_url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22})
+            yield scrapy.Request(url=abs_url)
+
+
+            # if "Journal" in relative_url or 'Navi' in relative_url:
                 
-                yield scrapy.Request(url=abs_url)
-                self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO) 
-            elif "/Article/" in relative_url:
-                #abs_url =urljoin_rfc(base_url,relative_url)
-                #yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
-                self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)                
+            #     yield scrapy.Request(url=abs_url)
+            #     self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO) 
+            # elif "/Article/" in relative_url:
+            #     #abs_url =urljoin_rfc(base_url,relative_url)
+            #     #yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+            #     self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)                
 
   
 

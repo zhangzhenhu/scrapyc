@@ -53,7 +53,7 @@ class WwwSpider(base.RobotSpider):
          #    yield scrapy.Request(url=abs_url)
                    
         #解析期刊首页
-         for href in response.xpath("//table[@class='r_list']/tr/td/span/span[1]/a/@href").extract():
+        for href in response.xpath("//table[@class='r_list']/tr/td/span/span[1]/a/@href").extract():
 
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)

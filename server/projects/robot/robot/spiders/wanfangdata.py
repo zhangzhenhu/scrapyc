@@ -66,7 +66,7 @@ class RobotSpider(base.RobotSpider):
         #解析文章
         for href in response.xpath("//div[@id='wrap3']//a[@class='qkcontent_name']/@href").extract():
             #self.log("Parse %s %s"%(response.url,href),level=scrapy.log.INFO)
-            yield self.baidu_rpc_request({"url":href,"src_id":4},furl=response.url)
+            yield self.baidu_rpc_request({"url":href,"src_id":22},furl=response.url)
 
         #解析历史期刊首页
         # for href in response.xpath("//div[@id='wrap3']//ul[@class='new_ul5']/li/p/a/@href").extract():

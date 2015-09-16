@@ -31,7 +31,7 @@ class WwwSpider(base.RobotSpider):
             return
         base_url  = get_base_url(response)
         #解析文章
-        for href in response.xpath("//table[@id='articleList']/tr/td/a/@href"):
+        for href in response.xpath("//table[@id='articleList']/tr/td/a/@href").extract():
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":22})

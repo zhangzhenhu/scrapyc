@@ -104,7 +104,7 @@ class HandleCNSpider(base.RobotSpider):
         offset = 0
         #site = get_url_site(response.url)
         while offset < totalItemCount:
-            yield scrapy.Request(response.url.replace("browse?type=dateissued","browse?order=DESC&rpp=100&sort_by=2&year=&offset=%d&type=dateissued"%(offset),callback=self.parse)
+            yield scrapy.Request(response.url.replace("browse?type=dateissued","browse?order=DESC&rpp=100&sort_by=2&year=&offset=%d&type=dateissued"%(offset)),callback=self.parse)
             offset += 100
 
     def parse(self,response):

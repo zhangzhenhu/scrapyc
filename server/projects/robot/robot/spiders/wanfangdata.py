@@ -78,6 +78,10 @@ class RobotSpider(base.RobotSpider):
 
 
     def parse(self,response):
+
+        for item in self.parse_content(response):
+            yield item
+        return
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
         #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         if response.status / 100 != 2:

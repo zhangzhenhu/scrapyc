@@ -28,6 +28,7 @@ class WwwSpider(base.RobotSpider):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
         #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         if response.status / 100 != 2:
+            yield scrapy.Request(url=response.url)
             return
         base_url  = get_base_url(response)
         #解析文章
@@ -41,7 +42,7 @@ class WwwSpider(base.RobotSpider):
 
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":22})
+            #yield self.baidu_rpc_request({"url":abs_url,"src_id":22})
             yield scrapy.Request(url=abs_url)
 
         #解析历年各期
@@ -57,7 +58,7 @@ class WwwSpider(base.RobotSpider):
 
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":22})
+            #yield self.baidu_rpc_request({"url":abs_url,"src_id":22})
             yield scrapy.Request(url=abs_url)
 
 

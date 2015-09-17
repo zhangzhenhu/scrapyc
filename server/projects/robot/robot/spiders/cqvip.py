@@ -79,11 +79,11 @@ class RobotSpider(base.RobotSpider):
             yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             #self.log("Parse %s %s"%(abs_url,response.url),level=scrapy.log.INFO)
         #解析历史期刊首页
-        for href in response.xpath("//ol[@class='date']/li/a/@href").extract():
-            relative_url = href
-            abs_url =urljoin_rfc(base_url,relative_url)
-            if '2015' in relative_url:
-                yield scrapy.Request(url=abs_url,callback=self.parse_content)            
+        # for href in response.xpath("//ol[@class='date']/li/a/@href").extract():
+        #     relative_url = href
+        #     abs_url =urljoin_rfc(base_url,relative_url)
+        #     if '2015' in relative_url:
+        #         yield scrapy.Request(url=abs_url,callback=self.parse_content)            
             #yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             #self.log("Parse %s %s"%(abs_url,response.url),level=scrapy.log.INFO)
 

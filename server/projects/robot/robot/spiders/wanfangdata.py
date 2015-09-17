@@ -32,6 +32,7 @@ class RobotSpider(base.RobotSpider):
     def parse_index(self,response):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
         if response.status / 100 != 2:
+            yield scrapy.Request(url=response.url,callback=self.parse_index)
             return
         base_url  = get_base_url(response)
         #解析期刊首页

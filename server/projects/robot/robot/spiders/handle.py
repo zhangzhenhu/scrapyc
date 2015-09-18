@@ -84,6 +84,7 @@ class HandleCNSpider(base.RobotSpider):
         yield scrapy.Request("http://ir.psych.ac.cn:8080/browse?type=dateissued",callback=self.parse_first)
         yield scrapy.Request("http://124.16.151.184/browse?type=dateissued",callback=self.parse_first)
         yield scrapy.Request("http://202.127.25.144/browse?type=dateissued",callback=self.parse_first)
+        yield scrapy.Request("http://ir.cumt.edu.cn:8080/browse?type=title",callback=self.parse_first)
         #筛选的
         yield scrapy.Request("http://www.alice.cnptia.embrapa.br/browse?type=dateissued",callback=self.parse_first)
         yield scrapy.Request("http://www.infoteca.cnptia.embrapa.br/browse?type=dateissued",callback=self.parse_first)

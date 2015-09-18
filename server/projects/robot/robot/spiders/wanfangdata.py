@@ -90,7 +90,7 @@ class RobotSpider(base.RobotSpider):
             if _min_id in has:
                 continue
             tem = "%"+"0%dd.aspx"%_max_len
-            url = "http://d.wanfangdata.com.cn/" + key + tem%i
+            url = "http://d.wanfangdata.com.cn/" + key + tem%_min_id
             self.log("Make %s %s"%(response.url,url),level=scrapy.log.INFO)
             yield self.baidu_rpc_request({"url":url,"src_id":22},furl=response.url)
 

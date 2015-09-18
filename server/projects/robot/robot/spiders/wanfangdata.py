@@ -66,9 +66,33 @@ class RobotSpider(base.RobotSpider):
             return
         base_url  = get_base_url(response)
         #解析文章
+        _min_id=0
+        _max_id = 0
+        has = {}
+        _max_len = 1
+        key = None
         for href in response.xpath("//div[@id='wrap3']//a[@class='qkcontent_name']/@href").extract():
             #self.log("Parse %s %s"%(response.url,href),level=scrapy.log.INFO)
             yield self.baidu_rpc_request({"url":href,"src_id":22},furl=response.url)
+            ret = re.search("/([Pp]eriodical_\D+\d{4}[\w]{2})(\d+)\.aspx$",href)
+            if not ret:
+                continue
+            key,_id = ret.groups()
+            id = int(_id)
+            if id > _max_id:
+                _max_id = id
+            if len(_id) > _max_len:
+                _max_len = len(_id)
+            has[id] = None
+        
+        while _min_id <= _max_id and key:
+            _min_id += 1
+            if _min_id in has:
+                continue
+            tem = "%"+"0%dd.aspx"%_max_len
+            url = "http://d.wanfangdata.com.cn/" + key + tem%i
+            self.log("Make %s %s"%(response.url,url),level=scrapy.log.INFO)
+            yield self.baidu_rpc_request({"url":url,"src_id":22},furl=response.url)
 
         #解析历史期刊首页
         # for href in response.xpath("//div[@id='wrap3']//ul[@class='new_ul5']/li/p/a/@href").extract():

@@ -267,7 +267,7 @@ class CPfdSpider(base.RobotSpider):
 
 
 
-class CPfdSpider(base.RobotSpider):
+class EpubSpider(base.RobotSpider):
     name = "epub.cnki.net"
 
     allowed_domains = []
@@ -277,7 +277,7 @@ class CPfdSpider(base.RobotSpider):
         for i in range(1,460):
             yield scrapy.Request("http://epub.cnki.net/kns/Navi/brief.aspx?curpage=%d&RecordsPerPage=50&QueryID=14&ID=&turnpage=1&tpagemode=L&dbPrefix=34_CATALOG&Fields=&DisplayMode=listmode&pagename=ASP.navi_cdmdcatalog_aspx&NaviID=34&sKuaKuID=14"%i,callback=self.parse_unit)
         # yield scrapy.Request("")
-        for item in super(CPfdSpider, self).start_requests():
+        for item in super(EpubSpider, self).start_requests():
             yield item        
  
 

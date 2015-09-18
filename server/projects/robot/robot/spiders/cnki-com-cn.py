@@ -80,7 +80,7 @@ class CDmdSpider(base.RobotSpider):
     start_urls = [    ]
     def start_requests(self):
         for i in range(1,42):
-            yield scrapy.Request("http://cdmd.cnki.com.cn/Area/CDMDUnit-%04d.htm"%i,callback=self.parse_unit,headers={"Cache-Control":"no-cache","Cookie":"SID=110005; SID_cdmd=209021; CNZZDATA1356416=cnzz_eid%3D1750068259-1440478982-%26ntime%3D1440666594","Pragma":"no-cache"})
+            yield scrapy.Request("http://cdmd.cnki.com.cn/Area/CDMDUnit-%04d.htm"%i,callback=self.parse_unit)
 
 
         for item in super(CDmdSpider, self).start_requests():
@@ -118,7 +118,7 @@ class CDmdSpider(base.RobotSpider):
                 continue
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             count += 1
 
 
@@ -131,16 +131,16 @@ class CDmdSpider(base.RobotSpider):
             if pageNo< 150:
 
                 abs_url = up[0]+"-"+up[1]+"-"+up[2]+"-"+str(pageNo)+".htm"
-                yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+                yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
                 yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
                 self.log("Nimei %s"%abs_url,level=scrapy.log.INFO)
 
         #解析历年索引页
-        for href in response.xpath("//a[@class='content_gray02']/@href").extract():
-            relative_url = href
-            abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
-            yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
+        # for href in response.xpath("//a[@class='content_gray02']/@href").extract():
+        #     relative_url = href
+        #     abs_url =urljoin_rfc(base_url,relative_url)
+        #     yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
+        #     yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
 
         #解析当前索引页的翻页
         js = response.xpath("//table/tbody/tr/td/script").extract()
@@ -197,7 +197,7 @@ class CPfdSpider(base.RobotSpider):
             if href == "#":continue
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
 
     def parse_cdmd(self,response):
@@ -213,7 +213,7 @@ class CPfdSpider(base.RobotSpider):
                 continue
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             if "CPFDCONFArticleList" in relative_url:
                 yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
             count += 1
@@ -227,7 +227,7 @@ class CPfdSpider(base.RobotSpider):
             if pageNo< 150:
 
                 abs_url = up[0]+"-"+up[1]+"-"+str(pageNo)+".htm"
-                yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+                yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
                 yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
                 self.log("Nimei %s"%abs_url,level=scrapy.log.INFO)
 
@@ -236,7 +236,7 @@ class CPfdSpider(base.RobotSpider):
         for href in response.xpath("//a[@class='content_gray02']/@href").extract():
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
 
         #解析当前索引页的翻页
@@ -295,7 +295,7 @@ class CPfdSpider(base.RobotSpider):
             if href == "#":continue
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
 
     def parse_cdmd(self,response):
@@ -311,7 +311,7 @@ class CPfdSpider(base.RobotSpider):
                 continue
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             if "CPFDCONFArticleList" in relative_url:
                 yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
             count += 1
@@ -331,11 +331,11 @@ class CPfdSpider(base.RobotSpider):
 
 
         #解析历年索引页
-        for href in response.xpath("//a[@class='content_gray02']/@href").extract():
-            relative_url = href
-            abs_url =urljoin_rfc(base_url,relative_url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
-            yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
+        # for href in response.xpath("//a[@class='content_gray02']/@href").extract():
+        #     relative_url = href
+        #     abs_url =urljoin_rfc(base_url,relative_url)
+        #     yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
+        #     yield scrapy.Request(url=abs_url,callback=self.parse_cdmd)
 
         #解析当前索引页的翻页
         js = response.xpath("//table/tr/td/script").extract()

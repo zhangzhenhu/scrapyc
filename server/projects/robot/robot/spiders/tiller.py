@@ -69,7 +69,7 @@ class RobotSpider(base.RobotSpider):
         base_url  = get_base_url(response)
         #解析文章
         for href in response.xpath('//table//a/@href').extract():
-            if "view_abstract.aspx?" not in href or "create_pdf.aspx?" not in href:
+            if "view_abstract.aspx?" not in href and "create_pdf.aspx?" not in href:
                 continue
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)            

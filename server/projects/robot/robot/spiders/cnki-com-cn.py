@@ -38,7 +38,8 @@ class WwwSpider(base.RobotSpider):
             yield self.baidu_rpc_request({"url":abs_url,"src_id":22})
 
         #解析当年各期
-        for href in response.xpath("//table[@id='issueList']/tr/td/a/@href").extract():
+        #只更新最近2期的，为的是减少数据量，提高更新批次
+        for href in response.xpath("//table[@id='issueList']/tr/td/a/@href").extract()[-2:]:
 
             relative_url = href
             abs_url =urljoin_rfc(base_url,relative_url)

@@ -1,6 +1,6 @@
 #encoding=UTF8
 from scrapy.utils.response import get_base_url
-from w3lib.url import urljoin_rfc
+from w3lib.url import urljoin_rfc,url_query_cleaner
 
 from scrapy import signals
 from robot.items import NimeiItem
@@ -132,10 +132,13 @@ class RobotSpider(base.RobotSpider):
         base_url  = get_base_url(response)
         #解析文章
         for href in response.xpath('//table//a/@href').extract():
-            if "view_abstract.aspx?" not in href and "create_pdf.aspx?" not in href:
+            if "view_abstract.aspx?"  in href:
+                href = url_query_cleaner(href,("file_no"))
+            elif"create_pdf.aspx?"  in href:
+                pass                
+            else:
                 continue
-            relative_url = href
-            abs_url =urljoin_rfc(base_url,relative_url)            
+            abs_url =urljoin_rfc(base_url,href)            
             yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             #self.log("Parse %s %s"%(abs_url,response.url),level=scrapy.log.INFO)
 

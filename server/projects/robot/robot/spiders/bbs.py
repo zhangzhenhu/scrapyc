@@ -1,5 +1,5 @@
 from scrapy.utils.response import get_base_url
-from w3lib.url import urljoin_rfc
+from w3lib.url import urljoin_rfc,url_query_cleaner
 
 from scrapy import signals
 from robot.items import NimeiItem

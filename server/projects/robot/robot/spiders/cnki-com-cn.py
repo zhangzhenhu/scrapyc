@@ -44,6 +44,7 @@ class WwwSpider(base.RobotSpider):
             abs_url =urljoin_rfc(base_url,relative_url)
             #yield self.baidu_rpc_request({"url":abs_url,"src_id":22})
             yield scrapy.Request(url=abs_url)
+            self.log("Parse %s %s "%(response.url,abs_url),level=scrapy.log.INFO)
 
         #解析历年各期
          # for href in response.xpath("//table[@id='yearList']//a/@href").extract():

@@ -95,13 +95,16 @@ class RobotSpider(base.RobotSpider):
             yield self.baidu_rpc_request({"url":url,"src_id":22},furl=response.url)
 
         #解析历史期刊首页
-        # for href in response.xpath("//div[@id='wrap3']//ul[@class='new_ul5']/li/p/a/@href").extract():
-        #     relative_url = href
-        #     if '2015' in relative_url:
-        #         abs_url =urljoin_rfc(base_url,relative_url)
-        #         yield scrapy.Request(url=abs_url,callback=self.parse_content)            
-        #     yield self.baidu_rpc_request({"url":abs_url,"src_id":4},furl=response.url)
-        #     self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)
+        nimei = []
+        for href in response.xpath("//div[@id='wrap3']//ul[@class='new_ul5']/li/p/a/@href").extract():
+            relative_url = href
+            if '2015' in relative_url:
+                abs_url =urljoin_rfc(base_url,relative_url)
+                nimei.append(abs_url)
+        for  abs_url in nimei[-5:]:
+            yield scrapy.Request(url=abs_url,callback=self.parse_content)            
+            #yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
+            #self.log("Parse %s %s"%(response.url,abs_url),level=scrapy.log.INFO)
 
 
     def parse(self,response):

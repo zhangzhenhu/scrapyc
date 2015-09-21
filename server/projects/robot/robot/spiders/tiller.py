@@ -21,7 +21,6 @@ class RobotSpider(base.RobotSpider):
 
         yield scrapy.Request("http://www.cjmit.com/cjmit/ch/reader/issue_browser.aspx",callback=self.parse_index)
         yield scrapy.Request("http://www.hjkx.ac.cn/hjkx/ch/reader/issue_browser.aspx",callback=self.parse_index)
-
         yield scrapy.Request("http://211.68.236.122/ch/reader/issue_browser.aspx",callback=self.parse_index)
         yield scrapy.Request("http://hjjcgl.cnjournals.net/ch/reader/issue_browser.aspx",callback=self.parse_index)
         yield scrapy.Request("http://hnxbw.cnjournals.net/hznydxsk/ch/reader/issue_browser.aspx",callback=self.parse_index)

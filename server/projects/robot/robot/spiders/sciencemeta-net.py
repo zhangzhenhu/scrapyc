@@ -100,7 +100,9 @@ class BiopublisherSpider(base.RobotSpider):
         #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         if response.status / 100 != 2:
             return
-        for href in response.xpath('//div[@class="az"]/ul/li/p/a[1]/@href').extract():
+        for href in response.xpath('//div[@class="az"]/ul/li/p/a/@href').extract():
+            if "policy.php" in href:
+                continue
             abs_url =urljoin_rfc(response.url,href)
             yield scrapy.Request(url=abs_url+"/article/latestArticlesByJournal")
             yield self.baidu_rpc_request({"url":abs_url,"src_id":22},response.url)

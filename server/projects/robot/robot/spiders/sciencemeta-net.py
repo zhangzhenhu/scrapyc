@@ -101,7 +101,7 @@ class BiopublisherSpider(base.RobotSpider):
         if response.status / 100 != 2:
             return
         for href in response.xpath('//div[@class="az"]/ul/li/p/a[1]/@href').extract():
-            abs_url =urljoin_rfc(base_url,href)
+            abs_url =urljoin_rfc(response.url,href)
             yield scrapy.Request(url=abs_url+"/article/latestArticlesByJournal")
             yield self.baidu_rpc_request({"url":abs_url,"src_id":22},response.url)
 

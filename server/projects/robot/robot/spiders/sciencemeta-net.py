@@ -80,4 +80,50 @@ class RobotSpider(base.RobotSpider):
         #     yield scrapy.Request(url=abs_url)
         #     yield self.baidu_rpc_request({"url":abs_url,"src_id":4},response.url)
 
+class BiopublisherSpider(base.RobotSpider):
+    name = "biopublisher"
+
+    allowed_domains = []
+    start_urls = [    ]
+    def start_requests(self):
+
+        # for i in range(1,18):
+        #     yield scrapy.Request("http://sciencemeta.net/index.php/index/index/journals?metaDisciplineExamples=&searchInitial=&journalsPage=%d#journals"%i)
+       
+        yield scrapy.Request("http://biopublisher.cn/index.php/index/journal",self.parse_index)
+
+        for item in super(BiopublisherSpider, self).start_requests():
+            yield item        
+ 
+    def parse_index(self,response):
+        self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
+        #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
+        if response.status / 100 != 2:
+            return
+        for href in response.xpath('//div[@class="az"]/ul/li/p/a[1]/@href').extract():
+            yield scrapy.Request(url=abs_url+"/article/latestArticlesByJournal")
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22},response.url)
+
+
+    def parse(self,response):
+        self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
+        #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
+        if response.status / 100 != 2:
+            yield scrapy.Request(url=response.url)
+            return
+        base_url  = get_base_url(response)
+
+        for href in response.xpath('//div[@class="center_bottom_list"]//a/@href').extract():
+            if not self.is_valid_url(href):
+                continue
+            relative_url = href
+            abs_url =urljoin_rfc(base_url,relative_url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22},response.url)
+
+        #翻页
+        for href in response.xpath('//div[@class="article_list_page"]//a/@href').extract():
+            abs_url =urljoin_rfc(base_url,href)
+            yield scrapy.Request(url=abs_url)
+            #yield self.baidu_rpc_request({"url":abs_url,"src_id":4},response.url)
+
        

@@ -118,7 +118,7 @@ class HandleCNSpider(base.RobotSpider):
         yield scrapy.Request("http://ir.psych.ac.cn:8080/browse?type=dateissued",callback=self.parse_first)
         yield scrapy.Request("http://124.16.151.184/browse?type=dateissued",callback=self.parse_first)
         yield scrapy.Request("http://202.127.25.144/browse?type=dateissued",callback=self.parse_first)
-        yield scrapy.Request("http://ir.cumt.edu.cn:8080/browse?type=title",callback=self.parse_first)
+        yield scrapy.Request("http://ir.cumt.edu.cn:8080/browse?type=dateissued",callback=self.parse_first)
         #筛选的
         yield scrapy.Request("http://www.alice.cnptia.embrapa.br/browse?type=dateissued",callback=self.parse_first)
         yield scrapy.Request("http://www.infoteca.cnptia.embrapa.br/browse?type=dateissued",callback=self.parse_first)
@@ -262,6 +262,11 @@ class HandleCNSpider(base.RobotSpider):
         while offset < totalItemCount:
             yield scrapy.Request(response.url.replace("browse?type=dateissued","browse?order=DESC&rpp=100&sort_by=2&year=&offset=%d&type=dateissued"%(offset)),callback=self.parse)
             offset += 100
+
+        for href in response.xpath('//a/@href').extract():
+            if "sort_by=" in href and "offset=" in href and 'type=dateissued' in href:
+                abs_url =urljoin_rfc(response.url,href)
+                yield scrapy.Request(abs_url)
 
     def parse(self,response):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)

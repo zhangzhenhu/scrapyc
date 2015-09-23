@@ -73,7 +73,8 @@ class RobotSpider(base.RobotSpider):
         key = None
         for href in response.xpath("//div[@id='wrap3']//a[@class='qkcontent_name']/@href").extract():
             #self.log("Parse %s %s"%(response.url,href),level=scrapy.log.INFO)
-            yield self.baidu_rpc_request({"url":href,"src_id":22},furl=response.url)
+            abs_url = href.replace("_","/").replace(".aspx",'')
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             ret = re.search("/([Pp]eriodical_\D+\d{4}[\w]{2})(\d+)\.aspx$",href)
             if not ret:
                 continue
@@ -91,6 +92,7 @@ class RobotSpider(base.RobotSpider):
                 continue
             tem = "%"+"0%dd.aspx"%_max_len
             url = "http://d.wanfangdata.com.cn/" + key + tem%_min_id
+            url = href.replace("_","/").replace(".aspx",'')
             self.log("Make %s %s"%(response.url,url),level=scrapy.log.INFO)
             yield self.baidu_rpc_request({"url":url,"src_id":22},furl=response.url)
 

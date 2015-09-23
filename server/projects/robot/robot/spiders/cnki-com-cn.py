@@ -47,6 +47,7 @@ class WwwSpider(base.RobotSpider):
             yield scrapy.Request(url=abs_url)
             self.log("Parse %s %s "%(response.url,abs_url),level=scrapy.log.INFO)
 
+
         #解析历年各期
          # for href in response.xpath("//table[@id='yearList']//a/@href").extract():
 

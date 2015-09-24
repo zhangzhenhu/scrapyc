@@ -19,6 +19,8 @@ class RobotSpider(base.RobotSpider):
     start_urls = [    ]
     def start_requests(self):
 
+        yield scrapy.Request("http://www.epae.cn/ch/reader/issue_browser.aspx",callback=self.parse_index)
+        yield scrapy.Request("http://www.ykcs.ac.cn/ch/reader/issue_browser.aspx",callback=self.parse_index)
         yield scrapy.Request("http://hdxbzkb.cnjournals.net/ch/reader/issue_browser.aspx",callback=self.parse_index)
         yield scrapy.Request("http://www.marinejournal.cn/hyyhz/ch/reader/issue_browser.aspx",callback=self.parse_index)
         yield scrapy.Request("http://www.cjmit.com/cjmit/ch/reader/issue_browser.aspx",callback=self.parse_index)

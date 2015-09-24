@@ -18,7 +18,12 @@ class HandleSpider(base.RobotSpider):
     allowed_domains = []
     start_urls = [    ]
     def start_requests(self):
-
+        flag = False
+        for item in super(HandleSpider, self).start_requests():
+            yield item   
+            flag = True 
+        if flag:
+            return
         yield scrapy.Request("http://nccur.lib.nccu.edu.tw/browse-date",callback=self.parse)
         yield scrapy.Request("http://nccuir.lib.nccu.edu.tw/browse-date",callback=self.parse)
         yield scrapy.Request("http://thesis.lib.ncu.edu.tw/browse-date",callback=self.parse)
@@ -59,8 +64,7 @@ class HandleSpider(base.RobotSpider):
         yield scrapy.Request("http://repository.ncku.edu.tw/browse-date",callback=self.parse)
         yield scrapy.Request("http://thesis.lib.ncu.edu.tw/browse-date",callback=self.parse)
         yield scrapy.Request("http://tkuir.lib.tku.edu.tw/dspace/browse-date",callback=self.parse)        
-        for item in super(HandleSpider, self).start_requests():
-            yield item        
+      
 
 
     def parse(self,response):
@@ -101,6 +105,12 @@ class HandleCNSpider(base.RobotSpider):
     allowed_domains = []
     start_urls = [    ]
     def start_requests(self):
+        flag = False
+        for item in super(HandleCNSpider, self).start_requests():
+            yield item   
+            flag = True 
+        if flag:
+            return
         #人工的
         yield scrapy.Request("http://www.irgrid.ac.cn/browse?type=dateissued",callback=self.parse_first)
         yield scrapy.Request("http://www.irgrid.ac.cn/browse?type=dateissued",callback=self.parse_first)
@@ -243,8 +253,7 @@ class HandleCNSpider(base.RobotSpider):
         yield scrapy.Request("http://ir.stlib.cn/browse?type=dateissued",callback=self.parse_first)
 
         # yield scrapy.Request("")
-        for item in super(HandleCNSpider, self).start_requests():
-            yield item        
+     
 
 
     def parse_first(self,response):

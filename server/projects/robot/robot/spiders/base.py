@@ -48,8 +48,8 @@ class RobotSpider(scrapy.Spider):
             return
         
         base_site = get_url_site(response.url)
-        print response.url,response.status
-        base_url  = get_base_url(response)
+        #print response.url,response.status
+        base_url  = response.url
         for sel in response.xpath('//a/@href'):
             relative_url = sel.extract()
 

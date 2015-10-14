@@ -44,22 +44,22 @@ class RobotSpider(base.RobotSpider):
         if response.url.startswith("http://hot.163.com/post/list/") and res_data["data"] != None:
             for item in res_data["data"]:
                 url = "http://hot.163.com/group/%s/post/%s/"%(item["groupAlias"],item["id"])
-                yield self.baidu_rpc_request({"url":url,"src_id":4})
+                yield self.baidu_rpc_request({"url":url,"src_id":22})
                 yield NimeiItem(url=url,furl=response.url)
                 url = "http://hot.163.com/user/%s"%item["creator"]["userId"]
-                yield self.baidu_rpc_request({"url":url,"src_id":4})
+                yield self.baidu_rpc_request({"url":url,"src_id":22})
                 yield NimeiItem(url=url,furl=response.url)
                 url = "http://hot.163.com/group/%s"%item["groupAlias"]
-                yield self.baidu_rpc_request({"url":url,"src_id":4})
+                yield self.baidu_rpc_request({"url":url,"src_id":22})
                 yield NimeiItem(url=url,furl=response.url)
                 url = "http://hot.163.com/group/%s/post/%s/#!comment"%(item["groupAlias"],item["id"])
-                yield self.baidu_rpc_request({"url":url,"src_id":4})
+                yield self.baidu_rpc_request({"url":url,"src_id":22})
                 yield NimeiItem(url=url,furl=response.url)
                 url = "http://hot.163.com/post/list/group/%s/3/0/1000/new"%item["groupId"]
                 yield scrapy.Request(url=url)
         elif response.url.startswith("http://hot.163.com/operate/PC/") and res_data["data"] != None:
             for item in res_data["data"] :
-                yield self.baidu_rpc_request({"url":item["url"],"src_id":4})
+                yield self.baidu_rpc_request({"url":item["url"],"src_id":22})
                 yield NimeiItem(url=item["url"],furl=response.url)
     
     def parse_rank(self,response):
@@ -73,7 +73,7 @@ class RobotSpider(base.RobotSpider):
             url = "http://hot.163.com/post/list/group/%s/3/0/1000/new"%item["groupId"]
             yield scrapy.Request(url=url)
             url = "http://hot.163.com/group/%s"%item["alias"]
-            yield self.baidu_rpc_request({"url":url,"src_id":4})
+            yield self.baidu_rpc_request({"url":url,"src_id":22})
 
 
 

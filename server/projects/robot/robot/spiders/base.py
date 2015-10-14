@@ -52,7 +52,8 @@ class RobotSpider(scrapy.Spider):
         base_url  = response.url
         for sel in response.xpath('//a/@href'):
             relative_url = sel.extract()
-
+            if not self.is_valid_url(relative_url):
+                continue
             abs_url =urljoin_rfc(base_url,relative_url)
             #print abs_url
             schema = get_url_scheme(abs_url)

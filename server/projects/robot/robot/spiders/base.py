@@ -69,6 +69,7 @@ class RobotSpider(scrapy.Spider):
             yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             if site != base_site  or :
                 continue
+            self.log("SendCrawl %s"%(abs_url),level=scrapy.log.INFO)
             yield scrapy.Request(abs_url)
             # if relative_url.startswith("forum_") or relative_url.startswith("/archives/"):
             #     yield scrapy.Request(abs_url,callback=self.parse)

@@ -8,7 +8,7 @@ from robot.spiders import base
 from scrapy.utils.misc import load_object
 from scrapyc.server.utils.url import get_url_site,get_url_scheme
 import json
-
+import time
 
 class BuluoSpider(base.RobotSpider):
     name = "buluo.qq"
@@ -45,12 +45,16 @@ class BuluoSpider(base.RobotSpider):
             return
         bid = url_query_parameter(response.url,'bid')
         start = url_query_parameter(response.url,'start')
+        min_time = time.time()
         for item in res_data["result"]["posts"]:
             url = "http://buluo.qq.com/p/detail.html?bid=%s&pid=%s"%(bid,item["pid"])
             yield self.baidu_rpc_request({"url":url,"src_id":22})
+            if int(item["time"]) < min_time:
+                min_time = int(item["time"])
+
         start = int(start)
         
-        if int(res_data["result"]["total"]) > start+20:
+        if int(res_data["result"]["total"]) > start+20 and time.time() - min_time > 3600*24*3 :
             next_url = 'http://buluo.qq.com/cgi-bin/bar/post/get_post_by_page?bid=%s&num=20&start=%s&bkn'%(bid,start+20)
             self.log("SendCrawl %s Total:%d"%(next_url,int(res_data["result"]["total"])),level=scrapy.log.INFO)
             yield scrapy.Request(url=next_url,headers={"Referer":"http://buluo.qq.com/p/barindex.html?bid=%s"%bid})

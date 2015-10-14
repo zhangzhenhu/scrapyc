@@ -40,7 +40,7 @@ class BuluoSpider(base.RobotSpider):
             return
 
         res_data = json.loads(response.body)
-        if res_data["retcode"] != "0":
+        if res_data["retcode"]  != "0" and res_data["retcode"] != 0:
             self.log("Crawled %s %s"%(response.url,res_data["retcode"]),level=scrapy.log.CRITICAL)
             return
         bid = url_query_parameter(response.url,'bid')

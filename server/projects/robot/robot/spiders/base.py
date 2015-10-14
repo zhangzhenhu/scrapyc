@@ -22,13 +22,7 @@ class RobotSpider(scrapy.Spider):
 
     def start_requests(self):
 
-        # coms = self.settings.get("SITE_SPIDERS")
-        # for key,module in coms.items():
-        #     comcls = load_object(module)
-        #     self.parses[key]= comcls(self)
-        #     for item in self.parses[key].start_requests():
-        #         yield item
-        #self.crawler.signals.connect(self.spider_idle,signals.spider_idle)
+
         fname = self.settings.get("INPUT_FILE",None)
         if fname:
             with open(fname) as fh:
@@ -50,17 +44,11 @@ class RobotSpider(scrapy.Spider):
         self.log("Crawled %s %d"%(response.url,response.status),level=scrapy.log.INFO)
         #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         if response.status / 100 != 2:
+            self.log(response.headers,level=scrapy.log.INFO)
             return
         
         site = get_url_site(response.url)
-
-        # if site in self.parses:
-        #     parser = self.parses[site]
-        #     #self.log("Parser %s %s"%(response.url,parser.name),level=scrapy.log.INFO)
-        #     for item in parser.parse(response) :
-        #         yield item
-        #     return
-
+        print response.url,response.status
         base_url  = get_base_url(response)
         for sel in response.xpath('//a/@href'):
             relative_url = sel.extract()

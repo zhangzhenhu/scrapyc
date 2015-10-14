@@ -30,7 +30,7 @@ LOG_FORMATER = "%(asctime)s [%(filename)s::%(funcName)s:%(lineno)d] %(levelname)
 MAX_RUN_TASK = 10
 
 #需要配置JOBDIR才会使用磁盘队列
-JOBDIR = os.path.join(HISTORY_PATH,str(os.getpid()))
+#JOBDIR = os.path.join(HISTORY_PATH,str(os.getpid()))
 # if not os.path.exists(JOBDIR):
 #     os.makedirs(JOBDIR)
 CONCURRENT_REQUESTS=100

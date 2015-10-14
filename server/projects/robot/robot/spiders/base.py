@@ -28,13 +28,13 @@ class RobotSpider(scrapy.Spider):
             with open(fname) as fh:
                 for line in fh.readlines():
                     url = line.strip().split()[0]
-                    req =  scrapy.Request(url,callback=self.parse)
+                    req =  scrapy.Request(url)
                     yield req
         url = self.settings.get("url",None)
         if url:
-            yield scrapy.Request(url,callback=self.parse)
+            yield scrapy.Request(url)
         for url in self.start_urls:
-            req =  scrapy.Request(url,callback=self.parse)
+            req =  scrapy.Request(url)
             #req.meta["depth"] =  1
             yield req
         for item in super(RobotSpider, self).start_requests():
@@ -47,7 +47,7 @@ class RobotSpider(scrapy.Spider):
             self.log(response.headers,level=scrapy.log.INFO)
             return
         
-        site = get_url_site(response.url)
+        base_site = get_url_site(response.url)
         print response.url,response.status
         base_url  = get_base_url(response)
         for sel in response.xpath('//a/@href'):
@@ -59,10 +59,12 @@ class RobotSpider(scrapy.Spider):
             if schema not in ["http","https"]:
                 continue            
             site = get_url_site(abs_url)
+
             #yield NimeiItem(url=abs_url,furl=response.url)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
-            # if site != base_site and site not in ALLOW_SITES:
-            #     continue
+            if site != base_site:
+                continue
+            yield scrapy.Request(abs_url)
             # if relative_url.startswith("forum_") or relative_url.startswith("/archives/"):
             #     yield scrapy.Request(abs_url,callback=self.parse)
 

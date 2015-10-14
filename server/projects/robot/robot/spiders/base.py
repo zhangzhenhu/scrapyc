@@ -54,12 +54,12 @@ class RobotSpider(scrapy.Spider):
         
         site = get_url_site(response.url)
 
-        if site in self.parses:
-            parser = self.parses[site]
-            #self.log("Parser %s %s"%(response.url,parser.name),level=scrapy.log.INFO)
-            for item in parser.parse(response) :
-                yield item
-            return
+        # if site in self.parses:
+        #     parser = self.parses[site]
+        #     #self.log("Parser %s %s"%(response.url,parser.name),level=scrapy.log.INFO)
+        #     for item in parser.parse(response) :
+        #         yield item
+        #     return
 
         base_url  = get_base_url(response)
         for sel in response.xpath('//a/@href'):

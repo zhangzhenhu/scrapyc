@@ -45,6 +45,7 @@ class RobotSpider(scrapy.Spider):
         #self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         if response.status / 100 != 2:
             #self.log(response.headers,level=scrapy.log.INFO)
+            yield scrapy.Request(response.url)
             return
         if response.__class__ != scrapy.http.HtmlResponse:
             return

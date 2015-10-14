@@ -25,7 +25,7 @@ class BuluoSpider(base.RobotSpider):
         if flag:
             return
         
-        for bid in range(10038,100000):
+        for bid in range(10038,250000):
             url = 'http://buluo.qq.com/cgi-bin/bar/post/get_post_by_page?bid=%s&num=20&start=0&bkn'%(bid)
             refer = "http://buluo.qq.com/p/barindex.html?bid=%s"%bid
             yield scrapy.Request(url=url,headers={"Referer":refer})

@@ -71,8 +71,8 @@ class RobotSpider(scrapy.Spider):
             if schema not in ["http","https"]:
                 continue            
             site = get_url_site(abs_url)
-            yield NimeiItem(url=abs_url,furl=response.url)
-            yield self.baidu_rpc_request({"url":abs_url,"src_id":4})
+            #yield NimeiItem(url=abs_url,furl=response.url)
+            yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             # if site != base_site and site not in ALLOW_SITES:
             #     continue
             # if relative_url.startswith("forum_") or relative_url.startswith("/archives/"):

@@ -67,7 +67,7 @@ class RobotSpider(scrapy.Spider):
 
             #yield NimeiItem(url=abs_url,furl=response.url)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
-            if site != base_site  and not in self.settings.get("ALLOW_SITES",[]) :
+            if site != base_site  and site not in self.settings.get("ALLOW_SITES",[]) :
                 continue
             self.log("SendCrawl %s"%(abs_url),level=scrapy.log.INFO)
             yield scrapy.Request(abs_url)

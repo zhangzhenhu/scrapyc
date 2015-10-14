@@ -54,8 +54,7 @@ class RobotSpider(scrapy.Spider):
         base_url  = response.url
         for sel in response.xpath('//a/@href'):
             relative_url = sel.extract()
-            if not self.is_valid_url(relative_url):
-                continue
+
             abs_url =urljoin_rfc(base_url,relative_url)
             #print abs_url
             schema = get_url_scheme(abs_url)
@@ -65,7 +64,7 @@ class RobotSpider(scrapy.Spider):
 
             #yield NimeiItem(url=abs_url,furl=response.url)
             yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
-            if site != base_site:
+            if site != base_site  or not self.is_valid_url(relative_url):
                 continue
             yield scrapy.Request(abs_url)
             # if relative_url.startswith("forum_") or relative_url.startswith("/archives/"):
@@ -101,7 +100,7 @@ class RobotSpider(scrapy.Spider):
             ctype  = filename.split(".")[-1].lower() 
         else:
             ctype = None
-        if ctype in ["jpeg","jpg","swf","rar","zip","gz","gif","mov","png","bmp","exe","pps","db","txt","pptx",'xls',"ppt","xlsx"]:
+        if ctype in ["jpeg","jpg","swf","rar","zip","gz","gif","mov","png","bmp","exe","pps","db","txt","pptx",'xls',"ppt","xlsx","pdf","tz"]:
             return False
         return True
 

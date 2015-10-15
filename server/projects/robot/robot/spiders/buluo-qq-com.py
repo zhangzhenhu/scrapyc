@@ -54,7 +54,7 @@ class BuluoSpider(base.RobotSpider):
 
         start = int(start)
         
-        if int(res_data["result"]["total"]) > start+20 and time.time() - min_time > 3600*24*3 :
+        if int(res_data["result"]["total"]) > start+20 and time.time() - min_time < 3600*24*2 :
             next_url = 'http://buluo.qq.com/cgi-bin/bar/post/get_post_by_page?bid=%s&num=20&start=%s&bkn'%(bid,start+20)
             self.log("SendCrawl %s Total:%d"%(next_url,int(res_data["result"]["total"])),level=scrapy.log.INFO)
             yield scrapy.Request(url=next_url,headers={"Referer":"http://buluo.qq.com/p/barindex.html?bid=%s"%bid})

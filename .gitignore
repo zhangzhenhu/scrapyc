@@ -1,1 +1,9 @@
 *.log
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/.name
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/scrapyc.iml
+.idea/modules.xml

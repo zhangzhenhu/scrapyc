@@ -259,6 +259,7 @@ class HandleCNSpider(base.RobotSpider):
         self.log("Crawled %s %d" % (response.url, response.status), level=scrapy.log.INFO)
         if response.status / 100 != 2:
             return
+        # 从网页中提取最大文档数量，用于构造索引页翻页
         ret = re.search("var totalItemCount = (\d+);", response.body)
         totalItemCount = 0
         if ret:
@@ -268,12 +269,13 @@ class HandleCNSpider(base.RobotSpider):
             self.log("Parse %s totalItemCount NULL" % (response.url), level=scrapy.log.INFO)
         offset = 0
         # site = get_url_site(response.url)
+        # 构造翻页并抓取
         while offset < totalItemCount:
             yield scrapy.Request(response.url.replace("browse?type=dateissued",
                                                       "browse?order=DESC&rpp=100&sort_by=2&year=&offset=%d&type=dateissued" % (
                                                       offset)), callback=self.parse)
             offset += 100
-
+        # 部分站点上面的totalItemCount提取不到，需要从页面中提取翻页连接
         for href in response.xpath('//a/@href').extract():
             if "sort_by=" in href and "offset=" in href and 'type=dateissued' in href:
                 abs_url = urljoin_rfc(response.url, href)

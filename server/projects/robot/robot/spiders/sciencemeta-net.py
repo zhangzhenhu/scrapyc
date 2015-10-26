@@ -23,6 +23,7 @@ class RobotSpider(base.RobotSpider):
         # for i in range(1,18):
         #     yield scrapy.Request("http://sciencemeta.net/index.php/index/index/journals?metaDisciplineExamples=&searchInitial=&journalsPage=%d#journals"%i)
 
+        # 站点种子页面，包含全部期刊首页
         yield scrapy.Request("http://sciencemeta.net/index.php/index/about/siteMap", self.parse_sitemap)
 
         for item in super(RobotSpider, self).start_requests():
@@ -50,10 +51,11 @@ class RobotSpider(base.RobotSpider):
         # self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         if response.status / 100 != 2:
             return
+        # 提取并拼接期刊首页
         for href in response.xpath("//div[@id='siteMap']/ul/li/ul//a/@href").extract():
             abs_url = href.replace("/index/index", "/issue/archive")
             yield scrapy.Request(url=abs_url)
-            yield self.baidu_rpc_request({"url": abs_url, "src_id": 4}, response.url)
+            yield self.baidu_rpc_request({"url": abs_url, "src_id": 22}, response.url)
 
     def parse(self, response):
         self.log("Crawled %s %d" % (response.url, response.status), level=scrapy.log.INFO)
@@ -70,8 +72,8 @@ class RobotSpider(base.RobotSpider):
             abs_url = urljoin_rfc(base_url, relative_url)
             if "/article/view/" in abs_url:
                 count += 1
-            yield self.baidu_rpc_request({"url": abs_url, "src_id": 4}, response.url)
-            # 历史期刊
+            yield self.baidu_rpc_request({"url": abs_url, "src_id": 22}, response.url)
+            # 历史期刊，全站抓取时使用。例行更新不用
             # if re.search("/issue/archive/\d+$",abs_url):
             #     yield scrapy.Request(url=abs_url)
 

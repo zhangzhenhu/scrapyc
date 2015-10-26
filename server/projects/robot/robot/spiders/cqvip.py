@@ -13,7 +13,7 @@ class RobotSpider(base.RobotSpider):
     start_urls = []
 
     def start_requests(self):
-
+        # 全站爬取时以这些作为起始页面
         # yield scrapy.Request("http://www.cqvip.com/journal/63.shtml",callback=self.parse_index)
         # yield scrapy.Request("http://www.cqvip.com/journal/1.shtml",callback=self.parse_index)
         # yield scrapy.Request("http://www.cqvip.com/journal/67.shtml",callback=self.parse_index)
@@ -70,11 +70,11 @@ class RobotSpider(base.RobotSpider):
             abs_url = urljoin_rfc(base_url, relative_url)
             yield self.baidu_rpc_request({"url": abs_url, "src_id": 22}, furl=response.url)
             # self.log("Parse %s %s"%(abs_url,response.url),level=scrapy.log.INFO)
-            # 解析历史期刊首页
+            # 解析历史期刊首页,首次全站爬取时需要，后续更新不需要
             # for href in response.xpath("//ol[@class='date']/li/a/@href").extract():
             #     relative_url = href
             #     abs_url =urljoin_rfc(base_url,relative_url)
-            #     if '2015' in relative_url:
+            #     if '2015' in relative_url:#仅仅抓取2015年的部分
             #         yield scrapy.Request(url=abs_url,callback=self.parse_content)
             # yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
             # self.log("Parse %s %s"%(abs_url,response.url),level=scrapy.log.INFO)

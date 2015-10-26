@@ -21,6 +21,7 @@ class RobotSpider(base.RobotSpider):
 
     def start_requests(self):
 
+        # 全站抓取时的种子页面。
         # yield scrapy.Request("http://c.wanfangdata.com.cn/Periodical.aspx")
         # yield scrapy.Request("http://c.wanfangdata.com.cn/LastUpdatedPeriodical.aspx")
         # for letter in string.ascii_uppercase:
@@ -101,9 +102,11 @@ class RobotSpider(base.RobotSpider):
         nimei = []
         for href in response.xpath("//div[@id='wrap3']//ul[@class='new_ul5']/li/p/a/@href").extract():
             relative_url = href
+            # 只更新2015年的。站点不稳定，存在随进行抓取空页面的情况，每次都更新一次2015年的，确保召回
             if '2015' in relative_url:
                 abs_url = urljoin_rfc(base_url, relative_url)
                 nimei.append(abs_url)
+        # 只更新2015年最近5期，站点不稳定，存在随进行抓取空页面的情况，每次都更新一次2015年的，确保召回
         for abs_url in nimei[-5:]:
             yield scrapy.Request(url=abs_url, callback=self.parse_content)
             # yield self.baidu_rpc_request({"url":abs_url,"src_id":22},furl=response.url)
@@ -114,6 +117,7 @@ class RobotSpider(base.RobotSpider):
         for item in self.parse_content(response):
             yield item
         return
+        # 例行更新任务，从文件读取需要更新的种子页面，以下内容废弃
         self.log("Crawled %s %d" % (response.url, response.status), level=scrapy.log.INFO)
         # self.log("Crawled (%d) <GET %s>"%(response.status,response.url),level=scrapy.log.INFO)
         if response.status / 100 != 2:

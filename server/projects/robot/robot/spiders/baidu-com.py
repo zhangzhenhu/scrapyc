@@ -45,8 +45,8 @@ class BaiduSpider(scrapy.Spider):
             return
         query = url_query_parameter(response.url, 'wd')
         for json_str in response.xpath("//div/@data-click").extract():
-            data = json.loads(json_str.replace("'", '"'))
-            if "rsv_re_ename" in data and "rsv_re_uri" in data:
+            if "rsv_re_ename" in json_str and "rsv_re_uri" in json_str:
+                data = json.loads(json_str.replace("'", '"'))
                 print query + "\t" + data["rsv_re_ename"].encode("gb18030") + "\t" + data["rsv_re_uri"].encode("gb18030")
 
     def is_valid_url(self, url):

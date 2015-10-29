@@ -21,8 +21,11 @@ class BaiduSpider(scrapy.Spider):
         if fname:
             with open(fname) as fh:
                 for line in fh.readlines():
-                    url = line.strip().split()[0]
-                    req = scrapy.Request(url)
+                    line = line.strip().split('\t')
+                    url = line[0]
+                    cate = line[1]
+                    desc = line[2]
+                    req = scrapy.Request(url, meta={"category": line[1], "desc": line[2]})
                     yield req
         url = self.settings.get("url", None)
         if url:
@@ -43,13 +46,14 @@ class BaiduSpider(scrapy.Spider):
             return
         if response.__class__ != scrapy.http.HtmlResponse:
             return
-        query = url_query_parameter(response.url, 'wd')
+        query = response.meta["category"] + " " + response.meta["desc"]  # url_query_parameter(response.url, 'wd')
         print query,
         for json_str in response.xpath("//div/@data-click").extract():
             if "rsv_re_ename" in json_str and "rsv_re_uri" in json_str:
                 data = json.loads(json_str.replace("'", '"'))
                 print "\t" + data["rsv_re_ename"].encode("gb18030") + "\t" + data["rsv_re_uri"].encode("gb18030"),
         print
+
     def is_valid_url(self, url):
         if url.startswith("javascript:") or url.startswith("mailto:") or url == "#":
             return False

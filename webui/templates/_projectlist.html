@@ -1,0 +1,24 @@
+      {% set scheduler =  flask_app.config["scheduler_proxy"]  %}
+  {% set _CLASSES = { "Running":"active","Failed":"danger","Pending":'info',"Succeed": 'success', 'Killed':"warning","Error":"danger"} %}
+
+    <table class="table table-bordered">
+
+      <tbody>
+        <tr>
+          <th>Project</th>
+          <th>Author</th>
+          <th>Version</th>
+          <th>Spiders</th>
+          <th>LastestUpdate</th>
+        </tr>
+        {% for project in scheduler.project_all() %}
+        <tr>
+          <td >{{project["project_name"]}}</td>
+          <td >{{project["author"]}}</td>
+          <td >{{project["version"]}}</td>
+          <td >{{",".join(project["spiders"])}}</td>
+          <td >{{project["latest_update"].strftime("%Y-%m-%dT%H:%M:%S")}}</td>
+        </tr>
+        {% endfor %}
+        <!-- On cells (`td` or `th`) --> </tbody>
+    </table>

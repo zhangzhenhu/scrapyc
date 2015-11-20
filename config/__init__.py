@@ -8,4 +8,22 @@
 Authors: zhangzhenhu@baidu.com
 Date:    2015/11/20 17:21
 """
+import os
 
+
+def load_config():
+    """º”‘ÿ≈‰÷√¿‡"""
+    mode = os.environ.get('MODE')
+    try:
+        if mode == 'LOCAL':
+            from .local import LocalConfig
+            return LocalConfig
+        elif mode == 'ONLINE':
+            from .online import OnlineConfig
+            return OnlineConfig
+        else:
+            from .default import Config
+            return Config
+    except ImportError, e:
+        from .default import Config
+        return Config

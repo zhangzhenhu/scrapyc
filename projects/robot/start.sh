@@ -1,0 +1,1 @@
+nohup scrapy crawl one  -s INPUT_FILE=   -s JOBDIR=   &

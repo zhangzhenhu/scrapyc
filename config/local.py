@@ -8,4 +8,8 @@
 Authors: zhangzhenhu@baidu.com
 Date:    2015/11/20 17:22
 """
+from .default import Config
 
+
+class LocalConfig(Config):
+    pass

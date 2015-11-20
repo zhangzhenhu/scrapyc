@@ -11,9 +11,10 @@ Date:    2015/11/20 17:21
 import os
 
 
-def load_config():
+def load_config(mode):
     """º”‘ÿ≈‰÷√¿‡"""
-    mode = os.environ.get('MODE')
+    # mode = os.environ.get('MODE')
+    config = None
     try:
         if mode == 'LOCAL':
             from .local import LocalConfig
@@ -27,3 +28,4 @@ def load_config():
     except ImportError, e:
         from .default import Config
         return Config
+

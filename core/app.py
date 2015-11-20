@@ -9,33 +9,33 @@ Date:    2015/11/16 9:42
 import os
 import sys
 import logging
-from .settings import Settings
+from sqlalchemy import create_engine
+from db.database import Base, SafeSession
+from core.scheduler import Scheduler
 
 
 class CoreApp(object):
     """docstring for CoreApp"""
-    config = Settings()
+    config = None
     scheduler = None
 
-    def __init__(self):
+    def __init__(self, config):
         super(CoreApp, self).__init__()
+        self.config = config
 
-    def init(self, setting_module=None):
-
-        if setting_module == None:
-            setting_module = os.environ["SCRAPYC_SETTINGS"]
-        if setting_module:
-            self.config.setmodule(setting_module)
-
-        logging.basicConfig(format=self.config.get("LOG_FORMATER"), level=self.config.get("LOG_LEVEL", logging.INFO))
-
-        for _path_config in ["LOG_PATH", "DATA_PATH", "PROJECT_PATH", "HISTORY_PATH"]:
-            _p = self.config.get(_path_config)
-            if not os.path.exists(_p):
-                os.mkdir(_p)
-
-        from core.scheduler import Scheduler
+        self.__init_db()
         self.scheduler = Scheduler(self.config)
+
+    def __init_db(self):
+
+        _db_file = self.config.get("DATA_PATH", None)
+        if _db_file:
+            _db_file = os.path.join(_db_file, "task.db")
+        else:
+            _db_file = ':memory:'
+        self.db_engine = create_engine('sqlite:///' + _db_file, echo=False)
+        Base.metadata.create_all(self.db_engine)
+        SafeSession.configure(bind=self.db_engine)
 
     def start(self):
         self.scheduler.start()
@@ -46,4 +46,3 @@ class CoreApp(object):
             self.scheduler.stop()
 
 
-coreapp = CoreApp()

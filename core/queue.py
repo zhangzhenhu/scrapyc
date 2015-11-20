@@ -13,9 +13,9 @@ import Queue
 from sqlalchemy.orm.exc import NoResultFound
 from core.project import Project
 from core.config import Config
-from core.models import TaskModel
-from core.database import SafeSession
-
+from db.models import TaskModel
+from db.database import SafeSession
+import traceback
 
 class ProjectQueue(object):
     """docstring for ProjectQueue"""
@@ -24,7 +24,7 @@ class ProjectQueue(object):
         super(ProjectQueue, self).__init__()
         self.settings = settings
         # session = settings["db_session"]
-        self.settings.set("project_queue", self)
+        self.settings["project_queue"]=self
 
         self.logger = logging.getLogger("ProjectQueue")
         log_file = os.path.join(settings.get("LOG_PATH"), "project_queue.log")
@@ -51,9 +51,13 @@ class ProjectQueue(object):
                 continue
 
             cfg_config = Config(cfg_file)
-            p, error_msg = Project.from_cfg(cfg_config)
-            if not p:
-                self.logger.error("Project init from cfg failed. %s : %s", error_msg, cfg_config)
+            try:
+                p, error_msg = Project.from_cfg(cfg_config)
+                if not p:
+                    self.logger.error("Project init from cfg failed. %s : %s", error_msg, cfg_config)
+                    continue
+            except:
+                self.logger.error(traceback.format_exc())
                 continue
             self._queue[p.name] = p
         return len(self._queue)
@@ -82,7 +86,7 @@ class HistoryQueue(object):
     def __init__(self, settings):
         super(HistoryQueue, self).__init__()
         self.settings = settings
-        self.settings.set("history_queue", self)
+        self.settings["history_queue"] = self
         # session = db_session#settings["db_session"]
 
         self.logger = logging.getLogger("HistoryQueue")
@@ -167,7 +171,7 @@ class TaskQueue(threading.Thread):
     def __init__(self, settings):
         super(TaskQueue, self).__init__()
         self.settings = settings
-        self.settings.set("task_queue", self)
+        self.settings["task_queue"]= self
         self._history_queue = self.settings["history_queue"]
         self._max_proc = self.settings.get("MAX_RUN_TASK", 10)
 

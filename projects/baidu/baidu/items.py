@@ -1,5 +1,5 @@
 #encoding=utf8
-from scrapyc.server.utils.spider.twistarpiplines import TwistarItem,DBObject,Field
+from scrapyc_contrib.spider.twistarpiplines import TwistarItem,DBObject,Field
 #from sqlalchemy import Column,BigInteger, Integer,TEXT, ForeignKey, String,DateTime,Sequence
 
 

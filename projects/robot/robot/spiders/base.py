@@ -5,7 +5,7 @@ from w3lib.url import urljoin_rfc
 from scrapy import signals
 from robot.items import NimeiItem
 from scrapy.utils.misc import load_object
-from scrapyc.server.utils.url import get_url_site, get_url_scheme
+from scrapyc_contrib.url import get_url_site, get_url_scheme
 import json
 import random
 

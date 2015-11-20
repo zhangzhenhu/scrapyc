@@ -40,11 +40,12 @@ class Task(threading.Thread):
     Error = "Error"
     Stopped = "Stopped"
 
-    def __init__(self, project,task_config,scrapy_settings,spider_settings,callback=None):
+    def __init__(self, settings, project, task_config, scrapy_settings,spider_settings,callback=None):
         super(Task, self).__init__()
 
     #@classmethod
     #def from_crawler(cls,crawler)
+        self.settings = settings
         self.project = project
         self.project_name = project.name
         self.project_version = project.version
@@ -75,7 +76,7 @@ class Task(threading.Thread):
             os.makedirs(self.log_path)
         if not os.path.exists(self.data_path):
             os.makedirs(self.data_path)
-        #self.task_env['SCRAPY_LOG_FILE'] =
+        self.task_env['SCRAPYC_HOME'] = self.settings['HOME_PATH']
         self._stdout = open(os.path.join(self.log_path,"stdout.log"),"w")
         self._stderr = open(os.path.join(self.log_path,"stderr.log"),"w")
         self._p_hander = None

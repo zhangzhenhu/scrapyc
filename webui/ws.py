@@ -13,8 +13,10 @@ command).
 from __future__ import print_function
 import sys, optparse, urllib, json
 from urlparse import urljoin
-
-from scrapy.utils.jsonrpc import jsonrpc_client_call, JsonRpcError
+try:
+    from scrapy.utils.jsonrpc import jsonrpc_client_call, JsonRpcError
+except:
+    from scrapy_jsonrpc.jsonrpc import jsonrpc_client_call, JsonRpcError
 
 
 

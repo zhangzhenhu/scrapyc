@@ -57,7 +57,7 @@ class Scheduler(object):
             "HISTORY_PATH": self.settings["HISTORY_PATH"],
         }
 
-        task = Task(project, task_config, srcapy_config, spider_config)
+        task = Task(self.settings, project, task_config, srcapy_config, spider_config)
         self.task_queue.put(task)
         return True, "succed"
 

@@ -17,6 +17,7 @@ def project_environment():
     #project = os.environ['SCRAPY_PROJECT_PATH']
     #os.chdir(project)
     #sys.path.append(project)
+    sys.path.append(os.environ['SCRAPYC_HOME'])
     print "[cwd]"
     print os.getcwd() 
     print "[sys.path]"
@@ -26,7 +27,7 @@ def project_environment():
     print sys.argv
     sys.stderr.flush()
     sys.stdout.flush()
-    
+
     yield
     return
 

@@ -11,7 +11,7 @@ class DmozSpider(scrapy.Spider):
         "http://news.sina.cn/?vt=4&pos=3&sa=t124d8889597v84"
     ]
     def __init__(self):
-        self.crawler.signals.connect(self.spider_idle,signals.spider_idle)
+        # self.crawler.signals.connect(self.spider_idle,signals.spider_idle)
         pass
     def parse(self, response):
         base_url  = get_base_url(response)

@@ -183,7 +183,7 @@ def cronjob_removeall():
 
 
 # from scrapy-ws import cmd_get_global_stats
-from scrapyc.server.flask import ws
+from webui import ws
 
 
 @flask_app.route('/task/stop/<task_id>', methods=['POST', 'GET'])

@@ -44,8 +44,13 @@ def project_list():
 
 @flask_app.route('/task_start', methods=['POST', 'GET'])
 def task_start():
+    """
+    启动一个任务
+    Returns:
+
+    """
     try:
-        # print request.form
+        # 读取表单信息
         project_name = request.form["project_name"].strip()
         spider_name = request.form["spider_name"].strip()
         task_name = request.form["task_name"].strip()
@@ -53,18 +58,19 @@ def task_start():
         scrapy_config = str2dict(request.form["scrapy_config"].strip())
         cron_type = request.form["cron_type"].strip()
 
-
-    except  KeyError, e:
+    except KeyError, e:
         return jsonify(ok=False, msg=str(e))
-
+    # crontab任务服务
     apscheduler = flask_app.config["apscheduler"]
     if cron_type == "no":
+        # 不是ct任务
         scheduler = flask_app.config["scheduler_proxy"]
         ret, msg = scheduler.task_start(project_name, spider_name, task_name, scrapy_config, spider_config)
 
         return jsonify(ok=ret, msg="Success")
 
     elif cron_type == "interval":
+        # 每个一定时间启动一次的类型
         cron_minute = str2int(request.form["cron_minute"], 0)
         cron_hour = str2int(request.form["cron_hour"], 0)
         cron_day = str2int(request.form["cron_day"], 0)
@@ -85,6 +91,7 @@ def task_start():
             start_date=start_date,
             end_date=end_date, )
     elif cron_type == "cron":
+        # 类似unix下crontab定时任务的类型
         cron_minute = request.form["cron_minute"]
         cron_hour = request.form["cron_hour"]
         cron_day = request.form["cron_day"]
@@ -107,8 +114,8 @@ def task_start():
             start_date=start_date,
             end_date=end_date, )
     elif cron_type == "date":
+        # 定时未来某个时间点启动的类型
         start_date = str2date(request.form["start_date"].strip())
-        print "[nimei]", start_date
         job = apscheduler.add_job(
             name=task_name,
             func="scrapyc.server.flask.views:start_job",
@@ -126,6 +133,11 @@ def task_start():
 
 @flask_app.route('/task/kill', methods=['POST', 'GET'])
 def task_kill():
+    """
+    强制杀死一个任务
+    Returns:
+
+    """
     task_id = request.args.get('task_id', '')
     if not task_id:
         return jsonify(ok=False, msg="no param:task_id")
@@ -177,17 +189,26 @@ def cronjob_remove():
 
 @flask_app.route('/cronjob_removeall', methods=['POST', 'GET'])
 def cronjob_removeall():
+    """
+    删除所有crontab任务
+    Returns:
+
+    """
     apscheduler = flask_app.config["apscheduler"]
     apscheduler.remove_all_jobs()
     return jsonify(ok=True, msg="success")
 
 
-# from scrapy-ws import cmd_get_global_stats
-from webui import ws
-
-
 @flask_app.route('/task/stop/<task_id>', methods=['POST', 'GET'])
 def task_stop(task_id):
+    """
+    停止一个任务
+    Args:
+        task_id:
+
+    Returns:
+
+    """
     task = flask_app.config["scheduler"].task_queue.get_task(task_id)
     if not task:
         # abort(404)

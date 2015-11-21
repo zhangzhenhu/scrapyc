@@ -8,10 +8,10 @@ import urlparse
 import json
 from scrapy import log
 from alibaba.items import ShopItem,GoodsItem,IndexItem
-#from scrapy.conf import settings
+# from scrapy.conf import settings
 from scrapy.utils.url import parse_url
 import urlparse
-from scrapy.contrib.spiders import CrawlSpider, Rule
+# from scrapy.contrib.spiders import CrawlSpider, Rule
 import lxml.html
 import lxml.etree
 

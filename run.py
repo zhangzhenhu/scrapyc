@@ -47,6 +47,9 @@ def init_core_app(config):
 
 # flask_app.config["db_session"] = coreapp.config.get("db_session")
     # 初始哈flask的rpc服务
+    # 除了在webui界面进行操作为，这里也开放rpc接口
+    # SchedulerProxy所有公有方法都是对外开放的
+    # http://host:port/api/<func>
     _handler = XMLRPCHandler('api')
     _scheduler_proxy = SchedulerProxy(flask_app)
     _handler.register_instance(_scheduler_proxy)
@@ -60,12 +63,14 @@ def init_core_app(config):
 def init_apsscheduler(config):
     """
     初始化任务调度服务
+    apscheduler是一个类似crontab的服务，实现定时启动任务的服务
     Args:
         config: 传入的配置
 
     Returns:
 
     """
+    # apscheduler支持多个驱动引擎，我们采用Tornado
     apscheduler = TornadoScheduler({
         'apscheduler.jobstores.default': {
             'type': 'sqlalchemy',

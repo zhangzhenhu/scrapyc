@@ -14,9 +14,9 @@ from contextlib import contextmanager
 
 @contextmanager
 def project_environment():
-    #project = os.environ['SCRAPY_PROJECT_PATH']
-    #os.chdir(project)
-    #sys.path.append(project)
+    project = os.environ['SCRAPY_PROJECT_PATH']
+    # os.chdir(project)
+    sys.path.append(project)
     sys.path.append(os.environ['SCRAPYC_HOME'])
     print "[cwd]"
     print os.getcwd() 

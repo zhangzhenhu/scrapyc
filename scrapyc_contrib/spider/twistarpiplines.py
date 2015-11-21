@@ -7,7 +7,7 @@
 from twisted.enterprise import adbapi
 from twistar.registry import Registry
 from twistar.dbobject import DBObject
-from scrapy.conf import settings
+# from scrapy.conf import settings
 from ..url import parse_sql_url, translate_connect_args
 from scrapy.item import Field, Item, ItemMeta
 from scrapy import log
@@ -69,7 +69,7 @@ class TwistarPipeline(object):
     def open_spider(self, spider):
         self.settings = spider.settings
         self.log = spider.log
-        sql_url = settings['TWISTAR_DB_URL']
+        sql_url = self.spider.crawler.settings['TWISTAR_DB_URL']
         conn_arg = parse_sql_url(sql_url)
         drivername = conn_arg.pop("drivername")
         conn_arg = translate_connect_args(drivername, **conn_arg)

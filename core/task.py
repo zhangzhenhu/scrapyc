@@ -28,7 +28,11 @@ def get_valid_port(start=8000, end=9000):
 
 
 class Task(threading.Thread):
-    """docstring for Task"""
+    """
+    spider任务
+    启动一个spider任务是启动一个子进程，这个子进程就是scrapy的进程
+    每个Task对象本身是一个线程，这个线程监控scrapy子进程的状态
+    """
 
     Running = "Running"
     Failed = "Failed"
@@ -72,20 +76,24 @@ class Task(threading.Thread):
         self.retcode = None
         self.runner = os.path.join(os.path.dirname(__file__), "runner.py")
 
-        self.task_env = os.environ.copy()
         if not os.path.exists(self.log_path):
             os.makedirs(self.log_path)
         if not os.path.exists(self.data_path):
             os.makedirs(self.data_path)
-        self.task_env['SCRAPYC_HOME'] = self.settings['HOME_PATH']
+        # 重定向子进程
         self._stdout = open(os.path.join(self.log_path, "stdout.log"), "w")
         self._stderr = open(os.path.join(self.log_path, "stderr.log"), "w")
         self._p_hander = None
         self._pre_status = None
+        # 外界如果需要给spider进程发送指令，需要先把指令存入到这个队列
+        # Task是一个子线程的模式，这个线程会从这个队列中取出指令，并发执行
+        # 这样做可以避免主线程在执行命令时阻塞
         self._commands = Queue.Queue()
+        # Task结束时需要回调的函数,会把task对象传递给callback函数
         self._callback = callback
         self.logger = logging.getLogger("TaskQueue")
 
+        # scapy全局参数（通过-s传入的参数）
         self.default_scrapy_settings = {
             "WEBSERVICE_ENABLED": 1,
             "WEBSERVICE_LOGFILE": str(os.path.join(self.log_path, "webservice.log")),
@@ -94,28 +102,28 @@ class Task(threading.Thread):
             "LOGSTATS_DUMP_FILE": os.path.join(self.log_path, "stats.log"),
             "JOBDIR": self.data_path,
         }
+        # spider的参数（通过-a传入的参数）
         self.default_spider_settings = {
             "WORK_PATH": self.work_path,
             "LOG_PATH": self.log_path,
             "DATA_PATH": self.data_path,
         }
+        # 设置传递给spider任务子进程的环境变量
+        self.task_env = os.environ.copy()
+        self.task_env['SCRAPYC_HOME'] = self.settings['HOME_PATH']
         self.task_env['SCRAPY_LOG_FILE'] = str(os.path.join(self.log_path, "scrapy.log"))
+        self.task_env['SCRAPY_PROJECT_PATH'] = self.project.source_path
+
+        # spider进程的webservice
         self.webservice_port = 0
 
+        # spider的参数（通过-a传入的参数）
         for name, value in self.spider_settings.items():
             self.default_spider_settings[name] = value
 
+        # scapy全局参数（通过-s传入的参数）
         for name, value in self.scrapy_settings.items():
             self.default_scrapy_settings[name] = value
-
-    def _safe(func):
-        # print func
-
-        def safe_func(self, *args, **kwargs):
-            with self._lock:
-                return func(self, *args, **kwargs)
-
-        return safe_func
 
     def run(self):
 
@@ -123,6 +131,7 @@ class Task(threading.Thread):
             return
         self.spider_args = ""
         # self.scrapy_args = ""
+        # 获取一个空闲的端口号
         self.webservice_port = get_valid_port()
         if not self.webservice_port:
             self.status = Task.Error
@@ -156,9 +165,10 @@ class Task(threading.Thread):
         self.pid = self._p_hander.pid
         self.status = Task.Running
         self.logger.info("task run pid:%d %s", self.pid, self.task_id)
-        while self.retcode == None:
+        while self.retcode is None:
             self.retcode = self._p_hander.poll()
             try:
+                # 获取需要发送给spider进程的命令
                 cmd_func, args = self._commands.get_nowait()
                 cmd_func(args)
             except Queue.Empty, e:
@@ -171,7 +181,7 @@ class Task(threading.Thread):
         self.end_time = datetime.now()
         self._update_status()
         if callable(self._callback):
-            self.callback()
+            self._callback(self)
 
     def _update_status(self):
 
@@ -195,6 +205,7 @@ class Task(threading.Thread):
         if self.status != Task.Running:
             return
         self.logger.warning("task kill %s" % self.task_id)
+        # 把指令加入到命令队列中
         # self._pre_status = Task.Killing
         self._commands.put((self._kill, None))
 

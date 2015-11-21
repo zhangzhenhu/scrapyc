@@ -5,7 +5,7 @@ from scrapy import signals
 from robot.items import NimeiItem
 from robot.spiders import base
 import scrapy
-from scrapyc.server.utils.url import get_url_site, get_url_scheme
+from scrapyc_contrib.url import get_url_site, get_url_scheme
 import urlparse
 import re
 

@@ -19,9 +19,17 @@ from webui.proxy import SchedulerProxy
 
 
 def init_flask_app(config):
+    """
+    初始化flask app
+    Args:
+        config: 传入的配置
 
+    Returns:
 
-
+    """
+    # 把flask app压入应用上下文的栈中，方便在非request上下文中获取
+    # 通过flask.curent_app 获取
+    # flask在非request上下文中默认不会自动把app压入栈
     ctx = flask_app.app_context()
     ctx.push()
 
@@ -38,7 +46,7 @@ def init_core_app(config):
     flask_app.config["scheduler"] = coreapp.scheduler
 
 # flask_app.config["db_session"] = coreapp.config.get("db_session")
-
+    # 初始哈flask的rpc服务
     _handler = XMLRPCHandler('api')
     _scheduler_proxy = SchedulerProxy(flask_app)
     _handler.register_instance(_scheduler_proxy)
@@ -50,7 +58,14 @@ def init_core_app(config):
 
 
 def init_apsscheduler(config):
+    """
+    初始化任务调度服务
+    Args:
+        config: 传入的配置
 
+    Returns:
+
+    """
     apscheduler = TornadoScheduler({
         'apscheduler.jobstores.default': {
             'type': 'sqlalchemy',
@@ -63,11 +78,19 @@ def init_apsscheduler(config):
 
     })
 
-    flask_app.config["apscheduler"] = apscheduler
+    config["apscheduler"] = apscheduler
     return apscheduler
 
 
 def init_config(config):
+    """
+    配置预处理
+    Args:
+        config: 配置项
+
+    Returns:
+
+    """
 
     logging.basicConfig(format=config.get('LOG_FORMATER'), level=config.get("LOG_LEVEL", logging.INFO))
     for _path_config in ["LOG_PATH", "DATA_PATH", "PROJECT_PATH", "HISTORY_PATH"]:
@@ -77,7 +100,14 @@ def init_config(config):
 
 
 def execute(config):
+    """
 
+    Args:
+        config:
+
+    Returns:
+
+    """
 
     core_app = init_core_app(config)
     init_flask_app(config)

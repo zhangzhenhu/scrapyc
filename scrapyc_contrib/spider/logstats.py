@@ -1,8 +1,22 @@
+# -*- coding: utf-8 -*-
+"""
+把爬虫的统计信息dump到一个指定的文件中，方便srapyc平台进行读取
+文件的路径有scrapyc自动通过命令行参数传入
+
+发布到scrapyc的爬虫需要在爬虫的setting文件中加入本扩展
+EXTENSIONS = {
+'scrapyc_contrib.spider.logstats.LogStats':200,
+}
+
+Authors: acmtiger@gmail.com
+Date:    2015/11/16 9:42
+"""
 from twisted.internet import task
 
 from scrapy.exceptions import NotConfigured
 from scrapy import log, signals
 import os, cPickle as pickle
+
 
 class LogStats(object):
     """Log basic scraping stats periodically"""

@@ -19,8 +19,6 @@ except:
     from scrapy_jsonrpc.jsonrpc import jsonrpc_client_call, JsonRpcError
 
 
-
-
 def cmd_stop(host="127.0.0.1",port=0,spider=None):
     """stop <spider> - stop a running spider"""
     return jsonrpc_call(host,port, 'crawler/engine', 'close_spider',spider)

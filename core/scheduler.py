@@ -6,25 +6,33 @@ Authors: acmtiger@gmail.com
 Date:    2015/11/16 9:42
 """
 import os
-# from scrapyc.server.core.config import Config
 from core.queue import ProjectQueue, HistoryQueue, TaskQueue
 from core.task import Task
-import threading
 import logging
 
 
 class Scheduler(object):
-    """docstring for Scheduler"""
+    """
+    核心调度管理器
+    分为三个队列：spider项目队列(ProjectQueue)、运行任务管理队列(TaskQueue)、任务历史记录队列(HistoryQueue)
+    spider项目队列：
+        扫描project目录，从每个spider项目下的scrapy.cfg文件加载项目信息，并进行管理
+    运行任务管理队列：
+        响应执行任务的请求，启动并管理正在运行的任务，任务结束后移交到HistoryQueue
+    HistoryQueue:
+        用sqlite数据库实现，记录历史任务记录
+    """
 
     def __init__(self, settings):
         super(Scheduler, self).__init__()
+        # 全局配置
         self.settings = settings
-        # 注意三个队列的实例化顺序
+        # 注意三个队列的实例化顺序，不能改变
         self.history_queue = HistoryQueue(settings)
         self.project_queue = ProjectQueue(settings)
         self.task_queue = TaskQueue(settings)
 
-        self._lock = threading.Lock()
+        # 初始化logger
         self.logger = logging.getLogger("Scheduler")
         log_file = os.path.join(settings.get("LOG_PATH"), "scheduler_queue.log")
         handler = logging.FileHandler(log_file)
@@ -47,6 +55,21 @@ class Scheduler(object):
         self.logger.info("stopped")
 
     def task_start(self, project_name, spider_name, task_name, srcapy_config, spider_config):
+        """
+        启动一个任务
+        根据参数创建一个Task对象，并丢给TaskQueue
+        Args:
+            project_name: spider项目的名称
+            spider_name: spider名字
+            task_name: 任务名称
+            srcapy_config: scapy全局参数（通过-s传入的参数）
+            spider_config: spider的参数（通过-a传入的参数）
+
+        Returns:
+            bool: 是否成功，这里只能代表是否创建任务成功，无法代表任务是否启动成功，因为任务的启动是TaskQueue管理的
+            msg: 错误提示信息
+
+        """
         project, error_msg = self.project_queue.get(project_name)
         if not project:
             return False, error_msg

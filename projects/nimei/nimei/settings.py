@@ -15,7 +15,11 @@ NEWSPIDER_MODULE = 'nimei.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'nimei (+http://www.yourdomain.com)'
+
 EXTENSIONS = {
-'scrapyc_contrib.spider.logstats.LogStats':200,
+    # 把爬虫的统计信息dump到一个指定的文件中，方便srapyc平台进行读取
+    # 文件的路径由scrapyc自动通过命令行参数传入
+    'scrapyc_contrib.spider.logstats.LogStats' : 200,
 }
+
 #DOWNLOAD_HANDLERS={'http':'scrapyc.server.utils.PhantomJSDownloadHandler.PhantomJSDownloadHandler',}

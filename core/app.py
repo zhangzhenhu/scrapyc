@@ -15,7 +15,8 @@ from core.scheduler import Scheduler
 
 
 class CoreApp(object):
-    """docstring for CoreApp"""
+    """
+    """
     config = None
     scheduler = None
 

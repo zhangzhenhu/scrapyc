@@ -1,4 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
 
+
+Authors: acmtiger@gmail.com
+Date:    2015/11/16 9:42
+"""
 
 class SchedulerProxy(object):
     """docstring for SchedulerProxy"""

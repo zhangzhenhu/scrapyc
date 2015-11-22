@@ -6,9 +6,11 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, ForeignKey, String
 AlchemyBase = declarative_base()
 from sqlalchemy.orm.attributes import InstrumentedAttribute
+
+
 class AlchemyItemMeta(ItemMeta):
 
-    def  __new__(mcs, class_name, bases, attrs):
+    def __new__(mcs, class_name, bases, attrs):
         cls = super(AlchemyItemMeta, mcs).__new__(mcs, class_name, bases, attrs)
         #cls.fields = cls.fields.copy()
         if cls.alchemy_model:

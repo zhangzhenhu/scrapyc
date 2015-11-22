@@ -63,7 +63,7 @@ class MtimeSpider(scrapy.Spider):
         yield scrapy.Request("http://movie.mtime.com/195899/reviews/short/new.html", callback=self.parse_movie_shortcomment)
 
     def get_key(self, url):
-        return "/".join(url.split("/")[:4])
+        return "/".join(url.split("/")[:4])+"/"
 
     def parse_person_detail(self, response):
 

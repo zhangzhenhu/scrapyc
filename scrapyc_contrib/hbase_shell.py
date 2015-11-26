@@ -14,12 +14,24 @@ __version__ = '0.1'
 __decode__ = "utf8"
 
 
-def scan(table):
-    for row_key, row_data in table.scan():
-        for k, v in row_data.iteritems():
+def scan(table, options):
+
+    count = 0
+    for row_key, row_data in table.scan(row_start=options.start, row_stop=options.end, columns=options.columns, sorted_columns=False):
+
+        for k in sorted(row_data.keys()):
+            v = row_data[k]
             print "%s\t%s\t%s" % (row_key, k, v)
+        count += 1
+    print >>sys.stderr, "Rows:", count
 
 
+def get(table, options):
+
+    row_data = table.row(options.start,options.columns)
+    for k in sorted(row_data.keys()):
+        v = row_data[k]
+        print "%s\t%s" % (k, v)
 def init_option():
     """
     初始化命令行参数项
@@ -29,12 +41,21 @@ def init_option():
 
     # OptionParser 自己的print_help()会导致乱码，这里禁用自带的help参数
     parser = OptionParser(add_help_option=False, version=__version__)
-    parser.add_option("-s", dest="scan",
+    parser.add_option("-s", "--scan", action="store_true", dest="scan", default=False,
                       help=u"scan")
-    parser.add_option("-t", dest="table",
+    parser.add_option("-g", "--get", action="store_true", dest="get", default=False,
+                      help=u"get one")
+
+
+    parser.add_option("-t", "--table", dest="table",
                       help=u"table")
-    parser.add_option("-c", "--column",
-                      dest="column",
+    parser.add_option("-S", "--start", dest="start",
+                      help=u"row start")
+    parser.add_option("-E", "--end", dest="end",
+                      help=u"row end")
+
+    parser.add_option("-c", "--columns",
+                      dest="columns",
                       help=u"和-t参数配合使用，当从某个任务启动时，是否执行后续任务 ")
     parser.add_option("-H", "--host", default="localhost",
                       dest="host",
@@ -62,6 +83,13 @@ if __name__ == "__main__":
         quit()
     elif options.table:
         table = options.table
+    if options.columns:
+        options.columns = options.columns.split(",")
     conn = happybase.Connection("localhost")
+    # import pdb
+    # pdb.set_trace()
     table = conn.table(table)
-    scan(table)
+    if options.scan:
+        scan(table, options)
+    elif options.get:
+        get(table, options)

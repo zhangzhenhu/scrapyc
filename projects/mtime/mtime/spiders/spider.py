@@ -37,13 +37,14 @@ class MtimeSpider(scrapy.Spider):
         """
         self.setting = kwargs
         self.hbase_conn = happybase.Connection('localhost', autoconnect=True)
-        # conn.create_table('mtime_people',{"Detail":{},"ShortComment":{},"LongComment":{}})
-        # conn.create_table('mtime_movie',{"Detail":{},"Actor":{},"Director":{},"Writer":{},"Plots":{},"LongComment":{},"ShortComment":{}})
+        # self.hbase_conn.create_table('mtime_people',{"baidu":{}, "Detail":{},"ShortComment":{},"LongComment":{}, "Filmography":{}})
+        # self.hbase_conn.create_table('mtime_movie',{"baidu":{}, "Detail":{},"Actor":{},"Director":{},"Writer":{},"Plots":{},"LongComment":{},"ShortComment":{}})
         self.hbase_table_people = self.hbase_conn.table('mtime_people')
         self.hbase_table_movie = self.hbase_conn.table('mtime_movie')
         # self.crawler.signals.connect(self.spider_idle,signals.spider_idle)
         self.DATA_ENCODING = "utf8"
         self.pattern_movie = re.compile("http://movie\.mtime\.com/\d+/$")
+        self.pattern_person = re.compile("http://people\.mtime\.com/\d+/$")
         pass
 
     def start_requests(self):
@@ -56,20 +57,21 @@ class MtimeSpider(scrapy.Spider):
             return
         yield scrapy.Request("http://people.mtime.com/1839529/details.html", callback=self.parse_person_detail)
         yield scrapy.Request("http://people.mtime.com/1249959/details.html", callback=self.parse_person_detail)
-        yield scrapy.Request("http://people.mtime.com/1253921/details.html", callback=self.parse_person_detail)
         yield scrapy.Request("http://people.mtime.com/1839529/filmographies/", callback=self.parse_person_filmographies)
+        yield scrapy.Request("http://people.mtime.com/1249959/filmographies/", callback=self.parse_person_filmographies)
         yield scrapy.Request("http://people.mtime.com/1249009/comment.html", callback=self.parse_person_comment)
         yield scrapy.Request("http://movie.mtime.com/174305/fullcredits.html", callback=self.parse_movie_fullcredits)
-        yield scrapy.Request("http://movie.mtime.com/195899/reviews/short/new.html", callback=self.parse_movie_shortcomment)
+        yield scrapy.Request("http://movie.mtime.com/195899/reviews/short/new.html",
+                             callback=self.parse_movie_shortcomment)
 
     def get_key(self, url):
-        return "/".join(url.split("/")[:4])+"/"
+        return "/".join(url.split("/")[:4]) + "/"
 
     def parse_person_detail(self, response):
 
-        self.log("Crawled %s %d" % (response.url, response.status), level=scrapy.log.INFO)
+        self.log("person_detail Crawled %s %d" % (response.url, response.status), level=scrapy.log.INFO)
         if response.status / 100 != 2:
-            yield scrapy.Request(url=response.url, callback=self.parse_detail)
+            yield scrapy.Request(url=response.url, callback=self.parse_person_detail)
             return
 
         # base_url = get_base_url(response)
@@ -155,15 +157,47 @@ class MtimeSpider(scrapy.Spider):
         #     yield scrapy.Request(other_url+"details.html", callback=self.parse_person_detail)
 
     def parse_person_filmographies(self, response):
-        return
-        self.log("Crawled %s %d" % (response.url, response.status), level=scrapy.log.INFO)
-        if response.status / 100 != 2:
-            yield scrapy.Request(url=response.url, callback=self.parse_detail)
-            return
+        """
+        解析人物作品
+        Args:
+            response:
 
-        for href in response.xpath("//h3/a/@href").extract():
-            if self.pattern_movie.match(href):
-                yield scrapy.Request(href, callback=self.parse_movie_detail)
+        Returns:
+
+        """
+        self.log("person_filmographies Crawled %s %d" % (response.url, response.status), level=scrapy.log.INFO)
+        if response.status / 100 != 2:
+            yield scrapy.Request(url=response.url, callback=self.parse_person_filmographies)
+            return
+        filmography_data = {}
+        row_key = self.get_key(response.url)
+        # 作品
+        for a in response.xpath("//h3/a"):
+            href = a.xpath("@href").extract()
+            name = a.xpath("text()").extract()
+            if not href or not name:
+                continue
+            href = href[0]
+            name = name[0]
+            print name.encode(self.DATA_ENCODING), href.encode(self.DATA_ENCODING)
+            if not self.pattern_movie.match(href):
+                continue
+            filmography_data["Filmography:%s" % href.encode(self.DATA_ENCODING)] = name.encode(self.DATA_ENCODING)
+            yield scrapy.Request(href, callback=self.parse_movie_detail)
+
+        self.hbase_table_people.put(row_key, filmography_data)
+        return
+        # 人物
+        for href in response.xpath("//a/@href").extract():
+            if self.pattern_person.match(href):
+                yield scrapy.Request(href, callback=self.parse_person_detail)
+
+                # 不用翻页，网页里有全部作品
+                # base_url = response.url.split("#", 1)[0]
+                # for num in response.xpath("//div[@id='pageDiv']/div/a/text()").extract():
+                #     if not num.isdigit():
+                #         continue
+                #   scrapy.Request("%s#pageIndex=%s"%(base_url, num), callback=self.parse_person_filmographies)
 
     def parse_person_comment(self, response):
         """
@@ -174,9 +208,9 @@ class MtimeSpider(scrapy.Spider):
         Returns:
 
         """
-        self.log("Crawled %s %d" % (response.url, response.status), level=scrapy.log.INFO)
+        self.log("person_comment Crawled %s %d" % (response.url, response.status), level=scrapy.log.INFO)
         if response.status / 100 != 2:
-            yield scrapy.Request(url=response.url, callback=self.parse_detail)
+            yield scrapy.Request(url=response.url, callback=self.parse_person_comment)
             return
         row_key = self.get_key(response.url)
         detail_data = {}
@@ -203,10 +237,43 @@ class MtimeSpider(scrapy.Spider):
         Returns:
 
         """
-        self.log("Crawled %s %d" % (response.url, response.status), level=scrapy.log.INFO)
+        self.log("movie_detail Crawled %s %d" % (response.url, response.status), level=scrapy.log.INFO)
         if response.status / 100 != 2:
-            yield scrapy.Request(url=response.url, callback=self.parse_detail)
+            yield scrapy.Request(url=response.url, callback=self.parse_movie_detail)
             return
+        # if not self.pattern_movie.match(response.url):
+        #     return
+        name_cn = response.xpath("//div[@id='db_head']//h1/text()").extract()
+        name_en = response.xpath("//div[@id='db_head']//h1/text()").extract()
+        if name_cn:
+            name_cn = name_cn[0].encode(self.DATA_ENCODING)
+        else:
+            name_cn = ""
+        if name_en:
+            name_en = name_en[0].encode(self.DATA_ENCODING)
+        else:
+            name_en = ""
+        if not name_cn and not name_en:
+            return
+        row_key = self.get_key(response.url)
+
+        self.hbase_table_movie.put(row_key, {"Detail:name_cn" : name_cn, "Detail:name_en":name_en})
+        yield scrapy.Request(urljoin_rfc(response.url, "plots.html"), callback=self.parse_movie_plots)
+        yield scrapy.Request(urljoin_rfc(response.url, "reviews/short/new.html"), callback=self.parse_movie_shortcomment)
+        yield scrapy.Request(urljoin_rfc(response.url, "fullcredits.html"), callback=self.parse_movie_fullcredits)
+
+    def parse_movie_plots(self, response):
+        self.log("movie_plots Crawled %s %d" % (response.url, response.status), level=scrapy.log.INFO)
+        if response.status / 100 != 2:
+            yield scrapy.Request(url=response.url, callback=self.parse_movie_plots)
+            return
+        plots = u"".join(response.xpath("//div[@id='lblContent']//text()").extract())
+        plots = plots.strip()
+        if not plots:
+            return
+        detail_data = {"Detail:plots": plots.encode(self.DATA_ENCODING)}
+        row_key = self.get_key(response.url)
+        self.hbase_table_movie.put(row_key, detail_data)
 
     def parse_movie_fullcredits(self, response):
         """
@@ -217,11 +284,13 @@ class MtimeSpider(scrapy.Spider):
         Returns:
 
         """
-        self.log("Crawled %s %s %d" % ("parse_movie_fullcredits",response.url, response.status), level=scrapy.log.INFO)
+        self.log("movie_fullcredits Crawled %s %d" % ( response.url, response.status), level=scrapy.log.INFO)
         if response.status / 100 != 2:
-            yield scrapy.Request(url=response.url, callback=self.parse_detail)
+            yield scrapy.Request(url=response.url, callback=self.parse_movie_fullcredits)
             return
+
         row_key = self.get_key(response.url)
+        # 解析演员
         actor_data = {}
         for dd in response.xpath("//div[@class='db_actor']//dd"):
             actor_url = dd.xpath("div[@class='actor_tit']//a/@href").extract()
@@ -236,9 +305,9 @@ class MtimeSpider(scrapy.Spider):
             actor_key = self.get_key(actor_url)
             actor_data["Actor:" + actor_key] = character_name
             # print "************************",actor_url + "details.html"
-            yield scrapy.Request(actor_url + "details.html", callback=self.parse_person_detail)
+            # yield scrapy.Request(actor_url + "details.html", callback=self.parse_person_detail)
         self.hbase_table_movie.put(row_key, actor_data)
-
+        # 解析导演、编剧等等
         for div in response.xpath("//div[@class='credits_list']"):
             h = div.xpath('h4/text()').extract()[0]
             url = div.xpath('.//a/@href').extract()[0].strip()
@@ -254,10 +323,9 @@ class MtimeSpider(scrapy.Spider):
             elif 'Writer' in h:
                 self.hbase_table_movie.put(row_key, {"Writer:%s" % key: title})
             # print "************************",url + "details.html"
-            yield scrapy.Request(url + "details.html", callback=self.parse_person_detail)
+            # yield scrapy.Request(url + "details.html", callback=self.parse_person_detail)
 
-
-    def parse_movie_shortcomment(self,response):
+    def parse_movie_shortcomment(self, response):
         """
         解析电影的微评论
         Args:
@@ -266,9 +334,9 @@ class MtimeSpider(scrapy.Spider):
         Returns:
 
         """
-        self.log("Crawled %s %d" % (response.url, response.status), level=scrapy.log.INFO)
+        self.log("movie_shortcomment Crawled %s %d" % (response.url, response.status), level=scrapy.log.INFO)
         if response.status / 100 != 2:
-            yield scrapy.Request(url=response.url, callback=self.parse_detail)
+            yield scrapy.Request(url=response.url, callback=self.parse_movie_shortcomment)
             return
         row_key = self.get_key(response.url)
 
@@ -286,8 +354,6 @@ class MtimeSpider(scrapy.Spider):
 
         for href in response.xpath('//div[@id="PageNavigator"]/a/@href').extract():
             yield scrapy.Request(href, callback=self.parse_movie_shortcomment)
-
-
 
     def parse(self, response):
         base_url = get_base_url(response)

@@ -327,6 +327,8 @@ class MtimeSpider(scrapy.Spider):
 
             if not title:
                 title = div.xpath('.//a/text()').extract()
+            if not title:
+                continue
             title = title[0].encode(self.DATA_ENCODING)
             key = self.get_key(url)
             # title = title.encode(self.DATA_ENCODING)

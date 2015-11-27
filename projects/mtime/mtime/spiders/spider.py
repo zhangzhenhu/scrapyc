@@ -223,7 +223,7 @@ class MtimeSpider(scrapy.Spider):
             url = div.xpath("div//a[@entertime]/@href").extract()
             if url and text and enter_time:
                 url = url[0].encode(self.DATA_ENCODING)
-                enter_time = enter_time[0].encode(self.DATA_ENCODING)
+                enter_time = enter_time[0].encode(self.DATA_ENCODING).replace(" ", "T")
                 text = text[0].encode(self.DATA_ENCODING)
                 detail_data["ShortComment:%s\a%s" % (enter_time,url)] = text
         # for k, v in detail_data.iteritems():
@@ -362,7 +362,7 @@ class MtimeSpider(scrapy.Spider):
                 url = url[0].encode(self.DATA_ENCODING)
                 # tweetid = tweetid[0].encode(self.DATA_ENCODING)
                 text = text[0].encode(self.DATA_ENCODING)
-                enter_time = enter_time[0].encode(self.DATA_ENCODING).repace(" ", "T")
+                enter_time = enter_time[0].encode(self.DATA_ENCODING).replace(" ", "T")
                 comment_data["ShortComment:%s\a%s" % (enter_time, url)] = text
         # for k, v in detail_data.iteritems():
         #     print k, '\t', v

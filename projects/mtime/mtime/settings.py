@@ -10,8 +10,8 @@
 import socket
 import sys
 __hostname = socket.gethostname()
-if "baidu.com " in __hostname:
-    sys.path.append('/home/spider/zhangzhenhu/github/scrapyc')
+if "mgvscir1 " in __hostname:
+    sys.path.append('/home/spider/zhangzhenhu/github/scrapyc/')
 
 BOT_NAME = 'mtime'
 LOG_LEVEL = 'INFO'
@@ -38,8 +38,8 @@ FEED_URI = "file:///home/zhangzhenhu/mtime/url-people.txt"
 FEED_FORMAT = "mtime"
 
 HBASE_SERVER = "localhost"
-import socket
-if "baidu.com " in socket.gethostname():
+
+if "mgvscir1" in __hostname:
     HBASE_SERVER = 'st01-ps-ssd2145.st01.baidu.com'
     LOGSTATS_DUMP_FILE = "/home/spider/zhangzhenhu/mtime/stats.log"
     FEED_URI = "file:///home/spider/zhangzhenhu/mtime/url-people.txt"

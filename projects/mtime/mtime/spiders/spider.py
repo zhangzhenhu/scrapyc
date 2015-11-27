@@ -77,6 +77,7 @@ class MtimeSpider(scrapy.Spider):
         # base_url = get_base_url(response)
         detail_data = {}
         row_key = self.get_key(response.url)
+        # 解析人名
         name_cn = response.xpath("//div[@class='per_header']/h2/a/text()").extract()
         name_en = response.xpath("//div[@class='per_header']/p/a/text()").extract()
         if not name_cn and not name_en:
@@ -92,6 +93,7 @@ class MtimeSpider(scrapy.Spider):
             name_en = ""
         name_cn = name_cn.encode(self.DATA_ENCODING)
         name_en = name_en.encode(self.DATA_ENCODING)
+        # 人名数据导出到文件中
         yield KeyNameItem(key=row_key, name_cn=name_cn, name_en=name_en)
         detail_data["Detail:name_cn"] = name_cn
         detail_data["Detail:name_en"] = name_en
@@ -122,20 +124,12 @@ class MtimeSpider(scrapy.Spider):
             value = (u"\t".join(value)).encode(self.DATA_ENCODING)
             detail_data["Detail:" + name] = value
 
-        # for k, v in detail_data.iteritems():
-        #     print k, '\t', v
-
-        # # 教育背景
-        # edu = response.xpath("//dl[@class='per_info_cont']/dd/text()")
-        # if len(edu):
-        #     edu_background = edu.extract()[0]
-        #     detail_data['detail:edu_background'] = edu_background.encode(self.DATA_ENCODING)
         # 个人传记
         biography = response.xpath("//div[@id='lblPartGraphy']/p/text()")
         if len(biography):
             biography = biography.extract()[0]
             detail_data['Detail:biography'] = biography.encode(self.DATA_ENCODING)
-
+        # 提取其它页面的url并发起调度
         func_table = {
             "details.html": self.parse_person_detail,
             "filmographies": self.parse_person_filmographies,
@@ -151,8 +145,9 @@ class MtimeSpider(scrapy.Spider):
                 yield scrapy.Request(href, callback=func_table[suffix])
 
                 # index_url = response.url.replace("/details.html", '')
-
+        # 个人信息写入到数据库
         self.hbase_table_people.put(row_key, detail_data)
+        # 提取其它明星的url并发起抓取
         # for other_url in response.xpath("//dl[@class='per_relalist']/dd/a/@href").extract():
         #     yield scrapy.Request(other_url+"details.html", callback=self.parse_person_detail)
 
@@ -187,7 +182,7 @@ class MtimeSpider(scrapy.Spider):
 
         self.hbase_table_people.put(row_key, filmography_data)
         return
-        # 人物
+        # 解析其它人物
         for href in response.xpath("//a/@href").extract():
             if self.pattern_person.match(href):
                 yield scrapy.Request(href, callback=self.parse_person_detail)
@@ -254,6 +249,7 @@ class MtimeSpider(scrapy.Spider):
         else:
             name_en = ""
         if not name_cn and not name_en:
+            self.log("movie_detail no_name %s" % response.url, level=logging.WARNING)
             return
         row_key = self.get_key(response.url)
 
@@ -270,6 +266,7 @@ class MtimeSpider(scrapy.Spider):
         plots = u"".join(response.xpath("//div[@id='lblContent']//text()").extract())
         plots = plots.strip()
         if not plots:
+            self.log("movie_plots no_plots %s" % response.url, level=logging.WARNING)
             return
         detail_data = {"Detail:plots": plots.encode(self.DATA_ENCODING)}
         row_key = self.get_key(response.url)

@@ -7,6 +7,11 @@
 #
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #
+import socket
+import sys
+__hostname = socket.gethostname()
+if "baidu.com " in __hostname:
+    sys.path.append('/home/spider/zhangzhenhu/github/scrapyc')
 
 BOT_NAME = 'mtime'
 LOG_LEVEL = 'INFO'

@@ -217,12 +217,15 @@ class MtimeSpider(scrapy.Spider):
         row_key = self.get_key(response.url)
         detail_data = {}
         for div in response.xpath("//div[@tweetid]"):
-            tweetid = div.xpath("@tweetid").extract()
+            # tweetid = div.xpath("@tweetid").extract()
             text = div.xpath("h3/text()").extract()
-            if tweetid and text:
-                tweetid = tweetid[0].encode(self.DATA_ENCODING)
+            enter_time = div.xpath("div//a[@entertime]/@entertime").extract()
+            url = div.xpath("div//a[@entertime]/@href").extract()
+            if url and text and enter_time:
+                url = url[0].encode(self.DATA_ENCODING)
+                enter_time = enter_time[0].encode(self.DATA_ENCODING)
                 text = text[0].encode(self.DATA_ENCODING)
-                detail_data["ShortComment:%s" % tweetid] = text
+                detail_data["ShortComment:%s\a%s" % (enter_time,url)] = text
         # for k, v in detail_data.iteritems():
         #     print k, '\t', v
         self.hbase_table_people.put(row_key, detail_data)
@@ -314,7 +317,7 @@ class MtimeSpider(scrapy.Spider):
             actor_key = self.get_key(actor_url)
             actor_data["Actor:" + actor_key] = character_name
             # print "************************",actor_url + "details.html"
-            # yield scrapy.Request(actor_url + "details.html", callback=self.parse_person_detail)
+            yield scrapy.Request(actor_url + "details.html", callback=self.parse_person_detail)
         self.hbase_table_movie.put(row_key, actor_data)
         # 解析导演、编剧等等
         for div in response.xpath("//div[@class='credits_list']"):
@@ -332,7 +335,7 @@ class MtimeSpider(scrapy.Spider):
             elif 'Writer' in h:
                 self.hbase_table_movie.put(row_key, {"Writer:%s" % key: title})
             # print "************************",url + "details.html"
-            # yield scrapy.Request(url + "details.html", callback=self.parse_person_detail)
+            yield scrapy.Request(url + "details.html", callback=self.parse_person_detail)
 
     def parse_movie_shortcomment(self, response):
         """
@@ -359,8 +362,8 @@ class MtimeSpider(scrapy.Spider):
                 url = url[0].encode(self.DATA_ENCODING)
                 # tweetid = tweetid[0].encode(self.DATA_ENCODING)
                 text = text[0].encode(self.DATA_ENCODING)
-                enter_time = enter_time[0].encode(self.DATA_ENCODING)
-                comment_data["ShortComment:%s\t%s" %(enter_time,url)] = text
+                enter_time = enter_time[0].encode(self.DATA_ENCODING).repace(" ", "T")
+                comment_data["ShortComment:%s\a%s" % (enter_time, url)] = text
         # for k, v in detail_data.iteritems():
         #     print k, '\t', v
         self.hbase_table_movie.put(row_key, comment_data)

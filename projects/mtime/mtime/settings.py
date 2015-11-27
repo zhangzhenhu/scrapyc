@@ -31,3 +31,8 @@ FEED_EXPORTERS = {
 LOGSTATS_DUMP_FILE = "/home/zhangzhenhu/mtime/stats.log"
 FEED_URI = "file:///home/zhangzhenhu/mtime/url-people.txt"
 FEED_FORMAT = "mtime"
+
+HBASE_SERVER = "localhost"
+import socket
+if "baidu.com " in socket.gethostname():
+    HBASE_SERVER = 'st01-ps-ssd2145.st01.baidu.com'

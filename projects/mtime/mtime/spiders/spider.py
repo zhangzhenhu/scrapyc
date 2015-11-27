@@ -263,7 +263,7 @@ class MtimeSpider(scrapy.Spider):
         if response.status / 100 != 2:
             yield scrapy.Request(url=response.url, callback=self.parse_movie_plots)
             return
-        plots = u"".join(response.xpath("//div[@id='lblContent']//text()").extract())
+        plots = u"".join(response.xpath("//div[@class='plots_box']/div[2]//text()").extract())
         plots = plots.strip()
         if not plots:
             self.log("movie_plots no_plots %s" % response.url, level=logging.WARNING)

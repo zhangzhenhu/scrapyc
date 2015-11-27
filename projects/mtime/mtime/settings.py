@@ -36,3 +36,7 @@ HBASE_SERVER = "localhost"
 import socket
 if "baidu.com " in socket.gethostname():
     HBASE_SERVER = 'st01-ps-ssd2145.st01.baidu.com'
+    LOGSTATS_DUMP_FILE = "/home/spider/zhangzhenhu/mtime/stats.log"
+    FEED_URI = "file:///home/spider/zhangzhenhu/mtime/url-people.txt"
+    import sys
+    sys.path.append('/home/spider/zhangzhenhu/github/scrapyc')

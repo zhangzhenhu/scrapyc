@@ -45,3 +45,4 @@ if "mgvscir1" in __hostname:
     FEED_URI = "file:///home/spider/zhangzhenhu/mtime/url-people.txt"
     import sys
     sys.path.append('/home/spider/zhangzhenhu/github/scrapyc')
+    JOBDIR = "/home/spider/zhangzhenhu/mtime/job/"
